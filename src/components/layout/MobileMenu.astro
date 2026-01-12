@@ -1,0 +1,93 @@
+---
+// =============================================================================
+// Mobile Menu Component
+// =============================================================================
+
+import type { Locale, NavItem } from '@/config';
+import {
+  HiHome,
+  HiDocumentText,
+  HiCollection,
+  HiFolder,
+  HiTag,
+  HiUser,
+} from 'react-icons/hi';
+
+interface Props {
+  locale?: Locale;
+  navItems: NavItem[];
+}
+
+const { locale = 'pt', navItems } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Map icon names to components
+const iconMap: Record<string, any> = {
+  HiHome,
+  HiDocumentText,
+  HiCollection,
+  HiFolder,
+  HiTag,
+  HiUser,
+};
+
+// Known routes that are NOT blog posts
+const knownRoutes = ['/', '/blog', '/series', '/categories', '/tags', '/about'];
+
+function isActive(href: string): boolean {
+  if (href === '/') {
+    return currentPath === '/';
+  }
+
+  // For /blog, also activate when viewing a blog post
+  if (href === '/blog') {
+    const isKnownRoute = knownRoutes.some(route =>
+      route === '/' ? currentPath === '/' : currentPath.startsWith(route)
+    );
+    if (!isKnownRoute && currentPath !== '/') {
+      return true;
+    }
+  }
+
+  return currentPath.startsWith(href);
+}
+---
+
+<div
+  id="mobile-menu"
+  class="hidden lg:hidden border-t border-base-200 bg-base-100"
+>
+  <nav class="container mx-auto px-4 py-3">
+    <ul class="space-y-1">
+      {
+        navItems.map((item) => {
+          const IconComponent = item.icon ? iconMap[item.icon] : null;
+          const isExternal = item.external;
+          return (
+            <li>
+              <a
+                href={item.href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                class:list={[
+                  'group relative flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-all duration-300 overflow-hidden',
+                  !isExternal && isActive(item.href)
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-md'
+                    : 'text-base-content/70 hover:text-white',
+                ]}
+              >
+                {(isExternal || !isActive(item.href)) && (
+                  <span class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_200%] opacity-0 group-hover:opacity-100 group-hover:animate-gradient transition-opacity duration-300"></span>
+                )}
+                <span class="relative z-10 flex items-center gap-3">
+                  {IconComponent && <IconComponent className="h-5 w-5" />}
+                  {item.label}
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+</div>

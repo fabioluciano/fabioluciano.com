@@ -1,0 +1,115 @@
+---
+// =============================================================================
+// Series Detail Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllSeries, getSeriesInfo, getPostSlug } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { formatDate } from '@/lib/utils';
+import { LOCALES } from '@/config/locales';
+
+export async function getStaticPaths() {
+  const paths: { params: { lang: string; slug: string }; props: { seriesSlug: string } }[] = [];
+
+  for (const lang of LOCALES) {
+    const seriesSlugs = await getAllSeries(lang);
+    for (const slug of seriesSlugs) {
+      paths.push({ params: { lang, slug }, props: { seriesSlug: slug } });
+    }
+  }
+
+  return paths;
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const { seriesSlug } = Astro.props;
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+
+const seriesInfo = await getSeriesInfo(seriesSlug, lang);
+---
+
+<BaseLayout
+  title={seriesInfo?.name || seriesSlug}
+  description={seriesInfo?.posts[0]?.data.description || ''}
+  locale={lang}
+>
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      {seriesInfo ? (
+        <>
+          <header class="max-w-3xl mx-auto mb-12">
+            <a
+              href={`${urlPrefix}/series`}
+              class="text-sm text-base-content/60 hover:text-primary transition-colors mb-4 inline-flex items-center gap-1"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              {t('series.title')}
+            </a>
+
+            <div class="flex items-center gap-3 mb-4">
+              <span class="badge badge-info">{t('series.ongoing')}</span>
+              <span class="text-sm text-base-content/50">
+                {seriesInfo.totalPosts} {seriesInfo.totalPosts === 1 ? 'post' : 'posts'}
+              </span>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+              {seriesInfo.name}
+            </h1>
+
+            {seriesInfo.posts[0] && (
+              <p class="text-xl text-base-content/60 mb-6">
+                {seriesInfo.posts[0].data.description}
+              </p>
+            )}
+          </header>
+
+          <div class="max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-base-content mb-6">
+              {lang === 'pt' ? 'Posts da Série' : 'Series Posts'}
+            </h2>
+
+            <div class="space-y-4">
+              {seriesInfo.posts.map((post, index) => (
+                <a
+                  href={`${urlPrefix}/${getPostSlug(post)}`}
+                  class="card bg-base-100 border border-base-300 hover:border-primary hover:shadow-lg transition-all block"
+                >
+                  <div class="card-body flex-row items-center gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary text-primary-content flex items-center justify-center font-bold">
+                      {post.data.seriesOrder || index + 1}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h3 class="font-semibold text-base-content line-clamp-1">
+                        {post.data.title}
+                      </h3>
+                      <p class="text-sm text-base-content/60 line-clamp-1">
+                        {post.data.description}
+                      </p>
+                      <p class="text-xs text-base-content/40 mt-1">
+                        {formatDate(post.data.publishedAt, lang)}
+                      </p>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-base-content/40 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div class="text-center py-12">
+          <p class="text-base-content/60">
+            {lang === 'pt' ? 'Série não encontrada.' : 'Series not found.'}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+title: "Bem-vindo ao meu blog sobre Platform Engineering"
+description: "Uma introdução ao blog, aos temas que serão abordados e à minha jornada como Platform Engineer."
+publishedAt: 2024-01-15
+locale: pt
+category: platform-engineering
+tags:
+  - platform-engineering
+  - developer-experience
+  - introducao
+draft: false
+toc: true
+comments: true
+translationSlug: welcome-to-blog
+---
+
+import { Callout } from '@/components/mdx/Callout';
+
+## Introdução
+
+Olá! Sou Fabio Luciano, Platform Engineer com mais de 10 anos de experiência em infraestrutura, cloud native e developer experience. Este blog é o meu espaço para compartilhar conhecimento, experiências e reflexões sobre o fascinante mundo de Platform Engineering.
+
+<Callout type="info" title="Sobre este blog">
+  Este blog foi construído com Astro, React, TypeScript e Tailwind CSS. Todo o conteúdo é escrito em MDX, permitindo a inclusão de componentes interativos.
+</Callout>
+
+## O que você vai encontrar aqui
+
+### Kubernetes e Cloud Native
+
+Vamos explorar desde conceitos básicos até tópicos avançados como:
+
+- **Operators**: Como criar controllers customizados com Kubebuilder
+- **Service Mesh**: Istio, Linkerd e quando usar cada um
+- **Security**: Pod Security Standards, Network Policies e RBAC
+
+### Platform Engineering
+
+O coração deste blog. Tópicos incluem:
+
+- **Internal Developer Platforms (IDPs)**: Backstage, Port, Kratix
+- **Self-service**: Como empoderar desenvolvedores
+- **Platform as a Product**: Tratando a plataforma como um produto
+
+### GitOps e IaC
+
+Infraestrutura declarativa e versionada:
+
+- **ArgoCD e Flux**: Comparações e casos de uso
+- **Terraform e Crossplane**: IaC tradicional vs Kubernetes-native
+- **Kustomize e Helm**: Gerenciamento de configurações
+
+## Código de exemplo
+
+Aqui está um exemplo de como criar um recurso Kubernetes com TypeScript:
+
+```typescript
+import * as k8s from '@kubernetes/client-node';
+
+const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
+
+const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+
+async function createNamespace(name: string) {
+  const namespace: k8s.V1Namespace = {
+    metadata: {
+      name: name,
+      labels: {
+        'managed-by': 'platform-team',
+      },
+    },
+  };
+
+  try {
+    const response = await k8sApi.createNamespace(namespace);
+    console.log(`Namespace ${name} created successfully`);
+    return response.body;
+  } catch (error) {
+    console.error('Error creating namespace:', error);
+    throw error;
+  }
+}
+```
+
+## Próximos passos
+
+Nos próximos posts, vamos mergulhar em tópicos específicos. Fique atento às séries que estou preparando:
+
+1. **Kubernetes Operators do Zero**: Uma série completa sobre como construir operators
+2. **Platform Engineering na Prática**: Casos reais de implementação de IDPs
+3. **Observabilidade Cloud Native**: OpenTelemetry, Prometheus e muito mais
+
+<Callout type="tip" title="Fique conectado">
+  Siga-me nas redes sociais e assine o RSS para não perder nenhum conteúdo novo!
+</Callout>
+
+## Conclusão
+
+Este é apenas o começo de uma jornada de compartilhamento de conhecimento. Espero que o conteúdo aqui seja útil para você, seja você um iniciante curioso ou um veterano buscando novas perspectivas.
+
+Até o próximo post!

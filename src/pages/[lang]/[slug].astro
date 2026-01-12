@@ -1,0 +1,51 @@
+---
+// =============================================================================
+// Dynamic Post Page - Unified for all locales
+// =============================================================================
+
+import PostLayout from '@/layouts/PostLayout.astro';
+import { getAllPosts, getPostSlug, type Post } from '@/lib/posts';
+import { getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const paths: { params: { lang: string; slug: string }; props: { post: Post } }[] = [];
+
+  for (const lang of LOCALES) {
+    const localePosts = posts.filter((p) => p.data.locale === lang);
+    for (const post of localePosts) {
+      paths.push({
+        params: { lang, slug: getPostSlug(post) },
+        props: { post },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const { post } = Astro.props;
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const { Content, headings } = await post.render();
+
+// Check if alternate locale version exists
+const allPosts = await getAllPosts();
+const slug = getPostSlug(post);
+const alternateLang = lang === 'pt' ? 'en' : 'pt';
+const alternatePost = allPosts.find(
+  (p) => p.data.locale === alternateLang && getPostSlug(p) === slug
+);
+const alternateUrl = alternatePost
+  ? `${getUrlPrefix(alternateLang)}/${slug}`
+  : null;
+---
+
+<PostLayout post={post} headings={headings} alternateLocaleUrl={alternateUrl}>
+  <Content components={{}} />
+</PostLayout>

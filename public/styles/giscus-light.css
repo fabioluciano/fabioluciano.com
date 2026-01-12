@@ -1,0 +1,91 @@
+/* =============================================================================
+ * Giscus Custom Theme - Light Mode
+ * Matches DaisyUI light theme colors
+ * ============================================================================= */
+
+main {
+  --color-canvas-default: oklch(100% 0 0); /* base-100 */
+  --color-canvas-overlay: oklch(98% 0 0);
+  --color-canvas-inset: oklch(96% 0 0); /* base-200 */
+  --color-canvas-subtle: oklch(94% 0 0); /* base-300 */
+
+  --color-border-default: oklch(85% 0 0);
+  --color-border-muted: oklch(90% 0 0);
+  --color-border-subtle: rgba(0, 0, 0, 0.05);
+
+  --color-fg-default: oklch(30% 0 0); /* base-content */
+  --color-fg-muted: oklch(50% 0 0);
+  --color-fg-subtle: oklch(60% 0 0);
+  --color-fg-on-emphasis: #ffffff;
+
+  --color-accent-fg: oklch(55% 0.25 264); /* primary */
+  --color-accent-emphasis: oklch(55% 0.25 264);
+  --color-accent-muted: oklch(55% 0.25 264 / 0.4);
+  --color-accent-subtle: oklch(55% 0.25 264 / 0.15);
+
+  --color-success-fg: oklch(65% 0.2 145);
+  --color-success-emphasis: oklch(65% 0.2 145);
+  --color-success-muted: oklch(65% 0.2 145 / 0.4);
+  --color-success-subtle: oklch(65% 0.2 145 / 0.15);
+
+  --color-attention-fg: oklch(70% 0.15 85);
+  --color-attention-emphasis: oklch(70% 0.15 85);
+  --color-attention-muted: oklch(70% 0.15 85 / 0.4);
+  --color-attention-subtle: oklch(70% 0.15 85 / 0.15);
+
+  --color-danger-fg: oklch(60% 0.25 25);
+  --color-danger-emphasis: oklch(60% 0.25 25);
+  --color-danger-muted: oklch(60% 0.25 25 / 0.4);
+  --color-danger-subtle: oklch(60% 0.25 25 / 0.15);
+
+  --color-btn-text: oklch(30% 0 0);
+  --color-btn-bg: oklch(96% 0 0);
+  --color-btn-border: oklch(85% 0 0);
+  --color-btn-hover-bg: oklch(94% 0 0);
+  --color-btn-hover-border: oklch(80% 0 0);
+  --color-btn-active-bg: oklch(92% 0 0);
+  --color-btn-active-border: oklch(75% 0 0);
+  --color-btn-selected-bg: oklch(90% 0 0);
+
+  --color-btn-primary-text: #ffffff;
+  --color-btn-primary-bg: oklch(55% 0.25 264);
+  --color-btn-primary-border: oklch(50% 0.25 264);
+  --color-btn-primary-hover-bg: oklch(50% 0.25 264);
+  --color-btn-primary-hover-border: oklch(45% 0.25 264);
+  --color-btn-primary-selected-bg: oklch(48% 0.25 264);
+  --color-btn-primary-disabled-text: rgba(255, 255, 255, 0.5);
+  --color-btn-primary-disabled-bg: oklch(70% 0.15 264);
+  --color-btn-primary-disabled-border: oklch(70% 0.15 264);
+
+  --color-primer-shadow-inset: inset 0 1px 0 rgba(0, 0, 0, 0.04);
+  --color-scale-gray-1: oklch(96% 0 0);
+  --color-scale-blue-1: oklch(55% 0.25 264 / 0.15);
+
+  color-scheme: light;
+}
+
+/* Remove borders for cleaner look */
+.gsc-main {
+  border: none !important;
+}
+
+.gsc-comment-box {
+  border-radius: 0.75rem !important;
+}
+
+.gsc-comment {
+  border-radius: 0.75rem !important;
+}
+
+.gsc-header {
+  border-bottom: 1px solid var(--color-border-muted) !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.gsc-reactions-button {
+  border-radius: 0.5rem !important;
+}
+
+.gsc-reply-box {
+  border-radius: 0.5rem !important;
+}

@@ -1,0 +1,187 @@
+---
+title: "What Happens When You Run kubectl apply?"
+description: "Explore kubectl apply: see authentication, authorization, and admission in Kubernetes for efficient security and control"
+publishedAt: 2025-10-31
+locale: en
+category: kubernetes
+tags: ["authentication", "authorization", "kubernetes", "admission"]
+series: kubernetes-triple-a
+seriesOrder: 1
+draft: false
+toc: true
+comments: true
+---
+
+Recently, while working on documentation about best practices for building solutions with **sidecars**, I came across some topics that, despite being fundamental, usually receive little attention when we talk about Kubernetes.
+
+These subjects seemed so interesting that I decided to turn them into a series of articles — and this is the first one.
+
+To begin, I want to ask you a simple question:
+
+> Do you know exactly what happens when you run `kubectl apply -f manifest.yaml`?
+
+It may seem like a trivial action, but behind this command there's a well-structured process, divided into three major stages: **Authentication**, **Authorization**, and **Admission**.
+
+Actually, the topic that most caught my interest was the **Admission** process, but it's impossible to fully understand it without first going through the other two. These three components work together and form the foundation of all Kubernetes security and access control.
+
+Despite seeming simple, each of these elements — **Authentication**, **Authorization**, and **Admission** — is highly configurable and full of nuances. Understanding how they connect helps not only to solve everyday problems but also to create more secure and elegant solutions.
+
+Let's start by understanding **how they communicate**:
+
+![](/images/posts/o-que-acontece-quando-voce-executa-kubectl-apply/0.png)
+
+When a user runs the command **kubectl apply -f manifest.yaml**, the request journey begins like this:
+
+1. **Authentication**: Kubernetes identifies **who** is making the call.
+
+2. **Authorization**: The system verifies **if** that person (or service) has permission to perform the operation.
+
+3. **Admission**: The submitted resource is analyzed, validated, and in some cases, modified before being stored in **etcd**.
+
+
+Only after these three steps is the change effectively applied to the cluster.
+
+Now that we have an overview, let's dive into each of these processes, starting with Authentication.
+
+## Authentication
+
+If you've been working with Kubernetes for some time, you probably know that every interaction made with **kubectl** ends up reaching the **API Server**, which is the heart of the cluster.
+
+It works similarly to a **RESTful API**: each command is translated into an HTTP request containing information about the desired resource, the type of operation, and who is making the call.
+
+We can observe this message exchange in real-time by enabling the verbosity flag in `kubectl`, with `-v`.
+
+The higher the number, the more details are displayed. For example:
+
+```bash
+kubectl get pods -v=7
+```
+
+![](/images/posts/o-que-acontece-quando-voce-executa-kubectl-apply/1.jpg)
+
+Let's break down what's being displayed in the output of the command `kubectl get pods -v=7`
+
+1. **Command executed**
+Here is where everything begins. kubectl received the get pods command and, thanks to the `-v=7` flag, is displaying internal details of its communication with the API Server. This verbosity level shows, among other things, which configurations are being loaded and which HTTP requests are being made.
+
+2. **Configuration file loaded**
+kubectl reports that it loaded the credentials and context from the file **~/.kube/config**. This file contains the information that identifies **who the user is**, **which cluster is being accessed**, and **how to authenticate to it** (for example, via token, certificate, or OIDC provider).
+
+3. **Request sent to the API Server**
+Here we see kubectl transforming the get pods command into an **HTTP GET request** to the endpoint:
+
+```bash
+https://127.0.0.1:26443/api/v1/namespaces/kube-system/pods?limit=500
+```
+
+This is the moment when the call actually "leaves your terminal" and reaches Kubernetes. The request header includes authentication information (such as tokens), the expected response format (application/json), and the **User-Agent**, which indicates the kubectl version.
+
+4. **Server response**
+The API Server processes the request, authenticates the user, checks if they have permission (authorization), and if everything is correct, returns the result with status `200 OK`. Following that, we see the list of Pods from the kube-system namespace, indicating that the request was accepted and completed successfully.
+
+Authentication is, therefore, the first filter: it defines **who the user or service is** that's trying to interact with the cluster.
+
+This identification can happen in various ways — such as via certificates, service tokens, identity providers (OIDC), or even custom plugins.
+
+## Authorization
+
+After the user or service is authenticated, the next step is to verify **what they can do within the cluster**. This is the role of **authorization**.
+
+While authentication answers the question **"who are you?"**, authorization answers **"what can you do?"**.
+
+And this decision is always made by the API Server, before the request proceeds further.
+
+Kubernetes offers different **authorization mechanisms**, and each has its purpose. The most common are:
+
+* **RBAC (Role-Based Access Control)** — the most used. Defines permissions based on roles (Roles) and binds these roles to users, groups, or service accounts.
+
+* **ABAC (Attribute-Based Access Control)** — uses attributes defined in JSON policies, allowing more flexible rules but less practical to manage.
+
+* **Webhook Authorization** — forwards the decision to an external service, ideal for integrations with corporate authentication systems.
+
+* **Node** and **AlwaysAllow**/**AlwaysDeny** — used in very specific cases (the first for internal node authentication and the second usually for testing).
+
+
+In practice, **RBAC** is the most common model, being simple and integrated into the Kubernetes ecosystem.
+
+A basic example:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pod-reader
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: read-pods-binding
+subjects:
+  - kind: User
+    name: fabio
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+```
+
+In this example, user *fabio* can **list and view pods** in the `default` namespace, but cannot create, delete, or modify any.
+
+With RBAC configured, the API Server queries these rules whenever a request arrives.
+
+If the user tries to do something outside the assigned permissions, they'll receive a `Forbidden` error — and the process is interrupted before even reaching the **Admission** stage.
+
+## Admission
+
+If authentication identifies the user and authorization confirms they can perform the action, the **Admission** process is the moment when Kubernetes **analyzes and modifies what will be created or changed** before it goes to the database (etcd).
+
+This is where one of the most powerful parts of Kubernetes comes in: the **Admission Controllers**.
+
+Think of them as "gatekeepers" that inspect everything entering the cluster. They can **validate**, **block**, or even **modify** resources before Kubernetes accepts the operation.
+
+There are two main types:
+
+* **Validating Admission Controllers** — analyze the request and decide whether it's valid or not.
+
+* **Mutating Admission Controllers** — can change the request before it's persisted.
+
+
+A practical example: imagine your company wants to ensure that **every Pod has a label indicating the responsible team**.
+
+An Admission Controller can automatically reject any Pod that doesn't have this label, or even add the missing label (in the case of a mutating controller).
+
+Kubernetes already comes with several ready-made Admission Controllers — such as *NamespaceLifecycle*, *LimitRanger*, *ResourceQuota*, among others — but it's also possible to create your own using **webhooks**.
+
+A **MutatingAdmissionWebhook**, for example, can intercept Pod creation and automatically inject sidecars (such as a logging, metrics, or security container) (hello *istio*).
+
+This type of automation is widely used by tools like **Istio**, **Linkerd**, and various **operators (Operators)** that manage custom resources.
+
+A simplified flow would look like this:
+
+![](/images/posts/o-que-acontece-quando-voce-executa-kubectl-apply/2.png)
+
+Notice that the admission process is the **last step before the resource is saved**.
+
+This means that any modification made at this point is the last opportunity to adjust, validate, or enforce security and compliance policies.
+
+## Conclusion
+
+Next time you run a simple *kubectl apply*, remember everything that happens behind the scenes:
+
+* Kubernetes first **checks who you are (Authentication)**,
+
+* then **verifies what you can do (Authorization)**,
+
+* and finally **analyzes and adjusts what you're trying to create (Admission)**.
+
+
+These three processes are the foundation of all cluster security and governance.
+
+Understanding them is essential not only for those who administer Kubernetes but also for those who develop solutions that interact with it — such as sidecars, operators, or custom webhooks.
+
+In the next articles in the series, I'll explore each of these components in greater depth, bringing practical examples, use cases, and even some curiosities that are rarely covered in the official documentation.

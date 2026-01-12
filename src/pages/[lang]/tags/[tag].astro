@@ -1,0 +1,77 @@
+---
+// =============================================================================
+// Tag Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import { getAllPosts, getPostsByTag } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const paths: { params: { lang: string; tag: string } }[] = [];
+
+  for (const lang of LOCALES) {
+    const localePosts = posts.filter((p) => p.data.locale === lang);
+    const tags = new Set<string>();
+    localePosts.forEach((post) => post.data.tags.forEach((tag) => tags.add(tag)));
+
+    for (const tag of tags) {
+      paths.push({ params: { lang, tag } });
+    }
+  }
+
+  return paths;
+}
+
+const { lang, tag } = Astro.params as { lang: Locale; tag: string };
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+
+const allTagPosts = await getPostsByTag(tag);
+const posts = allTagPosts.filter((p) => p.data.locale === lang);
+---
+
+<BaseLayout
+  title={t('blog.postsWithTag', { tag })}
+  description={t('blog.postsWithTag', { tag })}
+  locale={lang}
+>
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      <header class="max-w-3xl mx-auto text-center mb-12">
+        <a
+          href={`${urlPrefix}/tags`}
+          class="text-sm text-base-content/60 hover:text-primary transition-colors mb-4 inline-flex items-center gap-1"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          {t('tags.title')}
+        </a>
+        <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+          #{tag}
+        </h1>
+        <p class="text-xl text-base-content/60">
+          {t('tags.postsCount', { count: posts.length.toString() })}
+        </p>
+      </header>
+
+      {
+        posts.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {posts.map((post) => (
+              <PostCard post={post} locale={lang} urlPrefix={urlPrefix} />
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-12">
+            <p class="text-base-content/60">{t('blog.noPosts')}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

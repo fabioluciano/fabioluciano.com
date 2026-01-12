@@ -1,0 +1,137 @@
+---
+// =============================================================================
+// Base Layout - Main layout wrapper for all pages
+// =============================================================================
+
+import '@/styles/global.css';
+import { getSiteConfig, getPageTitle } from '@/config';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import SEO from '@/components/seo/SEO.astro';
+import type { Locale } from '@/config';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
+  locale?: Locale;
+  type?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalUrl,
+  noIndex = false,
+  locale = 'pt',
+  type = 'website',
+  publishedAt,
+  updatedAt,
+  tags,
+} = Astro.props;
+
+const config = getSiteConfig();
+const pageTitle = getPageTitle(title);
+const pageDescription = description || config.seo.defaultDescription;
+---
+
+<!doctype html>
+<html
+  lang={locale === 'pt' ? 'pt-BR' : 'en-US'}
+  data-theme="light"
+  class="scroll-smooth"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={pageTitle}
+      description={pageDescription}
+      ogImage={ogImage}
+      canonicalUrl={canonicalUrl}
+      noIndex={noIndex}
+      locale={locale}
+      type={type}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+      tags={tags}
+    />
+
+    <!-- Preload fonts -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Theme script (prevents flash) -->
+    <script is:inline>
+      (function () {
+        const theme = (() => {
+          const stored = localStorage.getItem('theme');
+          if (stored) return stored;
+
+          return window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        })();
+
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-base-100 text-base-content transition-theme">
+    <!-- Skip to content link -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-content focus:rounded-lg"
+    >
+      {locale === 'pt' ? 'Pular para o conteúdo' : 'Skip to content'}
+    </a>
+
+    <Header locale={locale} />
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer locale={locale} />
+
+    <!-- Theme toggle script -->
+    <script>
+      function setupThemeToggle() {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (!themeToggle) return;
+
+        themeToggle.addEventListener('click', () => {
+          const html = document.documentElement;
+          const currentTheme = html.getAttribute('data-theme');
+          const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+        });
+      }
+
+      // Run on initial load
+      setupThemeToggle();
+
+      // Run on view transitions
+      document.addEventListener('astro:after-swap', setupThemeToggle);
+    </script>
+  </body>
+</html>

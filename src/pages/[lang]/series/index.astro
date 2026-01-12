@@ -1,0 +1,77 @@
+---
+// =============================================================================
+// Series Index Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllSeries, getSeriesInfo } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+
+const seriesSlugs = await getAllSeries(lang);
+const seriesData = await Promise.all(
+  seriesSlugs.map((slug) => getSeriesInfo(slug, lang))
+);
+const seriesList = seriesData.filter(Boolean);
+---
+
+<BaseLayout
+  title={t('series.title')}
+  description={t('series.subtitle')}
+  locale={lang}
+>
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      <header class="max-w-3xl mx-auto text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+          {t('series.title')}
+        </h1>
+        <p class="text-xl text-base-content/60">
+          {t('series.subtitle')}
+        </p>
+      </header>
+
+      {
+        seriesList.length > 0 ? (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {seriesList.map((item) => (
+              <a
+                href={`${urlPrefix}/series/${item!.slug}`}
+                class="card bg-base-100 border border-base-300 hover:border-primary hover:shadow-xl transition-all"
+              >
+                <div class="card-body">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="badge badge-sm badge-info">
+                      {t('series.ongoing')}
+                    </span>
+                    <span class="text-xs text-base-content/50">
+                      {item!.totalPosts} {item!.totalPosts === 1 ? 'post' : 'posts'}
+                    </span>
+                  </div>
+                  <h2 class="card-title">{item!.name}</h2>
+                  {item!.posts[0] && (
+                    <p class="text-sm text-base-content/60 line-clamp-3">
+                      {item!.posts[0].data.description}
+                    </p>
+                  )}
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-12">
+            <p class="text-base-content/60">{t('series.noSeries')}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

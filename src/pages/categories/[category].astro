@@ -1,0 +1,24 @@
+---
+// =============================================================================
+// Category Page - Redirects to default locale
+// =============================================================================
+
+import { getAllPosts } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const categories = new Set<string>();
+
+  posts.forEach((post) => {
+    categories.add(post.data.category);
+  });
+
+  return Array.from(categories).map((category) => ({
+    params: { category },
+  }));
+}
+
+const { category } = Astro.params;
+return Astro.redirect(`/pt/categories/${category}`);
+---
+

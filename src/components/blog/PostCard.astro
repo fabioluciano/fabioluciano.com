@@ -1,0 +1,139 @@
+---
+// =============================================================================
+// Post Card Component - Compact card for displaying post previews
+// =============================================================================
+
+import type { Post } from '@/lib/posts';
+import { getPostSlug, calculateReadingTime } from '@/lib/posts';
+import { formatDate, formatReadingTime } from '@/lib/utils';
+import type { Locale } from '@/config';
+import { FiCalendar, FiClock, FiArrowRight, FiLayers } from 'react-icons/fi';
+
+interface Props {
+  post: Post;
+  locale?: Locale;
+  featured?: boolean;
+  compact?: boolean;
+  urlPrefix?: string;
+}
+
+const { post, locale = 'pt', featured = false, compact = false, urlPrefix = '' } = Astro.props;
+const { data } = post;
+
+const readingTime = calculateReadingTime(post.body);
+const slug = getPostSlug(post);
+
+// Category colors mapping
+const categoryColors: Record<string, string> = {
+  'platform-engineering': 'from-orange-500 to-amber-500',
+  'kubernetes': 'from-blue-500 to-indigo-500',
+  'devops': 'from-green-500 to-emerald-500',
+  'cloud': 'from-sky-500 to-cyan-500',
+  'security': 'from-red-500 to-rose-500',
+  'observability': 'from-purple-500 to-violet-500',
+  'default': 'from-primary to-secondary',
+};
+
+const categoryGradient = categoryColors[data.category.toLowerCase()] || categoryColors['default'];
+---
+
+<article
+  class:list={[
+    'group card bg-base-100 border border-base-300 hover:border-primary/50 hover:shadow-lg transition-all duration-200 overflow-hidden',
+    featured && !compact ? 'md:col-span-2 lg:col-span-2' : '',
+  ]}
+>
+  {/* Gradient top strip */}
+  <div class={`h-0.5 bg-gradient-to-r ${categoryGradient}`}></div>
+
+  {/* Cover image - only for featured non-compact */}
+  {
+    data.coverImage && featured && !compact && (
+      <figure class="relative overflow-hidden">
+        <img
+          src={data.coverImage.src}
+          alt={data.coverImageAlt || data.title}
+          class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-base-100/80 to-transparent"></div>
+      </figure>
+    )
+  }
+
+  <div class:list={['card-body', compact ? 'p-3' : 'p-4']}>
+    {/* Top row: Category + Series + Meta */}
+    <div class="flex items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2">
+        <a
+          href={`${urlPrefix}/categories/${data.category}`}
+          class={`badge badge-sm bg-gradient-to-r ${categoryGradient} text-white border-0`}
+        >
+          {data.category}
+        </a>
+        {data.series && (
+          <span class="badge badge-sm badge-info badge-outline">
+            <FiLayers className="h-2.5 w-2.5 mr-0.5" />
+            {locale === 'pt' ? 'Série' : 'Series'}
+          </span>
+        )}
+      </div>
+      <span class="text-base-content/50 flex items-center gap-1 shrink-0">
+        <FiClock className="h-3 w-3" />
+        {formatReadingTime(readingTime, locale)}
+      </span>
+    </div>
+
+    {/* Title */}
+    <h2 class:list={[
+      'font-semibold text-base-content group-hover:text-primary transition-colors leading-snug',
+      compact ? 'text-sm line-clamp-2' : featured ? 'text-lg line-clamp-2' : 'text-base line-clamp-2'
+    ]}>
+      <a href={`${urlPrefix}/${slug}`}>
+        {data.title}
+      </a>
+    </h2>
+
+    {/* Description - hidden in compact mode */}
+    {!compact && (
+      <p class="text-base-content/60 text-sm line-clamp-2 leading-relaxed">
+        {data.description}
+      </p>
+    )}
+
+    {/* Bottom row: Date + Tags + Arrow */}
+    <div class="flex items-center justify-between gap-2 mt-auto pt-2">
+      <div class="flex items-center gap-2 text-xs text-base-content/50">
+        <time datetime={data.publishedAt.toISOString()} class="flex items-center gap-1">
+          <FiCalendar className="h-3 w-3" />
+          {formatDate(data.publishedAt, locale)}
+        </time>
+        {!compact && data.tags.length > 0 && (
+          <>
+            <span class="text-base-content/30">•</span>
+            <div class="flex gap-1">
+              {data.tags.slice(0, 2).map((tag) => (
+                <a
+                  href={`${urlPrefix}/tags/${tag}`}
+                  class="hover:text-primary transition-colors"
+                >
+                  #{tag}
+                </a>
+              ))}
+              {data.tags.length > 2 && (
+                <span class="text-base-content/40">+{data.tags.length - 2}</span>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+      <a
+        href={`${urlPrefix}/${slug}`}
+        class="text-primary hover:translate-x-0.5 transition-transform"
+        aria-label={locale === 'pt' ? 'Ler artigo' : 'Read article'}
+      >
+        <FiArrowRight className="h-4 w-4" />
+      </a>
+    </div>
+  </div>
+</article>

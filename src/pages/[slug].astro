@@ -1,0 +1,26 @@
+---
+// =============================================================================
+// Dynamic Post Page - Redirects to default locale
+// =============================================================================
+
+import { getAllPosts, getPostSlug } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const slugs = new Set<string>();
+  const paths: { params: { slug: string } }[] = [];
+
+  for (const post of posts) {
+    const slug = getPostSlug(post);
+    if (!slugs.has(slug)) {
+      slugs.add(slug);
+      paths.push({ params: { slug } });
+    }
+  }
+
+  return paths;
+}
+
+const { slug } = Astro.params;
+return Astro.redirect(`/pt/${slug}`);
+---

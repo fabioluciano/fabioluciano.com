@@ -1,0 +1,72 @@
+---
+title: "Helm 4"
+description: "Helm 4 offers server-side apply, kstatus for stability, enhanced security, modularity, and improved plugins"
+publishedAt: 2025-11-13
+locale: en
+category: kubernetes
+tags: ["kubernetes", "helm"]
+draft: false
+toc: true
+comments: true
+---
+
+**Helm 4** is not just an incremental update; it's a significant overhaul that aligns the tool with modern K8s best practices, focusing on stability, security, and efficiency.
+
+### 1. Server-Side Apply (SSA)
+
+The main architectural change. Helm 4 abandons the complex client-side *three-way merge* logic in favor of Kubernetes native **Server-Side Apply (SSA)**.
+
+<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Feature</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 3 (Old)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 4 (SSA)</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Mechanism</strong></p></td><td colspan="1" rowspan="1"><p>Local <em>Three-way Merge</em></p></td><td colspan="1" rowspan="1"><p>Server-side Field Ownership</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Conflict Resolution</strong></p></td><td colspan="1" rowspan="1"><p>Prone to merge conflicts</p></td><td colspan="1" rowspan="1"><p>K8s tracks the field owner</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Advantage</strong></p></td><td colspan="1" rowspan="1"><p>N/A</p></td><td colspan="1" rowspan="1"><p>More robust deployments, especially with Operators and concurrent automations.</p></td></tr></tbody></table>
+
+SSA ensures that Helm only declares its **intent** for the fields defined in the *Chart*, delegating the final state resolution to K8s.
+
+---
+
+### 2. Stability with kstatus
+
+Operations with `--wait` in Helm are now more reliable thanks to the **kstatus** library integration.
+
+* **What it does:** `kstatus` provides a granular, rule-based assessment of what constitutes a "ready" or "healthy" K8s resource.
+
+* **Technical Advantage:** It goes beyond simple replica counting in a `Deployment`. It considers complex conditions of more sophisticated resources (e.g., completed *Jobs*, stable *StatefulSets*). Your CI/CD will have safer deployments, ensuring the next step only starts when the application is **effectively** in service.
+
+
+---
+
+### 3. Supply Chain Security
+
+**Open Container Initiative (OCI)** support has been improved with an explicit focus on integrity. This ensures that the downloaded and applied *Chart* is **bit-for-bit** identical to the original signed artifact, preventing tampering attacks in the supply chain.
+
+It's now possible to reference OCI *Charts* by **digest (SHA256)**, not just by version tag.
+
+* ```bash
+    helm install app oci://registry.com/charts/app@sha256:digest-hash-a42...
+    ```
+
+
+---
+
+### 4. Modularity and Organization with Multi-Document Values
+
+For enterprise or complex *Charts*, maintaining a single monolithic `values.yaml` was challenging. Now you can structure your environment configurations (Dev, Staging, Prod) or functional sections (DB, Caching, Monitoring) in a cleaner and more modular way.
+
+Helm 4 accepts multiple YAML documents in the main values file or in files passed via the `--values` flag.
+
+---
+
+### 5. Refactored Plugins and Post-Renderers
+
+Helm's extension capabilities gained a more secure and formalized framework.
+
+* **Post-Renderers:** Tools that modify K8s manifests after the templating phase (e.g., kustomize, yq) are now primarily implemented as plugins.
+
+* **Future:** The plugin system is being revised with a vision for optional **WebAssembly (Wasm)** adoption, which will provide a sandboxed execution environment for extensions, increasing security.
+
+
+---
+
+### 6. CLI Flags (Breaking Changes)
+
+To align command semantics, some command-line flags have been renamed.
+
+<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Old Flag (Helm 3)</strong></p></td><td colspan="1" rowspan="1"><p><strong>New Flag (Helm 4)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Purpose</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--atomic</code></p></td><td colspan="1" rowspan="1"><p><code>--rollback-on-failure</code></p></td><td colspan="1" rowspan="1"><p>Reverts the operation on failure.</p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--force</code></p></td><td colspan="1" rowspan="1"><p><code>--force-replace</code></p></td><td colspan="1" rowspan="1"><p>Forces replacement of incompatible resources.</p></td></tr></tbody></table>

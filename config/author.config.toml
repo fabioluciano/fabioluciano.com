@@ -1,0 +1,41 @@
+# =============================================================================
+# Author Configuration
+# =============================================================================
+
+[author]
+name = "Fabio Luciano"
+title = "Platform Engineer"
+bio = "Platform Engineer com mais de 10 anos de experiência em IDPs, Kubernetes, GitOps, Observabilidade e Developer Experience."
+bioEn = "Platform Engineer with 10+ years of experience in IDPs, Kubernetes, GitOps, Observability, and Developer Experience."
+avatar = "/images/avatar.jpg"
+email = "me@fabioluciano.com"
+location = "Brazil"
+
+# Social links
+[author.social]
+github = "https://github.com/fabioluciano"
+linkedin = "https://linkedin.com/in/fabioluciano"
+twitter = "https://twitter.com/fabioluciano"
+bluesky = ""
+mastodon = ""
+
+# Professional highlights (for about page)
+[[author.skills]]
+category = "Platform Engineering"
+items = ["Internal Developer Platforms", "Platform as a Product", "Self-service Infrastructure"]
+
+[[author.skills]]
+category = "Cloud Native"
+items = ["Kubernetes", "Helm", "Operators", "Service Mesh"]
+
+[[author.skills]]
+category = "GitOps & IaC"
+items = ["ArgoCD", "Flux", "Terraform", "Crossplane"]
+
+[[author.skills]]
+category = "Observability"
+items = ["Prometheus", "Grafana", "OpenTelemetry", "Loki"]
+
+[[author.skills]]
+category = "Developer Experience"
+items = ["CI/CD Pipelines", "Development Environments", "Documentation as Code"]

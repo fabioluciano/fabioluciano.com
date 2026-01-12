@@ -1,0 +1,72 @@
+---
+title: "Helm 4"
+description: "Helm 4 offers server-side apply, kstatus for stability, enhanced security, modularity, and improved plugins"
+publishedAt: 2025-11-13
+locale: pt
+category: kubernetes
+tags: ["kubernetes", "helm"]
+draft: false
+toc: true
+comments: true
+---
+
+A versão **Helm 4** não é apenas uma atualização incremental; é uma revisão significativa que alinha a ferramenta às melhores práticas modernas do K8s, focando em estabilidade, segurança e eficiência.
+
+### 1. Server-Side Apply (SSA)
+
+A principal mudança arquitetural. O Helm 4 abandona a complexa lógica de *three-way merge* do lado do cliente em favor do **Server-Side Apply (SSA)** nativo do Kubernetes.
+
+<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Característica</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 3 (Antigo)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 4 (SSA)</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Mecanismo</strong></p></td><td colspan="1" rowspan="1"><p><em>Three-way Merge</em> Local</p></td><td colspan="1" rowspan="1"><p>Propriedade de Campo no Servidor</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Resolução de Conflito</strong></p></td><td colspan="1" rowspan="1"><p>Propenso a falhas de mesclagem (<code>merge conflicts</code>)</p></td><td colspan="1" rowspan="1"><p>O K8s rastreia o "proprietário" do campo (<code>field owner</code>)</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Vantagem</strong></p></td><td colspan="1" rowspan="1"><p>N/A</p></td><td colspan="1" rowspan="1"><p>Implantações mais robustas, especialmente com <em>Operators</em> e automações concorrentes.</p></td></tr></tbody></table>
+
+O SSA garante que o Helm apenas declare sua **intenção** para os campos definidos no *Chart*, delegando a resolução de estado final ao K8s.
+
+---
+
+### 2. Estabilidade com kstatus
+
+As operações com `--wait` no Helm agora são mais confiáveis graças à integração da biblioteca **kstatus**.
+
+* **O que faz:** `kstatus` fornece uma avaliação granular e orientada por regras sobre o que constitui um recurso K8s "pronto" ou "saudável".
+    
+* **Vantagem Técnica:** Vai além da simples contagem de réplicas em um `Deployment`. Ele considera condições complexas de recursos mais sofisticados (ex: *Jobs* completados, *StatefulSets* estáveis). Sua CI/CD terá *deployments* mais seguros, garantindo que a próxima etapa só comece quando a aplicação estiver **efetivamente** em serviço.
+    
+
+---
+
+### 3. Segurança da Supply Chain
+
+O suporte ao **Open Container Initiative (OCI)** foi melhorado com um foco explícito em integridade. Assim, garantindo que o *Chart* baixado e aplicado é **bit-a-bit** idêntico ao artefato original assinado, prevenindo ataques de adulteração na supply chain
+
+Agora é possível referenciar *Charts* OCI por **digest (SHA256)**, e não apenas pela tag de versão.
+
+* ```bash
+    helm install app oci://registry.com/charts/app@sha256:digest-hash-a42...
+    ```
+    
+
+---
+
+### 4. Modularidade e Organização com Multi-Document Values
+
+Para *Charts* empresariais ou complexos, manter um único e monolítico `values.yaml` era um desafio. Agora é possível que você estruture suas configurações de ambiente (Dev, Staging, Prod) ou seções funcionais (DB, Caching, Monitoring) de forma mais limpa e modular.
+
+O Helm 4 aceita múltiplos documentos YAML no arquivo de valores principal ou em arquivos passados pela *flag* `--values`.
+
+---
+
+### 5. Plugins e Post-Renderers Refatorados
+
+A extensão do Helm ganhou um *framework* mais seguro e formalizado.
+
+* **Post-Renderers:** As ferramentas que modificam os manifestos K8s após a fase de *templating* (ex: kustomize, yq) agora são implementadas primariamente como *plugins*.
+    
+* **Futuro:** O sistema de *plugins* está sendo revisado com uma visão para adoção opcional de **WebAssembly (Wasm)**, que fornecerá um ambiente de execução em *sandbox* para extensões, aumentando a segurança.
+    
+
+---
+
+### 6. Flags de CLI (*Breaking Changes*)
+
+Para alinhar a semântica dos comandos, algumas *flags* de linha de comando foram renomeadas**.**
+
+<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Flag Antiga (Helm 3)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Flag Nova (Helm 4)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Finalidade</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--atomic</code></p></td><td colspan="1" rowspan="1"><p><code>--rollback-on-failure</code></p></td><td colspan="1" rowspan="1"><p>Reverte a operação em caso de falha.</p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--force</code></p></td><td colspan="1" rowspan="1"><p><code>--force-replace</code></p></td><td colspan="1" rowspan="1"><p>Força a substituição de recursos incompatíveis.</p></td></tr></tbody></table>

@@ -1,0 +1,91 @@
+---
+// =============================================================================
+// Series Navigation Component
+// =============================================================================
+
+import type { Post } from '@/lib/posts';
+import { getPostSlug } from '@/lib/posts';
+import type { Locale } from '@/config';
+
+interface Props {
+  previous?: Post;
+  next?: Post;
+  locale?: Locale;
+}
+
+const { previous, next, locale = 'pt' } = Astro.props;
+---
+
+{
+  (previous || next) && (
+    <nav class="mt-12 pt-8 border-t border-base-200" aria-label={locale === 'pt' ? 'Navegação da série' : 'Series navigation'}>
+      <h3 class="text-sm font-semibold uppercase tracking-wider text-base-content/60 mb-4">
+        {locale === 'pt' ? 'Navegação da Série' : 'Series Navigation'}
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Previous post */}
+        {previous ? (
+          <a
+            href={`/${getPostSlug(previous)}`}
+            class="group flex flex-col p-4 rounded-lg border border-base-300 hover:border-primary hover:bg-base-200 transition-all"
+          >
+            <span class="text-xs text-base-content/60 mb-1 flex items-center gap-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+              {locale === 'pt' ? 'Anterior' : 'Previous'}
+            </span>
+            <span class="font-medium text-base-content group-hover:text-primary transition-colors line-clamp-2">
+              {previous.data.title}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )}
+
+        {/* Next post */}
+        {next ? (
+          <a
+            href={`/${getPostSlug(next)}`}
+            class="group flex flex-col p-4 rounded-lg border border-base-300 hover:border-primary hover:bg-base-200 transition-all text-right"
+          >
+            <span class="text-xs text-base-content/60 mb-1 flex items-center justify-end gap-1">
+              {locale === 'pt' ? 'Próximo' : 'Next'}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-3 w-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </span>
+            <span class="font-medium text-base-content group-hover:text-primary transition-colors line-clamp-2">
+              {next.data.title}
+            </span>
+          </a>
+        ) : (
+          <div />
+        )}
+      </div>
+    </nav>
+  )
+}

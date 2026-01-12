@@ -1,0 +1,24 @@
+---
+// =============================================================================
+// Tag Page - Redirects to default locale
+// =============================================================================
+
+import { getAllPosts } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const tags = new Set<string>();
+
+  posts.forEach((post) => {
+    post.data.tags.forEach((tag) => tags.add(tag));
+  });
+
+  return Array.from(tags).map((tag) => ({
+    params: { tag },
+  }));
+}
+
+const { tag } = Astro.params;
+return Astro.redirect(`/pt/tags/${tag}`);
+---
+

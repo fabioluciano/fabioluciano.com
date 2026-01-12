@@ -1,0 +1,98 @@
+# =============================================================================
+# Site Configuration - Single Source of Truth
+# =============================================================================
+
+[site]
+title = "Fabio Luciano"
+description = "Platform Engineering, Developer Experience & Cloud Native"
+tagline = "Building platforms that developers love"
+domain = "fabioluciano.com"
+url = "https://fabioluciano.com"
+defaultLocale = "pt"
+supportedLocales = ["pt", "en"]
+
+# =============================================================================
+# SEO Configuration
+# =============================================================================
+
+[seo]
+titleTemplate = "%s | Fabio Luciano"
+defaultTitle = "Fabio Luciano - Platform Engineer"
+defaultDescription = "Blog sobre Platform Engineering, Kubernetes, GitOps, Observabilidade e Developer Experience"
+defaultImage = "/images/og-default.png"
+twitterHandle = "@fabioluciano"
+twitterCard = "summary_large_image"
+
+[seo.openGraph]
+type = "website"
+locale = "pt_BR"
+siteName = "Fabio Luciano"
+
+# =============================================================================
+# Theme Configuration
+# =============================================================================
+
+[theme]
+defaultMode = "system"  # light, dark, system
+codeThemeLight = "github-light"
+codeThemeDark = "github-dark"
+accentColor = "primary"
+
+# =============================================================================
+# Features Toggle
+# =============================================================================
+
+[features]
+search = true
+rss = true
+sitemap = true
+giscus = true
+plantuml = true
+tableOfContents = true
+readingTime = true
+relatedPosts = true
+seriesNavigation = true
+
+# =============================================================================
+# Giscus Comments Configuration
+# =============================================================================
+
+[giscus]
+enabled = true
+repo = "fabioluciano/fabioluciano.com"
+repoId = "R_kgDOQ4GstQ"
+category = "General"
+categoryId = "DIC_kwDOQ4Gstc4C02g9"
+mapping = "pathname"
+strict = true
+reactionsEnabled = true
+emitMetadata = true
+inputPosition = "top"
+lang = "pt"  # Will be overridden by component based on locale
+
+# =============================================================================
+# PlantUML Configuration
+# =============================================================================
+
+[plantuml]
+enabled = true
+renderMode = "build"  # build, server
+serverUrl = "https://www.plantuml.com/plantuml"
+format = "svg"
+cacheDir = "public/diagrams"
+
+# =============================================================================
+# Pagination
+# =============================================================================
+
+[pagination]
+postsPerPage = 10
+seriesPerPage = 12
+tagsPerPage = 20
+
+# =============================================================================
+# Reading Time Configuration
+# =============================================================================
+
+[readingTime]
+wordsPerMinute = 200

@@ -1,0 +1,187 @@
+---
+// =============================================================================
+// Header Component - Main navigation header
+// =============================================================================
+
+import { getNavItems, getSiteConfig } from '@/config';
+import type { Locale } from '@/config';
+import { getUrlPrefix } from '@/lib/i18n';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageToggle from './LanguageToggle.astro';
+import MobileMenu from './MobileMenu.astro';
+import SearchModal from './SearchModal.astro';
+import { FiSearch, FiMenu, FiTerminal } from 'react-icons/fi';
+import {
+  HiHome,
+  HiDocumentText,
+  HiCollection,
+  HiFolder,
+  HiTag,
+  HiUser,
+} from 'react-icons/hi';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'pt' } = Astro.props;
+
+const config = getSiteConfig();
+const navItems = getNavItems('main', locale);
+const currentPath = Astro.url.pathname;
+const urlPrefix = getUrlPrefix(locale);
+
+// Map icon names to components
+const iconMap: Record<string, any> = {
+  HiHome,
+  HiDocumentText,
+  HiCollection,
+  HiFolder,
+  HiTag,
+  HiUser,
+};
+
+// Path without locale prefix for route matching
+const pathWithoutLocale = currentPath.replace(/^\/(pt|en)/, '') || '/';
+
+// Known routes that are NOT blog posts (without locale prefix)
+const knownRoutes = ['/', '/blog', '/series', '/categories', '/tags', '/about'];
+
+function isActive(href: string): boolean {
+  // Remove locale prefix from href for comparison
+  const hrefWithoutLocale = href.replace(/^\/(pt|en)/, '') || '/';
+
+  if (hrefWithoutLocale === '/') {
+    return pathWithoutLocale === '/';
+  }
+
+  // For /blog, also activate when viewing a blog post
+  if (hrefWithoutLocale === '/blog') {
+    const isKnownRoute = knownRoutes.some(route =>
+      route === '/' ? pathWithoutLocale === '/' : pathWithoutLocale.startsWith(route)
+    );
+    // If not a known route, we're on a blog post
+    if (!isKnownRoute && pathWithoutLocale !== '/') {
+      return true;
+    }
+  }
+
+  return pathWithoutLocale.startsWith(hrefWithoutLocale);
+}
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-base-300/50 bg-base-100/90 backdrop-blur-xl shadow-sm">
+  <div class="container mx-auto px-4">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo / Site Title -->
+      <a
+        href={urlPrefix}
+        class="group flex items-center gap-3 text-xl font-bold text-base-content hover:text-primary transition-all duration-300"
+      >
+        <!-- Animated Logo Icon -->
+        <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-300">
+          <FiTerminal className="h-5 w-5 text-white" />
+          <div class="absolute inset-0 rounded-xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+        <span class="hidden sm:block">
+          <span class="text-gradient font-extrabold">{config.site.title.split(' ')[0]}</span>
+          {config.site.title.split(' ').length > 1 && (
+            <span class="text-base-content/80 font-semibold"> {config.site.title.split(' ').slice(1).join(' ')}</span>
+          )}
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1">
+        {
+          navItems.map((item) => {
+            const IconComponent = item.icon ? iconMap[item.icon] : null;
+            const isExternal = item.external;
+            return (
+              <a
+                href={item.href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                class:list={[
+                  'group relative px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 overflow-hidden',
+                  !isExternal && isActive(item.href)
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg shadow-primary/25'
+                    : 'text-base-content/70 hover:text-white',
+                ]}
+              >
+                {/* Gradient hover background with animation */}
+                {(isExternal || !isActive(item.href)) && (
+                  <span class="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_200%] opacity-0 group-hover:opacity-100 group-hover:animate-gradient transition-opacity duration-300"></span>
+                )}
+                <span class="relative z-10 flex items-center gap-1.5">
+                  {IconComponent && <IconComponent className="h-4 w-4" />}
+                  {item.label}
+                </span>
+              </a>
+            );
+          })
+        }
+      </nav>
+
+      <!-- Right side actions -->
+      <div class="flex items-center gap-1">
+        <!-- Search button -->
+        <button
+          id="search-button"
+          class="btn btn-ghost btn-sm btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300"
+          aria-label={locale === 'pt' ? 'Buscar' : 'Search'}
+        >
+          <FiSearch className="h-5 w-5" />
+        </button>
+
+        <!-- Language Toggle -->
+        <LanguageToggle locale={locale} />
+
+        <!-- Theme Toggle -->
+        <ThemeToggle locale={locale} />
+
+        <!-- Mobile menu button -->
+        <button
+          id="mobile-menu-button"
+          class="btn btn-ghost btn-sm btn-circle lg:hidden hover:bg-primary/10 hover:text-primary transition-all duration-300"
+          aria-label={locale === 'pt' ? 'Abrir menu' : 'Open menu'}
+          aria-expanded="false"
+        >
+          <FiMenu className="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <MobileMenu locale={locale} navItems={navItems} />
+</header>
+
+<!-- Search Modal -->
+<SearchModal locale={locale} />
+
+<script>
+  function setupMobileMenu() {
+    const button = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+
+    if (!button || !menu) return;
+
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', (!isExpanded).toString());
+      menu.classList.toggle('hidden');
+    });
+
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        button.setAttribute('aria-expanded', 'false');
+        menu.classList.add('hidden');
+      }
+    });
+  }
+
+  setupMobileMenu();
+  document.addEventListener('astro:after-swap', setupMobileMenu);
+</script>

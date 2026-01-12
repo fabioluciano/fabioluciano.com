@@ -1,0 +1,108 @@
+---
+// =============================================================================
+// Language Selector Component
+// =============================================================================
+
+import type { Locale } from '@/config';
+import { LOCALES, localeConfig } from '@/config/locales';
+
+interface Props {
+  locale?: Locale;
+}
+
+const currentPath = Astro.url.pathname;
+
+// Determine current locale from URL path
+const isEnglishPath = currentPath.startsWith('/en/') || currentPath === '/en';
+const currentLocale: Locale = isEnglishPath ? 'en' : 'pt';
+
+// Extract path without locale prefix
+const pathWithoutLocale = currentPath
+  .replace(/^\/(pt|en)(\/|$)/, '/')
+  .replace(/^$/, '/');
+
+// Build URLs for each locale (now both use /lang/ prefix)
+const ptUrl = `/pt${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+const enUrl = `/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+
+// Language options from centralized config
+const languages = LOCALES.map((code) => ({
+  code,
+  label: localeConfig[code].label,
+  flag: localeConfig[code].flag,
+}));
+
+const currentLang = languages.find(l => l.code === currentLocale) || languages[0];
+---
+
+<div class="dropdown dropdown-end">
+  <button
+    tabindex="0"
+    class="btn btn-ghost btn-sm gap-1"
+    aria-label="Selecionar idioma"
+  >
+    <span class="text-base">{currentLang.flag}</span>
+    <span class="text-xs font-medium uppercase hidden sm:inline">{currentLang.code}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-3 w-3 opacity-60"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </button>
+  <ul
+    tabindex="0"
+    class="dropdown-content z-[100] menu p-2 shadow-lg bg-base-100 rounded-box w-40 border border-base-300"
+  >
+    {languages.map((lang) => (
+      <li>
+        <a
+          href={lang.code === 'pt' ? ptUrl : enUrl}
+          class:list={[
+            'flex items-center gap-2',
+            lang.code === currentLocale && 'active'
+          ]}
+        >
+          <span class="text-base">{lang.flag}</span>
+          <span>{lang.label}</span>
+          {lang.code === currentLocale && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 ml-auto text-primary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          )}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script is:inline>
+  // Store language preference when visiting a page
+  (function() {
+    var path = window.location.pathname;
+    var isEnglish = path.startsWith('/en/') || path === '/en';
+    var locale = isEnglish ? 'en' : 'pt';
+
+    localStorage.setItem('preferred-locale', locale);
+    document.cookie = 'preferred-locale=' + locale + ';path=/;max-age=31536000;SameSite=Lax';
+  })();
+</script>

@@ -1,0 +1,122 @@
+---
+// =============================================================================
+// Giscus Comments Component
+// =============================================================================
+
+import { getSiteConfig } from '@/config';
+import type { Locale } from '@/config';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'pt' } = Astro.props;
+
+const config = getSiteConfig();
+const giscusConfig = config.giscus;
+
+// Map locale to Giscus language
+const giscusLang = locale === 'pt' ? 'pt' : 'en';
+
+// Custom theme URLs
+const siteUrl = config.site.url.replace(/\/$/, '');
+const lightThemeUrl = `${siteUrl}/styles/giscus-light.css`;
+const darkThemeUrl = `${siteUrl}/styles/giscus-dark.css`;
+
+// Determine initial theme based on system preference (will be overridden by script)
+const initialTheme = lightThemeUrl;
+---
+
+{
+  giscusConfig.enabled && giscusConfig.repo && (
+    <div
+      class="giscus-container"
+      data-light-theme={lightThemeUrl}
+      data-dark-theme={darkThemeUrl}
+    >
+      <script
+        is:inline
+        src="https://giscus.app/client.js"
+        data-repo={giscusConfig.repo}
+        data-repo-id={giscusConfig.repoId}
+        data-category={giscusConfig.category}
+        data-category-id={giscusConfig.categoryId}
+        data-mapping={giscusConfig.mapping}
+        data-strict={giscusConfig.strict ? '1' : '0'}
+        data-reactions-enabled={giscusConfig.reactionsEnabled ? '1' : '0'}
+        data-emit-metadata={giscusConfig.emitMetadata ? '1' : '0'}
+        data-input-position={giscusConfig.inputPosition}
+        data-theme={initialTheme}
+        data-lang={giscusLang}
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async
+      />
+    </div>
+  )
+}
+
+<script>
+  // Update Giscus theme when site theme changes
+  function updateGiscusTheme() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    const container = document.querySelector<HTMLElement>('.giscus-container');
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+
+    if (!container || !iframe) return;
+
+    // Get custom theme URLs from data attributes
+    const lightTheme = container.dataset.lightTheme;
+    const darkTheme = container.dataset.darkTheme;
+
+    // Use custom theme URLs
+    const themeUrl = theme === 'dark' ? darkTheme : lightTheme;
+
+    if (themeUrl) {
+      iframe.contentWindow?.postMessage(
+        {
+          giscus: {
+            setConfig: {
+              theme: themeUrl,
+            },
+          },
+        },
+        'https://giscus.app'
+      );
+    }
+  }
+
+  // Listen for theme changes
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'data-theme'
+      ) {
+        updateGiscusTheme();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+
+  // Initial theme sync after Giscus loads
+  window.addEventListener('message', (event) => {
+    if (event.origin !== 'https://giscus.app') return;
+    if (typeof event.data !== 'object' || !event.data.giscus) return;
+
+    if (event.data.giscus.discussion) {
+      // Giscus is loaded, sync theme
+      updateGiscusTheme();
+    }
+  });
+</script>
+
+<style>
+  .giscus-container {
+    @apply min-h-[200px];
+  }
+</style>

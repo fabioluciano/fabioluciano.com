@@ -1,0 +1,69 @@
+---
+// =============================================================================
+// Categories Index Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllCategories, getCategoryCounts } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+
+const categories = await getAllCategories(lang);
+const categoryCounts = await getCategoryCounts(lang);
+---
+
+<BaseLayout
+  title={t('categories.title')}
+  description={t('categories.subtitle')}
+  locale={lang}
+>
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      <header class="max-w-3xl mx-auto text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+          {t('categories.title')}
+        </h1>
+        <p class="text-xl text-base-content/60">
+          {t('categories.subtitle')}
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {
+          categories.map((category) => {
+            const count = categoryCounts.get(category) ?? 0;
+            return (
+              <a
+                href={`${urlPrefix}/categories/${category}`}
+                class="card bg-base-100 border border-base-300 hover:border-primary hover:shadow-xl transition-all"
+              >
+                <div class="card-body">
+                  <h2 class="card-title capitalize">{category}</h2>
+                  <p class="text-sm text-base-content/60">
+                    {t('categories.postsCount', { count: count.toString() })}
+                  </p>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      {
+        categories.length === 0 && (
+          <div class="text-center py-12">
+            <p class="text-base-content/60">{t('blog.noPosts')}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

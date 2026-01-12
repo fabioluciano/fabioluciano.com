@@ -1,0 +1,95 @@
+---
+// =============================================================================
+// Table of Contents Component
+// =============================================================================
+
+import type { MarkdownHeading } from 'astro';
+import type { Locale } from '@/config';
+
+interface Props {
+  headings: MarkdownHeading[];
+  locale?: Locale;
+}
+
+const { headings, locale = 'pt' } = Astro.props;
+
+// Filter to only show h2 and h3
+const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+<nav class="space-y-2" aria-label={locale === 'pt' ? 'Índice' : 'Table of contents'}>
+  <h2 class="text-sm font-semibold uppercase tracking-wider text-base-content/60 mb-4">
+    {locale === 'pt' ? 'Neste artigo' : 'On this page'}
+  </h2>
+
+  <ul class="space-y-1 text-sm">
+    {
+      filteredHeadings.map((heading) => (
+        <li
+          class:list={[
+            'border-l-2 border-base-300 transition-colors',
+            heading.depth === 3 ? 'ml-3' : '',
+          ]}
+        >
+          <a
+            href={`#${heading.slug}`}
+            class="toc-link block py-1 pl-3 text-base-content/60 hover:text-primary hover:border-primary transition-colors"
+            data-heading={heading.slug}
+          >
+            {heading.text}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .toc-link.active {
+    @apply text-primary border-primary;
+  }
+
+  li:has(.toc-link.active) {
+    @apply border-primary;
+  }
+</style>
+
+<script>
+  function setupTocHighlight() {
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const headings = document.querySelectorAll('h2[id], h3[id]');
+
+    if (tocLinks.length === 0 || headings.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Remove active class from all links
+            tocLinks.forEach((link) => link.classList.remove('active'));
+
+            // Add active class to corresponding link
+            const activeLink = document.querySelector(
+              `.toc-link[data-heading="${entry.target.id}"]`
+            );
+            if (activeLink) {
+              activeLink.classList.add('active');
+            }
+          }
+        });
+      },
+      {
+        rootMargin: '-80px 0px -80% 0px',
+        threshold: 0,
+      }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+
+    // Cleanup
+    return () => observer.disconnect();
+  }
+
+  setupTocHighlight();
+  document.addEventListener('astro:after-swap', setupTocHighlight);
+</script>

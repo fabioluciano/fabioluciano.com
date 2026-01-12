@@ -1,0 +1,247 @@
+---
+// =============================================================================
+// Search Modal Component - Pagefind Integration
+// =============================================================================
+
+import type { Locale } from '@/config';
+import { FiSearch, FiX } from 'react-icons/fi';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'pt' } = Astro.props;
+---
+
+<!-- Search Modal -->
+<div
+  id="search-modal"
+  class="fixed inset-0 z-[100] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="search-modal-title"
+>
+  <!-- Backdrop -->
+  <div
+    id="search-backdrop"
+    class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+  ></div>
+
+  <!-- Modal Content -->
+  <div class="relative flex items-start justify-center pt-[10vh] px-4">
+    <div
+      class="w-full max-w-2xl bg-base-100 rounded-2xl shadow-2xl border border-base-300 overflow-hidden transform transition-all"
+    >
+      <!-- Header -->
+      <div class="flex items-center gap-3 p-4 border-b border-base-300">
+        <FiSearch className="h-5 w-5 text-primary" />
+        <h2 id="search-modal-title" class="sr-only">
+          {locale === 'pt' ? 'Buscar no site' : 'Search site'}
+        </h2>
+        <input
+          id="search-input"
+          type="text"
+          placeholder={locale === 'pt' ? 'Buscar artigos...' : 'Search articles...'}
+          class="flex-1 bg-transparent text-lg outline-none placeholder:text-base-content/40"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        />
+        <button
+          id="search-close"
+          class="btn btn-ghost btn-sm btn-circle"
+          aria-label={locale === 'pt' ? 'Fechar busca' : 'Close search'}
+        >
+          <FiX className="h-5 w-5" />
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div
+        id="search-results"
+        class="max-h-[60vh] overflow-y-auto p-4"
+      >
+        <div id="search-empty" class="text-center py-8 text-base-content/50">
+          <FiSearch className="h-12 w-12 mx-auto mb-3 opacity-30" />
+          <p>{locale === 'pt' ? 'Digite para buscar...' : 'Type to search...'}</p>
+        </div>
+        <div id="search-results-list" class="space-y-2 hidden"></div>
+        <div id="search-no-results" class="text-center py-8 text-base-content/50 hidden">
+          <p>{locale === 'pt' ? 'Nenhum resultado encontrado' : 'No results found'}</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between px-4 py-3 border-t border-base-300 bg-base-200/50 text-xs text-base-content/50">
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1">
+            <kbd class="kbd kbd-xs">↑</kbd>
+            <kbd class="kbd kbd-xs">↓</kbd>
+            {locale === 'pt' ? 'navegar' : 'navigate'}
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="kbd kbd-xs">↵</kbd>
+            {locale === 'pt' ? 'abrir' : 'open'}
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="kbd kbd-xs">esc</kbd>
+            {locale === 'pt' ? 'fechar' : 'close'}
+          </span>
+        </div>
+        <span class="opacity-70">Powered by Pagefind</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  var pagefindInstance = null;
+  var selectedIndex = -1;
+
+  async function initPagefind() {
+    if (pagefindInstance) return pagefindInstance;
+
+    try {
+      pagefindInstance = await import('/pagefind/pagefind.js');
+      await pagefindInstance.init();
+      return pagefindInstance;
+    } catch (e) {
+      console.warn('Pagefind not available (run build first):', e);
+      return null;
+    }
+  }
+
+  function setupSearch() {
+    var modal = document.getElementById('search-modal');
+    var backdrop = document.getElementById('search-backdrop');
+    var input = document.getElementById('search-input');
+    var closeBtn = document.getElementById('search-close');
+    var searchBtn = document.getElementById('search-button');
+    var resultsContainer = document.getElementById('search-results-list');
+    var emptyState = document.getElementById('search-empty');
+    var noResults = document.getElementById('search-no-results');
+
+    if (!modal || !input || !resultsContainer) return;
+
+    var searchTimeout;
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      input.focus();
+      initPagefind();
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      input.value = '';
+      resultsContainer.innerHTML = '';
+      resultsContainer.classList.add('hidden');
+      emptyState.classList.remove('hidden');
+      noResults.classList.add('hidden');
+      selectedIndex = -1;
+    }
+
+    function updateSelection() {
+      var items = resultsContainer.querySelectorAll('[data-search-result]');
+      items.forEach(function(item, i) {
+        if (i === selectedIndex) {
+          item.classList.add('bg-primary/10', 'border-primary/30');
+          item.scrollIntoView({ block: 'nearest' });
+        } else {
+          item.classList.remove('bg-primary/10', 'border-primary/30');
+        }
+      });
+    }
+
+    async function performSearch(query) {
+      if (!query || query.length < 2) {
+        resultsContainer.innerHTML = '';
+        resultsContainer.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        noResults.classList.add('hidden');
+        return;
+      }
+
+      var pf = await initPagefind();
+      if (!pf) return;
+
+      var search = await pf.search(query);
+      var results = await Promise.all(
+        search.results.slice(0, 10).map(function(r) { return r.data(); })
+      );
+
+      emptyState.classList.add('hidden');
+
+      if (results.length === 0) {
+        resultsContainer.innerHTML = '';
+        resultsContainer.classList.add('hidden');
+        noResults.classList.remove('hidden');
+        return;
+      }
+
+      noResults.classList.add('hidden');
+      resultsContainer.classList.remove('hidden');
+      selectedIndex = -1;
+
+      resultsContainer.innerHTML = results.map(function(result, i) {
+        return '<a href="' + result.url + '" data-search-result="' + i + '" class="block p-3 rounded-lg border border-base-300 hover:border-primary/30 hover:bg-primary/5 transition-all"><h3 class="font-medium text-base-content line-clamp-1">' + (result.meta && result.meta.title ? result.meta.title : result.url) + '</h3><p class="text-sm text-base-content/60 mt-1 line-clamp-2">' + result.excerpt + '</p></a>';
+      }).join('');
+    }
+
+    if (searchBtn) searchBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    input.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(function() {
+        performSearch(input.value);
+      }, 200);
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        if (modal.classList.contains('hidden')) {
+          openModal();
+        } else {
+          closeModal();
+        }
+      }
+
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+
+      if (!modal.classList.contains('hidden')) {
+        var items = resultsContainer.querySelectorAll('[data-search-result]');
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+          updateSelection();
+        }
+
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          selectedIndex = Math.max(selectedIndex - 1, -1);
+          updateSelection();
+        }
+
+        if (e.key === 'Enter' && selectedIndex >= 0) {
+          e.preventDefault();
+          var selectedItem = items[selectedIndex];
+          if (selectedItem) {
+            window.location.href = selectedItem.href;
+          }
+        }
+      }
+    });
+  }
+
+  setupSearch();
+  document.addEventListener('astro:after-swap', setupSearch);
+</script>

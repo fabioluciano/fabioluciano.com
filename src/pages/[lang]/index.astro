@@ -1,0 +1,249 @@
+---
+// =============================================================================
+// Home Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import { getAuthorConfig } from '@/config';
+import { getPostsByLocale, getAllSeries, getSeriesInfo, getAllTags } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+import {
+  FiArrowRight,
+  FiGithub,
+  FiLinkedin,
+  FiTwitter,
+  FiMail,
+  FiLayers,
+  FiBookOpen,
+} from 'react-icons/fi';
+import { HiOutlineSparkles, HiOutlineRocketLaunch } from 'react-icons/hi2';
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+const author = getAuthorConfig();
+
+const posts = await getPostsByLocale(lang);
+const latestPosts = posts.slice(0, 6);
+
+const seriesSlugs = await getAllSeries(lang);
+const seriesData = await Promise.all(
+  seriesSlugs.map((slug) => getSeriesInfo(slug, lang))
+);
+const featuredSeries = seriesData.filter(Boolean).slice(0, 3);
+
+const allTags = await getAllTags(lang);
+---
+
+<BaseLayout locale={lang}>
+  <!-- Hero Section -->
+  <section class="relative py-12 md:py-16 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-base-100 via-base-200/50 to-primary/5"></div>
+    <div class="absolute top-10 right-10 w-48 h-48 bg-primary/5 rounded-full blur-3xl hidden lg:block"></div>
+    <div class="absolute bottom-10 left-10 w-64 h-64 bg-secondary/5 rounded-full blur-3xl hidden lg:block"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-3xl mx-auto">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+          <div class="flex-1 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-medium mb-4">
+              <HiOutlineSparkles className="h-3.5 w-3.5" />
+              <span>{lang === 'pt' ? 'Platform Engineer • 10+ anos' : 'Platform Engineer • 10+ years'}</span>
+            </div>
+
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-base-content mb-3 leading-tight">
+              <span class="text-gradient">{author.author.name.split(' ')[0]}</span>
+              <span class="text-base-content"> {author.author.name.split(' ').slice(1).join(' ')}</span>
+            </h1>
+
+            <p class="text-base md:text-lg text-base-content/70 mb-2 font-medium">
+              {author.author.title}
+            </p>
+
+            <p class="text-sm text-base-content/60 max-w-xl mb-6">
+              {lang === 'pt' ? author.author.bio : author.author.bioEn}
+            </p>
+
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+              <a href={`${urlPrefix}/blog`} class="group btn btn-primary btn-sm text-white shadow-md shadow-primary/20">
+                <FiBookOpen className="h-4 w-4" />
+                {t('nav.blog')}
+                <FiArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+              <a href="https://cv.fabioluciano.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+                <HiOutlineRocketLaunch className="h-4 w-4" />
+                {lang === 'pt' ? 'Currículo' : 'Resume'}
+              </a>
+
+              <div class="flex gap-1 ml-2">
+                {author.author.social.github && (
+                  <a href={author.author.social.github} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm btn-square hover:text-primary" aria-label="GitHub">
+                    <FiGithub className="h-4 w-4" />
+                  </a>
+                )}
+                {author.author.social.linkedin && (
+                  <a href={author.author.social.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm btn-square hover:text-primary" aria-label="LinkedIn">
+                    <FiLinkedin className="h-4 w-4" />
+                  </a>
+                )}
+                {author.author.social.twitter && (
+                  <a href={author.author.social.twitter} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm btn-square hover:text-primary" aria-label="Twitter">
+                    <FiTwitter className="h-4 w-4" />
+                  </a>
+                )}
+                {author.author.email && (
+                  <a href={`mailto:${author.author.email}`} class="btn btn-ghost btn-sm btn-square hover:text-primary" aria-label="Email">
+                    <FiMail className="h-4 w-4" />
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden lg:flex items-center justify-center">
+            <div class="relative group/photo">
+              <div class="absolute -inset-2 bg-gradient-to-br from-primary via-secondary to-accent rounded-full blur-md opacity-60 group-hover/photo:opacity-100 group-hover/photo:blur-xl group-hover/photo:-inset-3 group-hover/photo:animate-pulse transition-all duration-300"></div>
+              <div class="relative w-48 h-48 rounded-full overflow-hidden ring-4 ring-base-100 shadow-2xl group-hover/photo:shadow-primary/30 transition-shadow duration-300">
+                <img src="/images/photo.jpg" alt={author.author.name} class="w-full h-full object-cover saturate-[1.15] contrast-[1.08] brightness-[0.98] sepia-[0.05]" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest Posts -->
+  <section class="py-10 bg-base-100">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-base-content">{t('blog.latestPosts')}</h2>
+          <p class="text-sm text-base-content/60">
+            {lang === 'pt' ? 'Artigos recentes sobre engenharia de plataforma' : 'Recent articles about platform engineering'}
+          </p>
+        </div>
+        <a href={`${urlPrefix}/blog`} class="group btn btn-ghost btn-sm gap-1 hover:text-primary">
+          {t('common.viewAll')}
+          <FiArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+        </a>
+      </div>
+
+      {latestPosts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {latestPosts.map((post, index) => (
+            <PostCard post={post} locale={lang} featured={index === 0} urlPrefix={urlPrefix} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-8">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-base-200 flex items-center justify-center">
+            <FiBookOpen className="h-6 w-6 text-base-content/40" />
+          </div>
+          <p class="text-base-content/60 text-sm">{t('blog.noPosts')}</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Tag Cloud -->
+  {allTags.length > 0 && (
+    <section class="py-10 bg-base-200/30">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold text-base-content">
+              {lang === 'pt' ? 'Explore por Tags' : 'Explore by Tags'}
+            </h2>
+            <p class="text-sm text-base-content/60">
+              {lang === 'pt' ? 'Navegue pelos tópicos que mais te interessam' : 'Browse topics that interest you most'}
+            </p>
+          </div>
+          <span class="badge badge-primary badge-outline">{allTags.length} tags</span>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center">
+          {allTags.map((tag, index) => {
+            const gradients = [
+              'from-pink-500 to-rose-500',
+              'from-purple-500 to-violet-500',
+              'from-blue-500 to-indigo-500',
+              'from-cyan-500 to-blue-500',
+              'from-teal-500 to-emerald-500',
+              'from-green-500 to-lime-500',
+              'from-amber-500 to-orange-500',
+              'from-orange-500 to-red-500',
+            ];
+            const gradient = gradients[index % gradients.length];
+            const sizes = ['text-xs', 'text-sm', 'text-xs', 'text-sm', 'text-xs'];
+            const size = sizes[index % sizes.length];
+
+            return (
+              <a
+                href={`${urlPrefix}/tags/${tag}`}
+                class={`group relative px-3 py-1.5 rounded-full ${size} font-medium transition-all duration-300 overflow-hidden bg-base-100 border border-base-300 hover:border-transparent hover:text-white hover:shadow-lg`}
+              >
+                <span class={`absolute inset-0 bg-gradient-to-r ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></span>
+                <span class="relative z-10 flex items-center gap-1">
+                  <span class="text-base-content/50 group-hover:text-white/80">#</span>
+                  {tag}
+                </span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Series -->
+  {featuredSeries.length > 0 && (
+    <section class="py-10 bg-base-200/50">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold text-base-content">{t('series.title')}</h2>
+            <p class="text-sm text-base-content/60">{t('series.subtitle')}</p>
+          </div>
+          <a href={`${urlPrefix}/series`} class="group btn btn-ghost btn-sm gap-1 hover:text-primary">
+            {t('common.viewAll')}
+            <FiArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {featuredSeries.map((item) => (
+            <a
+              href={`${urlPrefix}/series/${item!.slug}`}
+              class="group card bg-base-100 border border-base-300 hover:border-primary/50 hover:shadow-lg transition-all duration-200 overflow-hidden"
+            >
+              <div class="h-0.5 bg-gradient-to-r from-primary to-secondary"></div>
+              <div class="card-body p-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <FiLayers className="h-5 w-5 text-primary" />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-base-content group-hover:text-primary transition-colors truncate">
+                      {item!.name}
+                    </h3>
+                    <p class="text-xs text-base-content/50">
+                      {item!.totalPosts} {item!.totalPosts === 1 ? 'post' : 'posts'}
+                    </p>
+                  </div>
+                  <FiArrowRight className="h-4 w-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

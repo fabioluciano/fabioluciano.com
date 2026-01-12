@@ -1,0 +1,111 @@
+{
+  "site": {
+    "title": "Fabio Luciano",
+    "description": "Platform Engineering, Developer Experience & Cloud Native"
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "series": "Séries",
+    "categories": "Categorias",
+    "tags": "Tags",
+    "about": "Sobre"
+  },
+  "common": {
+    "readMore": "Ler mais",
+    "readingTime": "{minutes} min de leitura",
+    "publishedOn": "Publicado em",
+    "updatedOn": "Atualizado em",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar posts...",
+    "noResults": "Nenhum resultado encontrado",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "back": "Voltar",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "all": "Todos",
+    "viewAll": "Ver todos",
+    "share": "Compartilhar",
+    "copyLink": "Copiar link",
+    "linkCopied": "Link copiado!"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Artigos sobre Platform Engineering, Kubernetes, GitOps e mais",
+    "latestPosts": "Últimos Posts",
+    "allPosts": "Todos os Posts",
+    "noPosts": "Nenhum post encontrado",
+    "postsInCategory": "Posts em {category}",
+    "postsWithTag": "Posts com a tag {tag}"
+  },
+  "series": {
+    "title": "Séries",
+    "subtitle": "Coleções de posts relacionados para aprendizado aprofundado",
+    "partOf": "Parte de uma série",
+    "post": "Post {current} de {total}",
+    "ongoing": "Em andamento",
+    "completed": "Concluída",
+    "planned": "Planejada",
+    "noSeries": "Nenhuma série encontrada"
+  },
+  "categories": {
+    "title": "Categorias",
+    "subtitle": "Navegue pelos posts organizados por categoria",
+    "postsCount": "{count} posts"
+  },
+  "tags": {
+    "title": "Tags",
+    "subtitle": "Explore posts por tags específicas",
+    "postsCount": "{count} posts"
+  },
+  "about": {
+    "title": "Sobre",
+    "subtitle": "Conheça mais sobre mim e minha jornada"
+  },
+  "footer": {
+    "copyright": "Todos os direitos reservados",
+    "builtWith": "Construído com",
+    "quickLinks": "Links Rápidos",
+    "contact": "Contato",
+    "getInTouch": "Entre em contato"
+  },
+  "comments": {
+    "title": "Comentários",
+    "leaveComment": "Deixe um comentário"
+  },
+  "toc": {
+    "title": "Neste artigo"
+  },
+  "related": {
+    "title": "Posts Relacionados"
+  },
+  "seriesNav": {
+    "title": "Navegação da Série",
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "language": {
+    "switchTo": "Mudar para {lang}",
+    "current": "Idioma atual: Português",
+    "availableIn": "Disponível também em",
+    "notAvailable": "Este post não está disponível em outros idiomas"
+  },
+  "theme": {
+    "toggle": "Alternar tema",
+    "light": "Tema claro",
+    "dark": "Tema escuro",
+    "system": "Tema do sistema"
+  },
+  "errors": {
+    "404": {
+      "title": "Página não encontrada",
+      "description": "A página que você está procurando não existe ou foi movida.",
+      "backHome": "Voltar para a home"
+    },
+    "500": {
+      "title": "Erro interno",
+      "description": "Algo deu errado. Por favor, tente novamente mais tarde."
+    }
+  }
+}

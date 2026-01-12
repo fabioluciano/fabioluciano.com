@@ -1,0 +1,45 @@
+# =============================================================================
+# Navigation Configuration
+# =============================================================================
+
+# Main navigation (header)
+[[main]]
+label = "Home"
+labelEn = "Home"
+href = "/"
+icon = "HiHome"
+
+[[main]]
+label = "Blog"
+labelEn = "Blog"
+href = "/blog"
+icon = "HiDocumentText"
+
+[[main]]
+label = "Séries"
+labelEn = "Series"
+href = "/series"
+icon = "HiCollection"
+
+[[main]]
+label = "Currículo"
+labelEn = "Resume"
+href = "https://resume.fabioluciano.com"
+hrefEn = "https://resume.fabioluciano.com/en"
+icon = "HiUser"
+external = true
+
+# Footer navigation
+[[footer]]
+label = "RSS Feed"
+labelEn = "RSS Feed"
+href = "/rss.xml"
+icon = "HiRss"
+external = false
+
+[[footer]]
+label = "Sitemap"
+labelEn = "Sitemap"
+href = "/sitemap-index.xml"
+icon = "HiMap"
+external = false

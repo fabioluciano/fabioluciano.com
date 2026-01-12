@@ -1,0 +1,19 @@
+---
+// =============================================================================
+// Series Detail Page - Redirects to default locale
+// =============================================================================
+
+import { getAllSeries } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const seriesSlugs = await getAllSeries();
+
+  return seriesSlugs.map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+return Astro.redirect(`/pt/series/${slug}`);
+---
+

@@ -1,0 +1,39 @@
+{
+  "name": "fabioluciano-blog",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Personal blog about Platform Engineering, Developer Experience & Cloud Native",
+  "author": "Fabio Luciano",
+  "license": "MIT",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && npm run postbuild",
+    "postbuild": "npx pagefind --site dist",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/react": "^4.4.2",
+    "@astrojs/rss": "^4.0.14",
+    "@astrojs/sitemap": "^3.6.1",
+    "@astrojs/tailwind": "^6.0.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "astro": "^5.16.8",
+    "daisyui": "^5.5.14",
+    "plantuml-encoder": "^1.4.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-icons": "^5.5.0",
+    "reading-time": "^1.5.0",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-slug": "^6.0.0",
+    "tailwindcss": "^4.1.18",
+    "toml": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "pagefind": "^1.4.0"
+  }
+}

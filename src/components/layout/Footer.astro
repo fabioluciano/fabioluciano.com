@@ -1,0 +1,205 @@
+---
+// =============================================================================
+// Footer Component
+// =============================================================================
+
+import { getSiteConfig, getAuthorConfig } from '@/config';
+import type { Locale } from '@/config';
+import {
+  FiGithub,
+  FiLinkedin,
+  FiTwitter,
+  FiMail,
+  FiArrowRight,
+  FiTerminal,
+  FiHeart,
+  FiRss,
+  FiBookOpen,
+  FiLayers,
+  FiTag,
+  FiUser,
+  FiChevronRight,
+  FiMap,
+} from 'react-icons/fi';
+import { SiKubernetes, SiDocker, SiTerraform } from 'react-icons/si';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'pt' } = Astro.props;
+
+const config = getSiteConfig();
+const author = getAuthorConfig();
+
+const currentYear = new Date().getFullYear();
+
+// Quick links with icons
+const quickLinks = [
+  { href: '/blog', label: locale === 'pt' ? 'Blog' : 'Blog', icon: FiBookOpen },
+  { href: '/series', label: locale === 'pt' ? 'Séries' : 'Series', icon: FiLayers },
+  { href: '/tags', label: 'Tags', icon: FiTag },
+  { href: 'https://cv.fabioluciano.com', label: locale === 'pt' ? 'Currículo' : 'Resume', icon: FiUser, external: true },
+  { href: '/rss.xml', label: 'RSS Feed', icon: FiRss },
+  { href: '/sitemap-index.xml', label: 'Sitemap', icon: FiMap },
+];
+---
+
+<footer class="border-t border-base-300/50 bg-gradient-to-b from-base-100 to-base-200">
+  <div class="container mx-auto px-4 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <!-- Brand & About -->
+      <div class="lg:col-span-2 space-y-6">
+        <a href="/" class="group inline-flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+            <FiTerminal className="h-5 w-5 text-white" />
+          </div>
+          <span class="text-xl font-bold">
+            <span class="text-gradient">{config.site.title.split(' ')[0]}</span>
+            {config.site.title.split(' ').length > 1 && (
+              <span class="text-base-content/80"> {config.site.title.split(' ').slice(1).join(' ')}</span>
+            )}
+          </span>
+        </a>
+        <p class="text-base-content/60 max-w-md leading-relaxed">
+          {config.site.description}
+        </p>
+
+        <!-- Tech stack badges -->
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-base-content/40 uppercase tracking-wider">{locale === 'pt' ? 'Especialista em' : 'Expert in'}:</span>
+          <div class="flex items-center gap-2">
+            <div class="p-1.5 rounded-lg bg-base-300/50 text-base-content/60 hover:text-primary hover:bg-primary/10 transition-colors">
+              <SiKubernetes className="h-4 w-4" />
+            </div>
+            <div class="p-1.5 rounded-lg bg-base-300/50 text-base-content/60 hover:text-primary hover:bg-primary/10 transition-colors">
+              <SiDocker className="h-4 w-4" />
+            </div>
+            <div class="p-1.5 rounded-lg bg-base-300/50 text-base-content/60 hover:text-primary hover:bg-primary/10 transition-colors">
+              <SiTerraform className="h-4 w-4" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Social links -->
+        <div class="flex gap-2">
+          {
+            author.author.social.github && (
+              <a
+                href={author.author.social.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-ghost btn-sm btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300"
+                aria-label="GitHub"
+              >
+                <FiGithub className="h-5 w-5" />
+              </a>
+            )
+          }
+          {
+            author.author.social.linkedin && (
+              <a
+                href={author.author.social.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-ghost btn-sm btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300"
+                aria-label="LinkedIn"
+              >
+                <FiLinkedin className="h-5 w-5" />
+              </a>
+            )
+          }
+          {
+            author.author.social.twitter && (
+              <a
+                href={author.author.social.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-ghost btn-sm btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300"
+                aria-label="Twitter"
+              >
+                <FiTwitter className="h-5 w-5" />
+              </a>
+            )
+          }
+          <a
+            href={`mailto:${author.author.email}`}
+            class="btn btn-ghost btn-sm btn-circle hover:bg-primary/10 hover:text-primary transition-all duration-300"
+            aria-label="Email"
+          >
+            <FiMail className="h-5 w-5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="space-y-6">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-base-content flex items-center gap-2">
+          <div class="w-1 h-4 bg-gradient-to-b from-primary to-secondary rounded-full"></div>
+          {locale === 'pt' ? 'Navegação' : 'Navigation'}
+        </h3>
+        <ul class="space-y-3">
+          {
+            quickLinks.map((link) => {
+              const IconComponent = link.icon;
+              const isExternal = 'external' in link && link.external;
+              return (
+                <li>
+                  <a
+                    href={link.href}
+                    target={isExternal ? '_blank' : undefined}
+                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                    class="group flex items-center gap-2 text-sm text-base-content/60 hover:text-primary transition-colors"
+                  >
+                    <IconComponent className="h-4 w-4 text-base-content/40 group-hover:text-primary transition-colors" />
+                    <span>{link.label}</span>
+                    <FiChevronRight className="h-3 w-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+
+      <!-- Contact CTA -->
+      <div class="space-y-6">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-base-content flex items-center gap-2">
+          <div class="w-1 h-4 bg-gradient-to-b from-secondary to-accent rounded-full"></div>
+          {locale === 'pt' ? 'Contato' : 'Contact'}
+        </h3>
+        <p class="text-sm text-base-content/60 leading-relaxed">
+          {locale === 'pt'
+            ? 'Interessado em discutir sobre Platform Engineering ou Cloud Native?'
+            : 'Interested in discussing Platform Engineering or Cloud Native?'}
+        </p>
+        <a
+          href={`mailto:${author.author.email}`}
+          class="group inline-flex items-center gap-2 btn btn-primary btn-sm text-white shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:scale-105 transition-all duration-300"
+        >
+          <FiMail className="h-4 w-4" />
+          {locale === 'pt' ? 'Entre em contato' : 'Get in touch'}
+          <FiArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="mt-16 pt-8 border-t border-base-300/50">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-base-content/50 flex items-center gap-1">
+          &copy; {currentYear} {author.author.name}.
+          {locale === 'pt' ? 'Todos os direitos reservados.' : 'All rights reserved.'}
+        </p>
+        <p class="text-sm text-base-content/40 flex items-center gap-1">
+          {locale === 'pt' ? 'Feito com' : 'Made with'}
+          <FiHeart className="h-4 w-4 text-error animate-pulse" />
+          {locale === 'pt' ? 'usando' : 'using'}
+          <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Astro</a>
+          +
+          <a href="https://daisyui.com" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">DaisyUI</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>

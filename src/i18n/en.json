@@ -1,0 +1,111 @@
+{
+  "site": {
+    "title": "Fabio Luciano",
+    "description": "Platform Engineering, Developer Experience & Cloud Native"
+  },
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "series": "Series",
+    "categories": "Categories",
+    "tags": "Tags",
+    "about": "About"
+  },
+  "common": {
+    "readMore": "Read more",
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published on",
+    "updatedOn": "Updated on",
+    "search": "Search",
+    "searchPlaceholder": "Search posts...",
+    "noResults": "No results found",
+    "loading": "Loading...",
+    "error": "Error",
+    "back": "Back",
+    "previous": "Previous",
+    "next": "Next",
+    "all": "All",
+    "viewAll": "View all",
+    "share": "Share",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied!"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Articles about Platform Engineering, Kubernetes, GitOps and more",
+    "latestPosts": "Latest Posts",
+    "allPosts": "All Posts",
+    "noPosts": "No posts found",
+    "postsInCategory": "Posts in {category}",
+    "postsWithTag": "Posts tagged with {tag}"
+  },
+  "series": {
+    "title": "Series",
+    "subtitle": "Collections of related posts for in-depth learning",
+    "partOf": "Part of a series",
+    "post": "Post {current} of {total}",
+    "ongoing": "Ongoing",
+    "completed": "Completed",
+    "planned": "Planned",
+    "noSeries": "No series found"
+  },
+  "categories": {
+    "title": "Categories",
+    "subtitle": "Browse posts organized by category",
+    "postsCount": "{count} posts"
+  },
+  "tags": {
+    "title": "Tags",
+    "subtitle": "Explore posts by specific tags",
+    "postsCount": "{count} posts"
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "Learn more about me and my journey"
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "builtWith": "Built with",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "getInTouch": "Get in touch"
+  },
+  "comments": {
+    "title": "Comments",
+    "leaveComment": "Leave a comment"
+  },
+  "toc": {
+    "title": "On this page"
+  },
+  "related": {
+    "title": "Related Posts"
+  },
+  "seriesNav": {
+    "title": "Series Navigation",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "language": {
+    "switchTo": "Switch to {lang}",
+    "current": "Current language: English",
+    "availableIn": "Also available in",
+    "notAvailable": "This post is not available in other languages"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "system": "System theme"
+  },
+  "errors": {
+    "404": {
+      "title": "Page not found",
+      "description": "The page you are looking for does not exist or has been moved.",
+      "backHome": "Back to home"
+    },
+    "500": {
+      "title": "Internal error",
+      "description": "Something went wrong. Please try again later."
+    }
+  }
+}

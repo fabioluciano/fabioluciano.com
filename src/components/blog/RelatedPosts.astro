@@ -1,0 +1,55 @@
+---
+// =============================================================================
+// Related Posts Component
+// =============================================================================
+
+import type { Post } from '@/lib/posts';
+import { getPostSlug, calculateReadingTime } from '@/lib/posts';
+import { formatShortDate, formatReadingTime } from '@/lib/utils';
+import type { Locale } from '@/config';
+
+interface Props {
+  posts: Post[];
+  locale?: Locale;
+}
+
+const { posts, locale = 'pt' } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="mt-12 pt-8 border-t border-base-200">
+      <h3 class="text-2xl font-bold text-base-content mb-6">
+        {locale === 'pt' ? 'Posts Relacionados' : 'Related Posts'}
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {posts.map((post) => {
+          const readingTime = calculateReadingTime(post.body);
+          return (
+            <a
+              href={`/${getPostSlug(post)}`}
+              class="group flex flex-col p-4 rounded-lg border border-base-300 hover:border-primary hover:shadow-lg transition-all bg-base-100"
+            >
+              <span class="badge badge-sm badge-ghost mb-2">{post.data.category}</span>
+
+              <h4 class="font-semibold text-base-content group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                {post.data.title}
+              </h4>
+
+              <p class="text-sm text-base-content/60 line-clamp-2 mb-3 flex-1">
+                {post.data.description}
+              </p>
+
+              <div class="flex items-center gap-3 text-xs text-base-content/50">
+                <span>{formatShortDate(post.data.publishedAt, locale)}</span>
+                <span>·</span>
+                <span>{formatReadingTime(readingTime, locale)}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )
+}

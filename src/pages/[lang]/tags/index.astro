@@ -1,0 +1,71 @@
+---
+// =============================================================================
+// Tags Index Page - Unified for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getAllTags, getTagCounts } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { LOCALES } from '@/config/locales';
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+
+const tags = await getAllTags(lang);
+const tagCounts = await getTagCounts(lang);
+
+const sortedTags = tags.sort(
+  (a, b) => (tagCounts.get(b) ?? 0) - (tagCounts.get(a) ?? 0)
+);
+---
+
+<BaseLayout
+  title={t('tags.title')}
+  description={t('tags.subtitle')}
+  locale={lang}
+>
+  <div class="py-12">
+    <div class="container mx-auto px-4">
+      <header class="max-w-3xl mx-auto text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-4">
+          {t('tags.title')}
+        </h1>
+        <p class="text-xl text-base-content/60">
+          {t('tags.subtitle')}
+        </p>
+      </header>
+
+      <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+        {
+          sortedTags.map((tag) => {
+            const count = tagCounts.get(tag) ?? 0;
+            const sizeClass = count > 5 ? 'badge-lg' : count > 2 ? 'badge-md' : 'badge-sm';
+
+            return (
+              <a
+                href={`${urlPrefix}/tags/${tag}`}
+                class={`badge ${sizeClass} badge-outline hover:badge-primary transition-all`}
+              >
+                #{tag}
+                <span class="ml-1 opacity-60">({count})</span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      {
+        tags.length === 0 && (
+          <div class="text-center py-12">
+            <p class="text-base-content/60">{t('blog.noPosts')}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>
