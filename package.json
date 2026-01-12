@@ -17,8 +17,8 @@
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.1",
-    "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.0",
     "astro": "^5.16.8",
     "daisyui": "^5.5.14",
     "plantuml-encoder": "^1.4.0",
@@ -28,7 +28,7 @@
     "reading-time": "^1.5.0",
     "rehype-autolink-headings": "^7.1.0",
     "rehype-slug": "^6.0.0",
-    "tailwindcss": "^4.1.18",
+    "tailwindcss": "^4.1.0",
     "toml": "^3.0.0"
   },
   "devDependencies": {
