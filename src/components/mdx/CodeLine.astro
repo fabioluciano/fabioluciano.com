@@ -1,0 +1,32 @@
+---
+// =============================================================================
+// CodeLine.astro - Alias for Command with 'prefix' prop (backwards compatibility)
+// =============================================================================
+
+import Command from './Command.astro';
+
+interface Props {
+  prefix?: string;
+  highlight?: boolean;
+  highlightColor?: 'warning' | 'error' | 'success' | 'info';
+  noHighlight?: boolean;
+}
+
+const {
+  prefix = '$',
+  highlight = false,
+  highlightColor = 'warning',
+  noHighlight = false
+} = Astro.props;
+
+const slotContent = await Astro.slots.render('default');
+---
+
+<Command
+  prompt={prefix}
+  highlight={highlight}
+  highlightColor={highlightColor}
+  noHighlight={noHighlight}
+>
+  <Fragment set:html={slotContent} />
+</Command>

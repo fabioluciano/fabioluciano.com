@@ -21,6 +21,7 @@ interface Props {
   publishedAt?: Date;
   updatedAt?: Date;
   tags?: string[];
+  alternateUrl?: string | null;
 }
 
 const {
@@ -34,6 +35,7 @@ const {
   publishedAt,
   updatedAt,
   tags,
+  alternateUrl,
 } = Astro.props;
 
 const config = getSiteConfig();
@@ -103,7 +105,7 @@ const pageDescription = description || config.seo.defaultDescription;
       {locale === 'pt' ? 'Pular para o conteúdo' : 'Skip to content'}
     </a>
 
-    <Header locale={locale} />
+    <Header locale={locale} alternateUrl={alternateUrl} />
 
     <main id="main-content" class="flex-1">
       <slot />

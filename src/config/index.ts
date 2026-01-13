@@ -127,7 +127,7 @@ export function getNavItems(
     const finalHref = item.external || baseHref.startsWith('http')
       ? baseHref
       : baseHref === '/'
-        ? urlPrefix
+        ? (urlPrefix || '/')
         : `${urlPrefix}${baseHref}`;
 
     return {

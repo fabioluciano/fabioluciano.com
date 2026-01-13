@@ -57,7 +57,7 @@ export default defineConfig({
         '@layouts': '/src/layouts',
         '@lib': '/src/lib',
         '@config': '/src/config',
-        '@content': '/src/content',
+        '@content': '/content',
         '@styles': '/src/styles',
       },
     },
