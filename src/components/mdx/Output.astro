@@ -1,0 +1,23 @@
+---
+// =============================================================================
+// Output.astro - Output line without prompt (for command results)
+// =============================================================================
+
+interface Props {
+  type?: 'default' | 'success' | 'error' | 'warning' | 'info';
+}
+
+const { type = 'default' } = Astro.props;
+
+const colors: Record<string, string> = {
+  default: '',
+  success: 'text-success',
+  error: 'text-error',
+  warning: 'text-warning',
+  info: 'text-info',
+};
+---
+
+<div class={colors[type]}>
+  <slot />
+</div>

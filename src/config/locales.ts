@@ -8,7 +8,7 @@ export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'pt';
 
 export const localeConfig: Record<Locale, { prefix: string; label: string; flag: string }> = {
-  pt: { prefix: '/pt', label: 'Português', flag: '🇧🇷' },
+  pt: { prefix: '', label: 'Português', flag: '🇧🇷' },
   en: { prefix: '/en', label: 'English', flag: '🇺🇸' },
 };
 

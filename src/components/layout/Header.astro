@@ -22,9 +22,10 @@ import {
 
 interface Props {
   locale?: Locale;
+  alternateUrl?: string | null;
 }
 
-const { locale = 'pt' } = Astro.props;
+const { locale = 'pt', alternateUrl } = Astro.props;
 
 const config = getSiteConfig();
 const navItems = getNavItems('main', locale);
@@ -75,7 +76,7 @@ function isActive(href: string): boolean {
     <div class="flex h-16 items-center justify-between">
       <!-- Logo / Site Title -->
       <a
-        href={urlPrefix}
+        href={urlPrefix || '/'}
         class="group flex items-center gap-3 text-xl font-bold text-base-content hover:text-primary transition-all duration-300"
       >
         <!-- Animated Logo Icon -->
@@ -135,7 +136,7 @@ function isActive(href: string): boolean {
         </button>
 
         <!-- Language Toggle -->
-        <LanguageToggle locale={locale} />
+        <LanguageToggle locale={locale} alternateUrl={alternateUrl} />
 
         <!-- Theme Toggle -->
         <ThemeToggle locale={locale} />

@@ -4,26 +4,34 @@
 // =============================================================================
 
 import type { Locale } from '@/config';
-import { LOCALES, localeConfig } from '@/config/locales';
+import { LOCALES, localeConfig, getUrlPrefix } from '@/config/locales';
 
 interface Props {
   locale?: Locale;
+  alternateUrl?: string | null;
 }
 
+const { alternateUrl } = Astro.props;
 const currentPath = Astro.url.pathname;
 
 // Determine current locale from URL path
 const isEnglishPath = currentPath.startsWith('/en/') || currentPath === '/en';
 const currentLocale: Locale = isEnglishPath ? 'en' : 'pt';
+const alternateLang: Locale = currentLocale === 'pt' ? 'en' : 'pt';
 
 // Extract path without locale prefix
 const pathWithoutLocale = currentPath
   .replace(/^\/(pt|en)(\/|$)/, '/')
   .replace(/^$/, '/');
 
-// Build URLs for each locale (now both use /lang/ prefix)
-const ptUrl = `/pt${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
-const enUrl = `/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+// Build URLs for each locale
+// Portuguese uses root (no prefix), English uses /en
+const ptUrl = currentLocale === 'pt'
+  ? currentPath
+  : (alternateUrl || pathWithoutLocale);
+const enUrl = currentLocale === 'en'
+  ? currentPath
+  : (alternateUrl || `/en${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`);
 
 // Language options from centralized config
 const languages = LOCALES.map((code) => ({

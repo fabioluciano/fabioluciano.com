@@ -39,13 +39,25 @@ const { Content, headings } = await post.render();
 
 // Check if alternate locale version exists
 const allPosts = await getAllPosts();
-const slug = getPostSlug(post);
 const alternateLang = lang === 'pt' ? 'en' : 'pt';
-const alternatePost = allPosts.find(
-  (p) => p.data.locale === alternateLang && getPostSlug(p) === slug
-);
+
+// Find alternate post using translationSlug or matching slug
+let alternatePost = null;
+if (post.data.translationSlug) {
+  // If translationSlug is defined, find post with that slug in the other language
+  alternatePost = allPosts.find(
+    (p) => p.data.locale === alternateLang && getPostSlug(p) === post.data.translationSlug
+  );
+} else {
+  // Fallback: look for a post with the same slug
+  const slug = getPostSlug(post);
+  alternatePost = allPosts.find(
+    (p) => p.data.locale === alternateLang && getPostSlug(p) === slug
+  );
+}
+
 const alternateUrl = alternatePost
-  ? `${getUrlPrefix(alternateLang)}/${slug}`
+  ? `${getUrlPrefix(alternateLang)}/${getPostSlug(alternatePost)}`
   : null;
 
 // MDX components mapping - override img to use ImageModal

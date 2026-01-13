@@ -278,6 +278,21 @@
     @apply bg-base-200 border border-base-300;
   }
 
+  /* Override prose styles for mockup-code pre elements */
+  .prose-custom .mockup-code pre,
+  .mockup-code pre {
+    background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* Ensure mockup-code has proper styling */
+  .mockup-code {
+    @apply pb-4 overflow-hidden;
+  }
+
   .prose-custom :where(code)::before,
   .prose-custom :where(code)::after {
     content: none;
@@ -299,29 +314,59 @@
 }
 
 /* =============================================================================
- * Syntax Highlighting
+ * Syntax Highlighting - Editor Window Style
  * ============================================================================= */
 
-@layer components {
-  .astro-code {
-    @apply rounded-lg border border-base-300 p-4 text-sm bg-base-200;
-  }
+/* Code block wrapper - creates window-like appearance */
+.prose-custom .astro-code {
+  @apply rounded-lg border border-base-300 text-sm overflow-hidden shadow-lg;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  position: relative;
+}
 
-  .astro-code code {
-    @apply bg-transparent;
-  }
+/* Window header bar with traffic lights */
+.prose-custom .astro-code::before {
+  content: '';
+  display: block;
+  height: 2.5rem;
+  background: oklch(var(--b3));
+  border-bottom: 1px solid oklch(var(--b3));
+  position: relative;
+}
 
-  [data-theme='light'] .astro-code,
-  [data-theme='light'] .astro-code span {
-    color: var(--shiki-light) !important;
-    background-color: transparent !important;
-  }
+/* Traffic lights */
+.prose-custom .astro-code::after {
+  content: '';
+  position: absolute;
+  top: 0.875rem;
+  left: 1rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #ff5f57;
+  border-radius: 50%;
+  box-shadow:
+    1.25rem 0 0 #febc2e,
+    2.5rem 0 0 #28c840;
+}
 
-  [data-theme='dark'] .astro-code,
-  [data-theme='dark'] .astro-code span {
-    color: var(--shiki-dark) !important;
-    background-color: transparent !important;
-  }
+/* Code content padding */
+.prose-custom .astro-code code {
+  display: block;
+  padding: 1rem;
+  background: transparent;
+  overflow-x: auto;
+}
+
+/* Shiki dual themes - outside @layer for proper specificity over inline styles */
+/* Light theme uses inline colors directly, dark theme uses CSS variables */
+html[data-theme='dark'] .astro-code {
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+html[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
 }
 
 /* =============================================================================

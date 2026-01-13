@@ -19,7 +19,7 @@ supportedLocales = ["pt", "en"]
 titleTemplate = "%s | Fabio Luciano"
 defaultTitle = "Fabio Luciano - Platform Engineer"
 defaultDescription = "Blog sobre Platform Engineering, Kubernetes, GitOps, Observabilidade e Developer Experience"
-defaultImage = "/images/og-default.png"
+defaultImage = "/images/photo.jpg"
 twitterHandle = "@fabioluciano"
 twitterCard = "summary_large_image"
 

@@ -1,0 +1,94 @@
+---
+// =============================================================================
+// Command.astro - Single command line with Shiki syntax highlighting
+// =============================================================================
+
+import { codeToHtml } from 'shiki';
+
+interface Props {
+  prompt?: string;
+  highlight?: boolean;
+  highlightColor?: 'warning' | 'error' | 'success' | 'info';
+  noHighlight?: boolean;
+}
+
+const {
+  prompt = '$',
+  highlight = false,
+  highlightColor = 'warning',
+  noHighlight = false
+} = Astro.props;
+
+// Get the slot content
+const slotContent = await Astro.slots.render('default');
+
+// Strip HTML tags and decode entities to get plain text
+const plainText = slotContent
+  .replace(/<[^>]*>/g, '')
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&amp;/g, '&')
+  .replace(/&quot;/g, '"')
+  .replace(/&#39;/g, "'")
+  .trim();
+
+const isComment = prompt === '#';
+
+// Highlight with Shiki (unless it's a comment or noHighlight is set)
+let codeContent = plainText;
+
+if (!isComment && !noHighlight && plainText) {
+  try {
+    const highlighted = await codeToHtml(plainText, {
+      lang: 'bash',
+      themes: {
+        light: 'github-light',
+        dark: 'github-dark',
+      },
+      defaultColor: false,
+    });
+
+    // Extract just the inner content from Shiki output
+    // Shiki outputs: <pre ...><code>CONTENT</code></pre>
+    const codeMatch = highlighted.match(/<code[^>]*>([\s\S]*?)<\/code>/);
+    if (codeMatch) {
+      codeContent = codeMatch[1];
+    }
+  } catch (e) {
+    // Fallback to plain text if Shiki fails
+    codeContent = plainText;
+  }
+}
+
+const highlightClasses: Record<string, string> = {
+  warning: 'bg-warning/20 -mx-4 px-4',
+  error: 'bg-error/20 -mx-4 px-4',
+  success: 'bg-success/20 -mx-4 px-4',
+  info: 'bg-info/20 -mx-4 px-4',
+};
+
+const bgClass = highlight ? highlightClasses[highlightColor] : '';
+---
+
+<div class={`flex gap-2 ${bgClass}`}>
+  <span class={`select-none shrink-0 ${isComment ? 'text-base-content/50' : 'text-success'}`}>
+    {prompt}
+  </span>
+  <span
+    data-command
+    class={`whitespace-pre-wrap ${isComment ? 'text-base-content/50 italic' : ''}`}
+  >
+    {isComment || noHighlight ? (
+      plainText
+    ) : (
+      <Fragment set:html={codeContent} />
+    )}
+  </span>
+</div>
+
+<style is:global>
+  /* Terminal always has dark background, so always use dark Shiki colors */
+  .terminal-wrapper [data-command] span {
+    color: var(--shiki-dark) !important;
+  }
+</style>
