@@ -7,6 +7,9 @@ import PostLayout from '@/layouts/PostLayout.astro';
 import { getAllPosts, getPostSlug, type Post } from '@/lib/posts';
 import { getUrlPrefix, type Locale } from '@/lib/i18n';
 import { LOCALES } from '@/config/locales';
+import MDXImageWrapper from '@/components/mdx/MDXImageWrapper.astro';
+import ImageModalWrapper from '@/components/mdx/ImageModalWrapper.astro';
+import PlantUMLWrapper from '@/components/mdx/PlantUMLWrapper.astro';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -44,8 +47,15 @@ const alternatePost = allPosts.find(
 const alternateUrl = alternatePost
   ? `${getUrlPrefix(alternateLang)}/${slug}`
   : null;
+
+// MDX components mapping - override img to use ImageModal
+const mdxComponents = {
+  img: MDXImageWrapper,
+  ImageModal: ImageModalWrapper,
+  PlantUML: PlantUMLWrapper,
+};
 ---
 
 <PostLayout post={post} headings={headings} alternateLocaleUrl={alternateUrl}>
-  <Content components={{}} />
+  <Content components={mdxComponents} />
 </PostLayout>

@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { getPlantUMLUrl, generateDiagramHash } from '@/lib/plantuml';
+import { ImageModal } from './ImageModal';
 
 interface PlantUMLProps {
   /**
@@ -62,22 +63,15 @@ export function PlantUML({
   const hash = generateDiagramHash(cleanCode);
 
   return (
-    <figure className={`my-8 not-prose ${className}`}>
-      <div className="flex justify-center bg-base-200 rounded-lg p-4 overflow-x-auto">
-        <img
-          src={diagramUrl}
-          alt={alt}
-          className="max-w-full h-auto"
-          loading="lazy"
-          data-plantuml-hash={hash}
-        />
-      </div>
-      {caption && (
-        <figcaption className="text-center text-sm text-base-content/60 mt-3">
-          {caption}
-        </figcaption>
-      )}
-    </figure>
+    <div className={`my-8 not-prose ${className}`}>
+      <ImageModal
+        src={diagramUrl}
+        alt={alt}
+        caption={caption}
+        className="max-w-full"
+        fullWidth={true}
+      />
+    </div>
   );
 }
 

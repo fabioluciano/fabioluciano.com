@@ -1,0 +1,292 @@
+---
+title: "Automating what shouldn't require effort: the resume as an engineering exercise"
+description: "How I transformed resume updates from a repetitive task into an automated system with data validation, contracts, and CI/CD pipelines"
+publishedAt: 2026-01-12
+locale: en
+category: automation
+tags: ["automation", "devops", "ci-cd", "toil", "productivity"]
+draft: false
+toc: true
+comments: true
+---
+
+import { Callout, Timeline, TimelineEvent, Steps, Step, Accordion, AccordionItem, LinkCard, LinkCardGrid } from '@/components/mdx';
+import PlantUML from '@/components/mdx/PlantUMLWrapper.astro';
+
+Updating a resume was never hard. It was just **tedious**. For a long time, this was one of those processes I accepted as a natural part of professional life: open a document, update experiences, adjust dates, export a PDF, and move on. It required no intellectual effort, brought no new learning, yet it needed to be done repeatedly. Only after a few years did I realize this had a name: **toil**.
+
+<Callout type="info" title="What is Toil?">
+Toil is repetitive, manual, automatable operational work with no lasting value. It's the kind of task that doesn't scale, teaches nothing new, and tends to grow linearly with the system. The term is widely used in SRE (Site Reliability Engineering) to identify work that should be eliminated through automation.
+</Callout>
+
+The problem was never the resume itself. It wasn't the format, the editor, or the layout. The problem was repeating the same process, always the same way, with no cognitive gain. This kind of work is treacherous because it seems small, almost irrelevant, but it accumulates. It takes time, mental energy, and most importantly, normalizes the idea that certain things "are just like that." Toil doesn't live only in production environments or operational tasks; it silently infiltrates our daily lives.
+
+## The trap of superficial automation
+
+My first reaction was technical, as it usually is. I switched from ODT to Markdown, then Markdown to AsciiDoc, added scripts, created templates, automated parts of the process. It worked better than before, but something was still wrong. I had automated the tool, not the problem.
+
+<Timeline title="Evolution of attempts">
+  <TimelineEvent date="Phase 1" title="Traditional document" status="completed">
+    ODT/DOCX manually edited. Each update required opening the editor, formatting, and exporting.
+  </TimelineEvent>
+  <TimelineEvent date="Phase 2" title="Markdown + Scripts" status="completed">
+    Migration to plain text. Improved versioning, but still manual duplication for each language.
+  </TimelineEvent>
+  <TimelineEvent date="Phase 3" title="AsciiDoc + Templates" status="completed">
+    More formatting power, but the fundamental problem persisted: data and presentation mixed together.
+  </TimelineEvent>
+  <TimelineEvent date="Phase 4" title="Structured data + Schema" status="milestone">
+    The resume stops being a document and becomes validated data. Templates are just renderers.
+  </TimelineEvent>
+</Timeline>
+
+<Callout type="warning" title="Beware of superficial automation">
+Changing technology without changing the mental model is a common trap when we talk about automation. You can have the most sophisticated pipeline in the world, but if the fundamental problem wasn't addressed, you've just automated inefficiency.
+</Callout>
+
+## The turning point: data, not documents
+
+The turning point happened when I stopped treating the resume as a document and started treating it as **data**. By adopting a formal resume specification based on a schema, it became clear that the information needed a contract. From the moment data became validated, versioned, and structured, the final format stopped mattering. HTML, PDF, or any other output became just different representations of the same set of information.
+
+<Steps>
+  <Step title="Separation of data and presentation">
+    Resume information lives in structured data files, following a defined schema. Templates only transform this data into readable formats.
+  </Step>
+  <Step title="Common vs. specific data">
+    Name, email, links, and shared experiences exist in a single place. Language-specific data (descriptions, summaries) are isolated in separate files.
+  </Step>
+  <Step title="Automatic merge and validation">
+    A simple process combines common data with language-specific data, validating against the schema before any rendering.
+  </Step>
+  <Step title="Multiple outputs, same source">
+    HTML, full PDF, one-page PDF — all automatically generated from the same source of truth.
+  </Step>
+</Steps>
+
+This change in perspective solved problems that previously seemed "natural." Having versions in Portuguese and English no longer meant content duplication.
+
+## System architecture
+
+The diagram below shows the data flow from YAML files to the final artifacts — three output formats for each language, all generated from the same source of truth:
+
+<PlantUML
+  code={`
+@startuml
+skinparam backgroundColor transparent
+skinparam defaultFontName JetBrains Mono
+skinparam shadowing false
+skinparam roundcorner 10
+skinparam arrowThickness 1.5
+skinparam arrowColor #666666
+skinparam rectangleBorderColor #888888
+skinparam cardBorderColor #AAAAAA
+
+title Resume Builder - Data Flow
+
+together {
+  card "**common.yaml**\\nshared data" as common #E3F2FD
+  card "**resume.en.yaml**\\ntranslations" as en #E8F5E9
+  card "**resume.ptbr.yaml**\\ntranslations" as ptbr #FFEBEE
+}
+
+card "**JSON Resume Schema**\\nvalidation" as schema #FCE4EC
+
+card "**Typst Engine**\\ndata-loader.typ (merge)" as typst #E0F7FA
+
+together {
+  card "resume-full.typ" as t_full #FFF8E1
+  card "resume-onepage.typ" as t_onepage #FFF8E1
+  card "resume-html.typ" as t_html #FFF8E1
+}
+
+together {
+  card "**EN** resume.pdf" as out_full_en #FFCCBC
+  card "**EN** resume-onepage.pdf" as out_onepage_en #FFCCBC
+  card "**EN** index.html" as out_html_en #C8E6C9
+}
+
+together {
+  card "**PT** resume.pdf" as out_full_pt #FFCCBC
+  card "**PT** resume-onepage.pdf" as out_onepage_pt #FFCCBC
+  card "**PT** index.html" as out_html_pt #C8E6C9
+}
+
+cloud "**GitHub Pages**" as gh #BBDEFB
+
+common -down-> schema
+en -down-> schema
+ptbr -down-> schema
+
+schema -down-> typst
+
+typst -down-> t_full
+typst -down-> t_onepage
+typst -down-> t_html
+
+t_full -down-> out_full_en
+t_full -down-> out_full_pt
+
+t_onepage -down-> out_onepage_en
+t_onepage -down-> out_onepage_pt
+
+t_html -down-> out_html_en
+t_html -down-> out_html_pt
+
+out_full_en -down-> gh
+out_onepage_en -down-> gh
+out_html_en -down-> gh
+out_full_pt -down-> gh
+out_onepage_pt -down-> gh
+out_html_pt -down-> gh
+
+@enduml
+`}
+  alt="Data flow diagram of the resume system"
+  caption="Data flow: YAML → Validation → Typst → 6 artifacts (3 formats × 2 languages)"
+/>
+
+The flow is straightforward:
+
+1. **YAML Data** is the source of truth — `common.yaml` contains shared data (name, contacts, experiences), while language files (`resume.en.yaml`, `resume.ptbr.yaml`) contain only translations
+2. **Validation** against JSON Resume Schema ensures data correctness before any processing
+3. **Typst** merges the data and applies templates, generating **3 formats for each language**: full PDF, one-page PDF, and HTML
+
+## The resume as an application
+
+At some point in this process, the resume stopped being a file and became an **application**. Today, it goes through a build pipeline like any other project: data is validated, artifacts are generated, and everything is published automatically. The result is always predictable and reproducible.
+
+The HTML site and PDFs — both the complete version and the condensed one-page version — are generated from the same source of truth. If something breaks, the pipeline catches it. If something changes, the update is trivial.
+
+<Callout type="tip" title="Pipeline as living documentation">
+When the build process is codified in a pipeline, it serves as executable documentation. Anyone can understand how the system works simply by reading the workflows — and can trust that this documentation is always up to date, because it *is* the process.
+</Callout>
+
+## Overengineering or investment?
+
+It's easy to look at this process and call it **overengineering**. And, in a way, maybe it is. But this criticism misses the central point.
+
+The goal was never the resume. It was just a **means**. A controlled ground to experiment with automation, data contracts, validation, and continuous publishing without real risk. Everything learned there transfers directly to much larger and more critical problems.
+
+<Accordion title="What this project taught in practice">
+  <AccordionItem title="Data contracts and validation" defaultOpen>
+    Schemas aren't bureaucracy — they're guarantees. When data goes through validation before being used, errors are detected at the source, not in production.
+  </AccordionItem>
+  <AccordionItem title="Separation of concerns">
+    Data, transformation logic, and presentation are distinct layers. Changing one shouldn't require changes to the others.
+  </AccordionItem>
+  <AccordionItem title="Automation as culture">
+    If something can be automated and doesn't add human value in manual execution, automate it. The recovered time is real.
+  </AccordionItem>
+  <AccordionItem title="Safe experimentation">
+    Personal projects are perfect laboratories for testing ideas before applying them in higher-risk contexts.
+  </AccordionItem>
+</Accordion>
+
+## The real lesson
+
+Ultimately, the lesson has nothing to do with career, documents, or specific technology. It's about learning to identify tedious, predictable, and repetitive processes and consciously deciding **not to accept them as inevitable**.
+
+> Whenever a task stops teaching something new, it becomes a candidate for automation.
+
+Not to show technical sophistication, but to return time and energy to what really matters.
+
+<Callout type="success" title="The fundamental principle">
+Automation, at its core, is not about modern tools or elegant stacks. It's about **respect for your own time**. If something no longer requires thought, maybe it's exactly the kind of thing you shouldn't do manually ever again.
+</Callout>
+
+---
+
+## Appendix: practical implementation
+
+As a practical complement to all this, it's worth showing how this idea materializes. Everything described above is published and can be inspected both from a usage and implementation perspective.
+
+### Published versions
+
+The HTML versions of the resume are the most visible entry point. They are automatically generated from the same database and published as a static site:
+
+<LinkCardGrid columns={2}>
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/"
+    title="Resume in Portuguese"
+    description="Full HTML version"
+    type="website"
+    label="PT-BR"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/"
+    title="Resume in English"
+    description="Full HTML version"
+    type="website"
+    label="EN"
+  />
+</LinkCardGrid>
+
+Besides HTML, the same pipeline generates PDFs. For each language, there are two variations: a complete version and a condensed one-page version:
+
+<LinkCardGrid columns={2} title="English PDFs">
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/resume.pdf"
+    title="Resume (Full)"
+    description="Complete version with all details"
+    type="pdf"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/resume-onepage.pdf"
+    title="Resume (One Page)"
+    description="Condensed single-page version"
+    type="pdf"
+  />
+</LinkCardGrid>
+
+<LinkCardGrid columns={2} title="Portuguese PDFs">
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/resume.pdf"
+    title="Currículo (Full)"
+    description="Complete version with all details"
+    type="pdf"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/resume-onepage.pdf"
+    title="Currículo (One Page)"
+    description="Condensed single-page version"
+    type="pdf"
+  />
+</LinkCardGrid>
+
+### Source code
+
+All the implementation that enables this process is in a public repository:
+
+<LinkCard
+  href="https://github.com/fabioluciano/resume.fabioluciano.com"
+  title="fabioluciano/resume.fabioluciano.com"
+  description="Complete source code: data, templates, validation, and CI/CD pipeline"
+  type="github"
+/>
+
+The repository structure clearly separates responsibilities:
+
+<LinkCardGrid columns={2}>
+  <LinkCard
+    href="https://github.com/fabioluciano/resume.fabioluciano.com/tree/main/data"
+    title="/data folder"
+    description="Resume data following the schema, separated by language"
+    type="folder"
+  />
+  <LinkCard
+    href="https://github.com/fabioluciano/resume.fabioluciano.com/tree/main/templates"
+    title="/templates folder"
+    description="Rendering logic for HTML and PDF"
+    type="folder"
+  />
+</LinkCardGrid>
+
+Templates don't know about language, version, or context; they just receive valid data and know how to transform it into HTML or PDF. This clear separation between data and presentation is what makes the system extensible and sustainable over time.
+
+Finally, the entire validation, generation, and publishing process happens automatically via workflows. The pipeline ensures data complies with the schema before any artifact is published. If something is inconsistent, the build fails. If something changes, everything is regenerated predictably.
+
+---
+
+<Callout type="info">
+The value is not in the resume itself, but in the **process**. The resume is just concrete evidence of a broader idea — identifying toil, creating clear contracts, and automating what shouldn't require repeated human effort.
+</Callout>

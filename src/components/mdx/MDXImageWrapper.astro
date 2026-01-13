@@ -1,0 +1,24 @@
+---
+// =============================================================================
+// MDXImageWrapper - Astro wrapper for MDXImage with client hydration
+// =============================================================================
+
+import { MDXImage } from './ImageModal';
+
+interface Props {
+  src?: string;
+  alt?: string;
+  title?: string;
+  className?: string;
+}
+
+const { src, alt, title, className } = Astro.props;
+---
+
+<MDXImage
+  client:only="react"
+  src={src}
+  alt={alt}
+  title={title}
+  className={className}
+/>

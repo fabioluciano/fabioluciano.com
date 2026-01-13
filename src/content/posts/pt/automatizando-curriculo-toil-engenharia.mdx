@@ -1,0 +1,292 @@
+---
+title: "Automatizando o que não deveria exigir esforço: o currículo como exercício de engenharia"
+description: "Como transformei a atualização de currículo de uma tarefa repetitiva em um sistema automatizado com validação de dados, contratos e pipelines de CI/CD"
+publishedAt: 2026-01-12
+locale: pt
+category: automacao
+tags: ["automacao", "devops", "ci-cd", "toil", "produtividade"]
+draft: false
+toc: true
+comments: true
+---
+
+import { Callout, Timeline, TimelineEvent, Steps, Step, Accordion, AccordionItem, LinkCard, LinkCardGrid } from '@/components/mdx';
+import PlantUML from '@/components/mdx/PlantUMLWrapper.astro';
+
+Atualizar currículo nunca foi difícil. Sempre foi apenas **chato**. Durante muito tempo, esse foi um daqueles processos que eu aceitava como parte natural da vida profissional: abrir um documento, atualizar experiências, ajustar datas, exportar um PDF e seguir em frente. Não exigia esforço intelectual, não trazia aprendizado novo e, ainda assim, precisava ser feito repetidamente. Só depois de alguns anos percebi que isso tinha nome: **toil**.
+
+<Callout type="info" title="O que é Toil?">
+Toil é trabalho operacional repetitivo, manual, automatizável e sem valor duradouro. É o tipo de tarefa que não escala, não ensina nada novo e tende a crescer linearmente com o sistema. O termo é amplamente usado em SRE (Site Reliability Engineering) para identificar trabalho que deve ser eliminado através de automação.
+</Callout>
+
+O problema nunca foi o currículo em si. Não era o formato, o editor ou o layout. O problema era repetir o mesmo processo, sempre da mesma maneira, sem nenhum ganho cognitivo. Esse tipo de trabalho é traiçoeiro porque parece pequeno, quase irrelevante, mas se acumula. Ele ocupa tempo, energia mental e, principalmente, normaliza a ideia de que certas coisas "são assim mesmo". Toil não vive apenas em ambientes de produção ou em tarefas operacionais; ele se infiltra silenciosamente no nosso dia a dia.
+
+## A armadilha da automação superficial
+
+Minha primeira reação foi técnica, como costuma acontecer. Troquei o ODT por Markdown, depois Markdown por AsciiDoc, adicionei scripts, criei templates, automatizei partes do processo. Funcionava melhor do que antes, mas algo ainda estava errado. Eu havia automatizado a ferramenta, não o problema.
+
+<Timeline title="Evolução das tentativas">
+  <TimelineEvent date="Fase 1" title="Documento tradicional" status="completed">
+    ODT/DOCX editado manualmente. Cada atualização exigia abrir o editor, formatar e exportar.
+  </TimelineEvent>
+  <TimelineEvent date="Fase 2" title="Markdown + Scripts" status="completed">
+    Migração para texto puro. Melhorou versionamento, mas ainda era duplicação manual para cada idioma.
+  </TimelineEvent>
+  <TimelineEvent date="Fase 3" title="AsciiDoc + Templates" status="completed">
+    Mais poder de formatação, mas o problema fundamental persistia: dados e apresentação misturados.
+  </TimelineEvent>
+  <TimelineEvent date="Fase 4" title="Dados estruturados + Schema" status="milestone">
+    O currículo deixa de ser documento e vira dados validados. Templates são apenas renderizadores.
+  </TimelineEvent>
+</Timeline>
+
+<Callout type="warning" title="Cuidado com a automação superficial">
+Trocar de tecnologia sem mudar o modelo mental é uma armadilha comum quando falamos de automação. Você pode ter o pipeline mais sofisticado do mundo, mas se o problema fundamental não foi endereçado, você apenas automatizou a ineficiência.
+</Callout>
+
+## O ponto de virada: dados, não documentos
+
+O ponto de virada aconteceu quando deixei de tratar o currículo como um documento e passei a tratá-lo como **dados**. Ao adotar uma especificação formal de currículo, baseada em um schema, ficou claro que a informação precisava ter um contrato. A partir do momento em que os dados passaram a ser validados, versionados e estruturados, o formato final deixou de importar. HTML, PDF ou qualquer outra saída passaram a ser apenas representações diferentes do mesmo conjunto de informações.
+
+<Steps>
+  <Step title="Separação de dados e apresentação">
+    Informações do currículo vivem em arquivos de dados estruturados, seguindo um schema definido. Templates apenas transformam esses dados em formatos legíveis.
+  </Step>
+  <Step title="Dados comuns vs. específicos">
+    Nome, e-mail, links e experiências compartilhadas existem em um único lugar. Dados específicos de cada idioma (descrições, resumos) ficam isolados em arquivos separados.
+  </Step>
+  <Step title="Merge e validação automática">
+    Um processo simples combina dados comuns com dados específicos do idioma, validando contra o schema antes de qualquer renderização.
+  </Step>
+  <Step title="Múltiplas saídas, mesma fonte">
+    HTML, PDF completo, PDF de uma página — todos gerados automaticamente a partir da mesma fonte de verdade.
+  </Step>
+</Steps>
+
+Essa mudança de perspectiva resolveu problemas que antes pareciam "naturais". Ter versões em português e inglês deixou de significar duplicação de conteúdo.
+
+## Arquitetura do sistema
+
+O diagrama abaixo mostra o fluxo de dados desde os arquivos YAML até os artefatos finais — três formatos de saída para cada idioma, todos gerados a partir da mesma fonte de verdade:
+
+<PlantUML
+  code={`
+@startuml
+skinparam backgroundColor transparent
+skinparam defaultFontName JetBrains Mono
+skinparam shadowing false
+skinparam roundcorner 10
+skinparam arrowThickness 1.5
+skinparam arrowColor #666666
+skinparam rectangleBorderColor #888888
+skinparam cardBorderColor #AAAAAA
+
+title Resume Builder - Data Flow
+
+together {
+  card "**common.yaml**\\nshared data" as common #E3F2FD
+  card "**resume.en.yaml**\\ntranslations" as en #E8F5E9
+  card "**resume.ptbr.yaml**\\ntranslations" as ptbr #FFEBEE
+}
+
+card "**JSON Resume Schema**\\nvalidation" as schema #FCE4EC
+
+card "**Typst Engine**\\ndata-loader.typ (merge)" as typst #E0F7FA
+
+together {
+  card "resume-full.typ" as t_full #FFF8E1
+  card "resume-onepage.typ" as t_onepage #FFF8E1
+  card "resume-html.typ" as t_html #FFF8E1
+}
+
+together {
+  card "**EN** resume.pdf" as out_full_en #FFCCBC
+  card "**EN** resume-onepage.pdf" as out_onepage_en #FFCCBC
+  card "**EN** index.html" as out_html_en #C8E6C9
+}
+
+together {
+  card "**PT** resume.pdf" as out_full_pt #FFCCBC
+  card "**PT** resume-onepage.pdf" as out_onepage_pt #FFCCBC
+  card "**PT** index.html" as out_html_pt #C8E6C9
+}
+
+cloud "**GitHub Pages**" as gh #BBDEFB
+
+common -down-> schema
+en -down-> schema
+ptbr -down-> schema
+
+schema -down-> typst
+
+typst -down-> t_full
+typst -down-> t_onepage
+typst -down-> t_html
+
+t_full -down-> out_full_en
+t_full -down-> out_full_pt
+
+t_onepage -down-> out_onepage_en
+t_onepage -down-> out_onepage_pt
+
+t_html -down-> out_html_en
+t_html -down-> out_html_pt
+
+out_full_en -down-> gh
+out_onepage_en -down-> gh
+out_html_en -down-> gh
+out_full_pt -down-> gh
+out_onepage_pt -down-> gh
+out_html_pt -down-> gh
+
+@enduml
+`}
+  alt="Diagrama de fluxo de dados do sistema de currículo"
+  caption="Fluxo de dados: YAML → Validação → Typst → 6 artefatos (3 formatos × 2 idiomas)"
+/>
+
+O fluxo é direto:
+
+1. **Dados YAML** são a fonte de verdade — `common.yaml` contém dados compartilhados (nome, contatos, experiências), enquanto arquivos por idioma (`resume.en.yaml`, `resume.ptbr.yaml`) contêm apenas traduções
+2. **Validação** contra o JSON Resume Schema garante que os dados estão corretos antes de qualquer processamento
+3. **Typst** mescla os dados e aplica os templates, gerando **3 formatos para cada idioma**: PDF completo, PDF de uma página, e HTML
+
+## O currículo como aplicação
+
+Em algum momento desse processo, o currículo deixou de ser um arquivo e virou uma **aplicação**. Hoje, ele passa por um pipeline de build como qualquer outro projeto: os dados são validados, os artefatos são gerados e tudo é publicado automaticamente. O resultado é sempre previsível e reproduzível.
+
+O site em HTML e os PDFs — tanto a versão completa quanto a versão condensada em uma única página — são gerados a partir da mesma fonte de verdade. Se algo quebra, o pipeline acusa. Se algo muda, a atualização é trivial.
+
+<Callout type="tip" title="Pipeline como documentação viva">
+Quando o processo de build está codificado em um pipeline, ele serve como documentação executável. Qualquer pessoa pode entender como o sistema funciona simplesmente lendo os workflows — e pode confiar que essa documentação está sempre atualizada, porque ela *é* o processo.
+</Callout>
+
+## Overengineering ou investimento?
+
+É fácil olhar para esse processo e chamá-lo de **overengineering**. E, de certa forma, talvez seja mesmo. Mas essa crítica ignora o ponto central.
+
+O objetivo nunca foi o currículo. Ele foi apenas um **meio**. Um terreno controlado para experimentar automação, contratos de dados, validação e publicação contínua sem risco real. Tudo o que foi aprendido ali se transfere diretamente para problemas muito maiores e mais críticos.
+
+<Accordion title="O que este projeto ensinou na prática">
+  <AccordionItem title="Contratos de dados e validação" defaultOpen>
+    Schemas não são burocracia — são garantias. Quando dados passam por validação antes de serem usados, erros são detectados na origem, não na produção.
+  </AccordionItem>
+  <AccordionItem title="Separação de concerns">
+    Dados, lógica de transformação e apresentação são camadas distintas. Mudar uma não deveria exigir mudanças nas outras.
+  </AccordionItem>
+  <AccordionItem title="Automação como cultura">
+    Se algo pode ser automatizado e não agrega valor humano na execução manual, automatize. O tempo recuperado é real.
+  </AccordionItem>
+  <AccordionItem title="Experimentação segura">
+    Projetos pessoais são laboratórios perfeitos para testar ideias antes de aplicá-las em contextos de maior risco.
+  </AccordionItem>
+</Accordion>
+
+## A lição real
+
+No fim das contas, a lição não tem nada a ver com carreira, documentos ou tecnologia específica. Ela é sobre aprender a identificar processos morosos, previsíveis e repetitivos e decidir conscientemente **não aceitá-los como inevitáveis**.
+
+> Sempre que uma tarefa deixa de ensinar algo novo, ela se torna candidata à automação.
+
+Não para mostrar sofisticação técnica, mas para devolver tempo e energia para aquilo que realmente importa.
+
+<Callout type="success" title="O princípio fundamental">
+Automação, no fundo, não é sobre ferramentas modernas ou stacks elegantes. É sobre **respeito ao próprio tempo**. Se algo não exige mais pensamento, talvez seja exatamente o tipo de coisa que você não deveria fazer manualmente nunca mais.
+</Callout>
+
+---
+
+## Apêndice: implementação prática
+
+Como complemento prático a tudo isso, vale mostrar como essa ideia se materializa. Todo o resultado descrito acima está publicado e pode ser inspecionado tanto do ponto de vista de uso quanto de implementação.
+
+### Versões publicadas
+
+As versões em HTML do currículo são o ponto de entrada mais visível. Elas são geradas automaticamente a partir da mesma base de dados e publicadas como site estático:
+
+<LinkCardGrid columns={2}>
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/"
+    title="Currículo em Português"
+    description="Versão HTML completa"
+    type="website"
+    label="PT-BR"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/"
+    title="Resume in English"
+    description="Full HTML version"
+    type="website"
+    label="EN"
+  />
+</LinkCardGrid>
+
+Além do HTML, o mesmo pipeline gera PDFs. Para cada idioma, existem duas variações: uma versão completa e uma versão condensada em uma única página:
+
+<LinkCardGrid columns={2} title="PDFs em Inglês">
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/resume.pdf"
+    title="Resume (Full)"
+    description="Complete version with all details"
+    type="pdf"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/en/resume-onepage.pdf"
+    title="Resume (One Page)"
+    description="Condensed single-page version"
+    type="pdf"
+  />
+</LinkCardGrid>
+
+<LinkCardGrid columns={2} title="PDFs em Português">
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/resume.pdf"
+    title="Currículo (Completo)"
+    description="Versão completa com todos os detalhes"
+    type="pdf"
+  />
+  <LinkCard
+    href="https://resume.fabioluciano.com/ptbr/resume-onepage.pdf"
+    title="Currículo (Uma Página)"
+    description="Versão condensada em página única"
+    type="pdf"
+  />
+</LinkCardGrid>
+
+### Código-fonte
+
+Toda a implementação que viabiliza esse processo está em um repositório público:
+
+<LinkCard
+  href="https://github.com/fabioluciano/resume.fabioluciano.com"
+  title="fabioluciano/resume.fabioluciano.com"
+  description="Código-fonte completo: dados, templates, validação e pipeline de CI/CD"
+  type="github"
+/>
+
+A estrutura do repositório separa claramente as responsabilidades:
+
+<LinkCardGrid columns={2}>
+  <LinkCard
+    href="https://github.com/fabioluciano/resume.fabioluciano.com/tree/main/data"
+    title="Pasta /data"
+    description="Dados do currículo seguindo o schema, separados por idioma"
+    type="folder"
+  />
+  <LinkCard
+    href="https://github.com/fabioluciano/resume.fabioluciano.com/tree/main/templates"
+    title="Pasta /templates"
+    description="Lógica de renderização para HTML e PDF"
+    type="folder"
+  />
+</LinkCardGrid>
+
+Os templates não conhecem idioma, versão ou contexto; eles apenas recebem dados válidos e sabem como transformá-los em HTML ou PDF. Essa separação clara entre dados e apresentação é o que torna o sistema extensível e sustentável ao longo do tempo.
+
+Por fim, todo o processo de validação, geração e publicação acontece de forma automatizada via workflows. O pipeline garante que os dados estejam em conformidade com o schema antes de qualquer artefato ser publicado. Se algo estiver inconsistente, o build falha. Se algo mudar, tudo é regenerado de forma previsível.
+
+---
+
+<Callout type="info">
+O valor não está no currículo em si, mas no **processo**. O currículo é apenas a evidência concreta de uma ideia mais ampla — identificar toil, criar contratos claros e automatizar aquilo que não deveria exigir esforço humano repetidamente.
+</Callout>

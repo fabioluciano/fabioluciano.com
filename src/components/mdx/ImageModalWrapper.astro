@@ -1,0 +1,26 @@
+---
+// =============================================================================
+// ImageModalWrapper - Astro wrapper for ImageModal with client hydration
+// =============================================================================
+
+import { ImageModal } from './ImageModal';
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  className?: string;
+  fullWidth?: boolean;
+}
+
+const { src, alt, caption, className, fullWidth } = Astro.props;
+---
+
+<ImageModal
+  client:only="react"
+  src={src}
+  alt={alt}
+  caption={caption}
+  className={className}
+  fullWidth={fullWidth}
+/>
