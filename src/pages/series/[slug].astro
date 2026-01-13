@@ -3,6 +3,7 @@
 // Series Detail Page - Redirects to default locale
 // =============================================================================
 
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 import { getAllSeries } from '@/lib/posts';
 
 export async function getStaticPaths() {
@@ -14,6 +15,6 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-return Astro.redirect(`/pt/series/${slug}`);
 ---
 
+<SilentRedirect to={`/pt/series/${slug}`} />

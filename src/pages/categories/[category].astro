@@ -3,6 +3,7 @@
 // Category Page - Redirects to default locale
 // =============================================================================
 
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 import { getAllPosts } from '@/lib/posts';
 
 export async function getStaticPaths() {
@@ -19,6 +20,6 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.params;
-return Astro.redirect(`/pt/categories/${category}`);
 ---
 
+<SilentRedirect to={`/pt/categories/${category}`} />

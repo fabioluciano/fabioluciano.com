@@ -3,6 +3,7 @@
 // Tag Page - Redirects to default locale
 // =============================================================================
 
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 import { getAllPosts } from '@/lib/posts';
 
 export async function getStaticPaths() {
@@ -19,6 +20,6 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
-return Astro.redirect(`/pt/tags/${tag}`);
 ---
 
+<SilentRedirect to={`/pt/tags/${tag}`} />

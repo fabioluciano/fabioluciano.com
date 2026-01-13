@@ -3,5 +3,7 @@
 // Categories Index - Redirects to default locale
 // =============================================================================
 
-return Astro.redirect('/pt/categories');
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 ---
+
+<SilentRedirect to="/pt/categories" />

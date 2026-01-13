@@ -1,0 +1,27 @@
+---
+// =============================================================================
+// Silent Redirect Layout
+// Performs instant redirect without showing any visible message
+// =============================================================================
+
+interface Props {
+  to: string;
+}
+
+const { to } = Astro.props;
+const canonicalUrl = new URL(to, Astro.site).href;
+---
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${to}`} />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonicalUrl} />
+    <script is:inline define:vars={{ to }}>
+      window.location.replace(to);
+    </script>
+  </head>
+  <body></body>
+</html>

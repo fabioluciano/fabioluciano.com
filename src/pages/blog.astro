@@ -3,5 +3,7 @@
 // Blog Page - Redirects to default locale
 // =============================================================================
 
-return Astro.redirect('/pt/blog');
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 ---
+
+<SilentRedirect to="/pt/blog" />

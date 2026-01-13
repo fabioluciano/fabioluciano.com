@@ -3,5 +3,7 @@
 // About Page - Redirects to default locale
 // =============================================================================
 
-return Astro.redirect('/pt/about');
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
 ---
+
+<SilentRedirect to="/pt/about" />
