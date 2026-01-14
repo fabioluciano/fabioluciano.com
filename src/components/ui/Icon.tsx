@@ -461,31 +461,3 @@ export function Icon({ name, className = 'h-5 w-5', size }: IconProps) {
 
 // Export icon map for direct access if needed
 export { iconMap };
-
-// Export individual icon categories for selective imports
-export const navigationIcons = {
-  arrowRight: FiArrowRight,
-  arrowLeft: FiArrowLeft,
-  chevronRight: FiChevronRight,
-  chevronLeft: FiChevronLeft,
-  chevronDown: FiChevronDown,
-  menu: FiMenu,
-  close: FiX,
-};
-
-export const socialIcons = {
-  github: SiGithub,
-  linkedin: SiLinkedin,
-  twitter: SiTwitter,
-  mail: FiMail,
-};
-
-export const techIcons = {
-  kubernetes: SiKubernetes,
-  docker: SiDocker,
-  terraform: SiTerraform,
-  aws: SiAmazonwebservices,
-  gcp: SiGooglecloud,
-  prometheus: SiPrometheus,
-  grafana: SiGrafana,
-};

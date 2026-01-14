@@ -3,7 +3,7 @@
 // =============================================================================
 
 import React from 'react';
-import { HiChevronDown, HiQuestionMarkCircle } from 'react-icons/hi2';
+import { HiQuestionMarkCircle } from 'react-icons/hi2';
 
 interface AccordionItemProps {
   title: string;
