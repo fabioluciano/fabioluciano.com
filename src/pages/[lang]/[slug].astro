@@ -3,6 +3,7 @@
 // Dynamic Post Page - Unified for all locales
 // =============================================================================
 
+import { render } from 'astro:content';
 import PostLayout from '@/layouts/PostLayout.astro';
 import { getAllPosts, getPostSlug, type Post } from '@/lib/posts';
 import { getUrlPrefix, type Locale } from '@/lib/i18n';
@@ -35,7 +36,7 @@ if (!post) {
   return Astro.redirect('/404');
 }
 
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 
 // Check if alternate locale version exists
 const allPosts = await getAllPosts();

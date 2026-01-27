@@ -136,8 +136,8 @@ const relatedPosts = isFeatureEnabled('relatedPosts')
               <div class="mt-2 p-3 bg-base-200/50 rounded-lg border border-base-300">
                 <div class="space-y-1">
                   {seriesNav.allPosts.map((seriesPost, index) => {
-                    const isCurrent = seriesPost.slug === post.slug;
-                    const postSlug = seriesPost.slug.split('/').pop();
+                    const isCurrent = seriesPost.id === post.id;
+                    const postSlug = seriesPost.id.split('/').pop();
                     return (
                       <a
                         href={isCurrent ? '#' : `${urlPrefix}/${postSlug}`}

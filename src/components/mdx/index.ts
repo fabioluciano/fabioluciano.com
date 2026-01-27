@@ -15,3 +15,11 @@ export { Accordion, AccordionItem, FAQ, FAQItem, Details, Collapse } from './Acc
 export { ImageModal, ImageGallery, MDXImage } from './ImageModal';
 export { LinkCard, LinkCardGrid, InlineLink } from './LinkCard';
 export { Badge } from '../ui/Badge';
+
+// New components
+export { DiffViewer } from './DiffViewer';
+export { CompareColumns } from './CompareColumns';
+export { Quiz } from './Quiz';
+export { Tooltip, GlossaryList, GlossaryTerm } from './Glossary';
+export { Mermaid } from './Mermaid';
+export { FootnoteRef, FootnoteList, FootnoteItem } from './Footnote';

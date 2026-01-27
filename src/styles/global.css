@@ -278,6 +278,19 @@
     @apply bg-base-200 border border-base-300;
   }
 
+  /* Steps Component - CSS Counters */
+  .steps-container {
+    counter-reset: step-counter;
+  }
+
+  .step-number {
+    counter-increment: step-counter;
+  }
+
+  .step-number::before {
+    content: counter(step-counter);
+  }
+
   /* Override prose styles for mockup-code pre elements */
   .prose-custom .mockup-code pre,
   .mockup-code pre {
@@ -418,3 +431,4 @@ html[data-theme='dark'] .astro-code span {
     display: none !important;
   }
 }
+

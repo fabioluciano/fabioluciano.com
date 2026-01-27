@@ -114,9 +114,9 @@ export async function getSeriesInfo(seriesSlug: string, locale?: Locale) {
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   const posts = await getAllPosts();
   return posts.find((post) => {
-    // slug format: "pt/post-slug" or "en/post-slug"
-    const postSlug = post.slug.split('/').pop();
-    return postSlug === slug || post.slug === slug;
+    // id format: "pt/post-slug" or "en/post-slug"
+    const postSlug = post.id.split('/').pop();
+    return postSlug === slug || post.id === slug;
   });
 }
 
@@ -130,11 +130,11 @@ export async function getLocalizedPost(
   const posts = await getAllPosts();
 
   // Try exact match with locale prefix
-  let post = posts.find((p) => p.slug === `${preferredLocale}/${slug}`);
+  let post = posts.find((p) => p.id === `${preferredLocale}/${slug}`);
 
   // Fallback to other locale
   if (!post) {
-    post = posts.find((p) => p.slug.endsWith(`/${slug}`));
+    post = posts.find((p) => p.id.endsWith(`/${slug}`));
   }
 
   return post;
@@ -154,7 +154,7 @@ export async function getPostTranslation(
   return posts.find(
     (p) =>
       p.data.locale === targetLocale &&
-      p.slug.endsWith(`/${post.data.translationSlug}`)
+      p.id.endsWith(`/${post.data.translationSlug}`)
   );
 }
 
@@ -189,7 +189,7 @@ export async function getSeriesNavigation(post: Post): Promise<{
   const allSeriesPosts = await getPostsBySeries(post.data.series);
   // Filter by the same locale as the current post
   const seriesPosts = allSeriesPosts.filter((p) => p.data.locale === post.data.locale);
-  const currentIndex = seriesPosts.findIndex((p) => p.slug === post.slug);
+  const currentIndex = seriesPosts.findIndex((p) => p.id === post.id);
   const seriesName = post.data.series.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
   return {
@@ -217,7 +217,7 @@ export async function getRelatedPosts(
 
   // Score each post based on shared tags and category
   const scored = posts
-    .filter((p) => p.slug !== post.slug)
+    .filter((p) => p.id !== post.id)
     .map((p) => {
       let score = 0;
 
@@ -355,7 +355,7 @@ export function sortPostsByDate(posts: Post[]): Post[] {
  * Extract slug without locale prefix
  */
 export function getPostSlug(post: Post): string {
-  return post.slug.split('/').pop() ?? post.slug;
+  return post.id.split('/').pop() ?? post.id;
 }
 
 /**

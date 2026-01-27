@@ -18,7 +18,7 @@ interface AccordionItemProps {
 export function AccordionItem({
   title,
   children,
-  defaultOpen = false,
+  defaultOpen = true,
   icon,
   name,
 }: AccordionItemProps) {
@@ -87,7 +87,7 @@ interface FAQItemProps {
   name?: string;
 }
 
-export function FAQItem({ question, children, defaultOpen = false, name }: FAQItemProps) {
+export function FAQItem({ question, children, defaultOpen = true, name }: FAQItemProps) {
   return (
     <AccordionItem
       title={question}

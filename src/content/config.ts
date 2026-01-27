@@ -3,13 +3,14 @@
 // =============================================================================
 
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
 // =============================================================================
 // Posts Collection
 // =============================================================================
 
 const postsCollection = defineCollection({
-  type: 'content',
+  loader: glob({ pattern: '**/*.mdx', base: './content' }),
   schema: ({ image }) =>
     z.object({
       // Required fields
