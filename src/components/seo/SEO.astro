@@ -131,12 +131,20 @@ const jsonLd =
 {config.seo.twitterHandle && <meta name="twitter:site" content={config.seo.twitterHandle} />}
 {config.seo.twitterHandle && <meta name="twitter:creator" content={config.seo.twitterHandle} />}
 
-<!-- RSS Feed -->
+<!-- RSS Feeds -->
 <link
   rel="alternate"
   type="application/rss+xml"
-  title={`${config.site.title} RSS Feed`}
-  href="/rss.xml"
+  title={`${config.site.title} RSS Feed (Português)`}
+  href="/rss-pt.xml"
+  hreflang="pt-BR"
+/>
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${config.site.title} RSS Feed (English)`}
+  href="/rss-en.xml"
+  hreflang="en-US"
 />
 
 <!-- JSON-LD Structured Data -->

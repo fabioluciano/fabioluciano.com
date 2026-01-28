@@ -1,0 +1,232 @@
+---
+title: "Before Measuring, Someone Chose What to Believe In"
+description: "Metrics aren't neutral. They reveal and reinforce the game already in motion. Understand why teams that deliver a lot still break down from within."
+publishedAt: 2026-01-27
+locale: en
+category: platform-engineering
+tags:
+  - developer-experience
+  - platform-engineering
+  - metrics
+  - burnout
+draft: false
+toc: true
+comments: true
+series: why-productive-teams-fail
+seriesOrder: 2
+translationSlug: por-que-times-produtivos-fracassam-02
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { Steps, Step } from '@/components/mdx/Steps';
+import { Timeline, TimelineEvent } from '@/components/mdx/Timeline';
+import { Accordion, AccordionItem, FAQ, FAQItem } from '@/components/mdx/Accordion';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+
+## Measuring is not understanding
+
+There's a silent belief that cuts through technology, management, and modern organizations without asking permission. It's rarely stated explicitly, but it guides decisions every day, in meetings, dashboards, and strategic plans.
+
+> If we can measure something, then we can understand it. If we understand, we can control. And if we control, we're being responsible.
+
+This logic seems too reasonable to be questioned. Measuring sounds like maturity. Numbers convey seriousness. Graphs create a sense of mastery.
+
+<Callout type="warning" title="The fundamental problem">
+  Measuring something doesn't mean understanding it — it just means choosing a specific, limited way to represent reality. Every metric is a slice. A reduction. An implicit hypothesis about what matters.
+</Callout>
+
+When we forget this, numbers stop being instruments and start being treated as truths. Decisions become justified not because they're good, but because they're **measurable**.
+
+### The visibility cycle
+
+<Tooltip client:load term="Metrics" definition="Quantitative representations of aspects of reality. Every metric is a slice that carries implicit assumptions about what matters.">Metrics</Tooltip> don't live in a technical vacuum. They exist within social systems, and in these systems, they don't just describe behavior — **they shape it**.
+
+<Steps>
+  <Step title="What is measured becomes visible">
+    The first effect of a metric is to direct attention. What isn't measured tends to disappear from discussions.
+  </Step>
+  <Step title="What becomes visible gets discussed">
+    Meetings gravitate around numbers. Dashboards define agendas.
+  </Step>
+  <Step title="What is discussed becomes priority">
+    Resources, time, and energy flow to what appears in reports.
+  </Step>
+</Steps>
+
+There's no such thing as a neutral metric. There's only an assumed metric or a metric used without awareness.
+
+## When efficiency becomes anesthesia
+
+The confusion begins to take shape when we treat different things as if they were equivalent.
+
+<CompareColumns
+  leftTitle="What seems the same"
+  rightTitle="What it actually means"
+  leftType="neutral"
+  rightType="neutral"
+  leftItems={[
+    "Activity",
+    "Output",
+    "Movement"
+  ]}
+  rightItems={[
+    "Outcome",
+    "Impact",
+    "Progress"
+  ]}
+/>
+
+The easier something is to measure, the more it tends to occupy the center of attention. **Real impact**, on the other hand, is difficult, diffuse, and slow. Over time, organizations start optimizing what they can see best — not necessarily what matters most.
+
+### The problem of decontextualized efficiency
+
+This is where <Tooltip client:load term="efficiency" definition="The relationship between output and input. Doing more with less. The problem is that efficiency doesn't correct direction — it amplifies any choice, good or bad.">efficiency</Tooltip> enters as an unquestionable virtue. Doing more, faster, at lower cost always seems desirable.
+
+<Callout type="danger" title="Efficiency amplifies, doesn't correct">
+  Efficiency doesn't correct decisions; it amplifies them. Applied to the wrong problem, it accelerates deviation. It makes faster what perhaps should never have been done.
+</Callout>
+
+The rarely asked question is **"efficient for what?"**.
+
+### When metrics become targets
+
+<Accordion client:load >
+  <AccordionItem title="Why does this happen?">
+    Not out of perversity, but organizational dynamics. Numbers facilitate comparison, close discussions, and offer simple justifications for complex decisions.
+  </AccordionItem>
+  <AccordionItem title="What's the effect?">
+    When a metric becomes a target, it stops observing the system and starts measuring the system's ability to adapt to the metric itself.<FootnoteRef client:load id={1} />
+  </AccordionItem>
+  <AccordionItem title="The implicit game">
+    Every system plays some game, even when nobody explicitly defines it. Something is always being optimized: predictability, appearance of control, speed, political tranquility, absence of conflict.
+  </AccordionItem>
+</Accordion>
+
+Metrics don't create this game out of thin air; they reveal and reinforce the game that was already in motion.
+
+## High delivery as a wrong signal of health
+
+This is how teams emerge that deliver a lot and still break down from within. The backlog moves, the roadmap progresses, deploys happen. To those watching from outside, **everything seems healthy**.
+
+<Timeline>
+  <TimelineEvent date="Phase 1" title="Recognition" status="completed">
+    High-delivery teams become references. They receive praise and visibility.
+  </TimelineEvent>
+  <TimelineEvent date="Phase 2" title="Overload" status="completed">
+    More demand, more pressure, more responsibility arrive as "rewards".
+  </TimelineEvent>
+  <TimelineEvent date="Phase 3" title="Compensation" status="current">
+    The cost starts accumulating. The team sustains delivery by reducing safety margins.
+  </TimelineEvent>
+  <TimelineEvent date="Phase 4" title="Invisible collapse" status="pending">
+    Constant tiredness, rushed decisions, the feeling that it's never a good time to stop.
+  </TimelineEvent>
+</Timeline>
+
+<Callout type="warning" title="Human systems don't fail abruptly">
+  They compensate. They push the cost forward. The wear doesn't appear in numbers; it appears as constant tiredness, as rushed technical decisions, as the feeling that it's never a good time to stop.
+</Callout>
+
+### DevEx as cognitive economy
+
+This is where <Tooltip client:load term="Developer Experience" definition="The total experience of developers when interacting with tools, processes, and systems. It's not operational comfort — it's cognitive economy.">Developer Experience</Tooltip> is often misunderstood.
+
+<CompareColumns
+  leftTitle="What DevEx is not"
+  rightTitle="What DevEx is"
+  leftType="negative"
+  rightType="positive"
+  leftItems={[
+    "Operational comfort",
+    "Reduced productivity",
+    "Luxury for mature teams"
+  ]}
+  rightItems={[
+    "Cognitive economy",
+    "Delivery sustainability",
+    "Necessity for any team"
+  ]}
+/>
+
+A team with poor DevEx doesn't necessarily deliver less. **It delivers at higher cost.** Output remains high, but the energy needed to sustain it grows silently.
+
+The classic sign of broken DevEx isn't a drop in productivity, but high productivity accompanied by chronic exhaustion.
+
+### How exceptions become rules
+
+This pattern crystallizes in technical leadership. Not out of bad intention, but because exceptions become rules:
+
+<Steps>
+  <Step title="Accept technical debt 'just this once'">
+    The urgency of the moment justifies the shortcut. The debt stays for later.
+  </Step>
+  <Step title="Skip understanding to meet deadline">
+    There's no time for discussion. The feature needs to ship.
+  </Step>
+  <Step title="Treat incidents as one-off deviations">
+    Each problem is seen in isolation, never as a pattern.
+  </Step>
+</Steps>
+
+Each decision seems sensible in isolation. Together, **they teach the system that delivering fast is safer than delivering well**.
+
+### Burnout as a side effect of poorly defined success
+
+Burnout isn't individual failure. It's a side effect of poorly defined success. The team doesn't break despite high performance. It breaks because high performance becomes a permanent state.
+
+Rework comes later, when systems become rigid, incidents repeat, and the organization wonders why everything got slower.
+
+### The real culture
+
+At this point, culture is already defined. Not by what's written in values, but by what was reinforced:
+
+<CompareColumns
+  leftTitle="What wins"
+  rightTitle="What loses"
+  leftType="negative"
+  rightType="neutral"
+  leftItems={[
+    "Deadlines",
+    "Speed",
+    "Silence"
+  ]}
+  rightItems={[
+    "Technical discussions",
+    "Clarity",
+    "Healthy conflict"
+  ]}
+/>
+
+**This is the real culture.** Delivery metrics give rational veneer to this state of affairs.
+
+## The choice that precedes the metric
+
+<Tooltip client:load term="Frameworks" definition="Conceptual structures like DORA, SPACE, or other evaluation methodologies. They work as lenses to see problems, not as ready-made solutions.">Frameworks</Tooltip> enter as lenses, not as solutions. They help us see, but they don't correct poorly formulated problems. That's why this series starts here, **delaying the rush for answers**.
+
+Before choosing metrics, choose the problem you want to solve. If this choice isn't conscious, the system will make it for you. And it doesn't care about burnout, DevEx, or people.
+
+---
+
+## FAQ
+
+<FAQ client:load>
+  <FAQItem question="So metrics are bad?">
+    No. Metrics are tools. The problem is using them without awareness of the assumptions they carry. Every metric is a slice of reality — useful when you know what you're slicing.
+  </FAQItem>
+  <FAQItem question="How to choose better metrics?">
+    Start with the problem, not the metric. Ask: what am I trying to understand? What won't this metric show? What behavior might it encourage?
+  </FAQItem>
+  <FAQItem question="Are DORA metrics reliable?">
+    DORA offers a useful framework for measuring software delivery capability. But like any framework, it works best when you understand its assumptions and limitations.
+  </FAQItem>
+</FAQ>
+
+---
+
+<FootnoteList>
+  <FootnoteItem id={1}>
+    Goodhart's Law states that "when a measure becomes a target, it ceases to be a good measure". This phenomenon is well documented in economics and social sciences.
+  </FootnoteItem>
+</FootnoteList>
