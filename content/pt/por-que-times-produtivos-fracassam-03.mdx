@@ -1,0 +1,211 @@
+---
+title: "DORA, SPACE, DevEx, DX Core 4: Cada Um Responde Uma Pergunta"
+description: "Times de software não quebram por falta de métricas. Eles quebram porque medem com convicção coisas que não entendem completamente."
+publishedAt: 2026-01-29
+locale: pt
+category: platform-engineering
+tags:
+  - developer-experience
+  - platform-engineering
+  - metricas
+  - dora
+  - space
+draft: false
+toc: true
+comments: true
+series: por-que-times-produtivos-fracassam
+seriesOrder: 3
+translationSlug: why-productive-teams-fail-03
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { Tooltip } from '@/components/mdx/Glossary';
+
+Times de software não quebram por falta de métricas.
+Eles quebram porque medem com convicção coisas que não entendem completamente.
+
+"Produtividade", "eficiência" e "performance" são palavras usadas com segurança excessiva no discurso técnico e executivo, como se fossem conceitos estáveis, universais e autoexplicativos. Não são. Na prática, elas funcionam mais como atalhos retóricos do que como definições precisas. Cada pessoa na organização escuta essas palavras e projeta nelas uma expectativa diferente — e, ainda assim, todos concordam em medi-las.
+
+<Callout type="warning" title="O problema da ambiguidade conceitual">
+  É nesse espaço nebuloso que surgem os frameworks de métricas. Eles aparecem como tentativas de organizar o caos conceitual, oferecendo modelos, indicadores e linguagens comuns. O problema é que, quando usados sem reflexão, esses frameworks passam a ser tratados como respostas prontas, quando na verdade são apenas lentes.
+</Callout>
+
+E toda lente amplia algumas coisas enquanto distorce ou esconde outras.
+
+## A pergunta que precede a métrica
+
+Antes de falar de métricas, portanto, é preciso falar do jogo. Que tipo de problema estamos tentando resolver?
+
+<CompareColumns
+  leftTitle="Perguntas sobre o sistema"
+  rightTitle="Perguntas sobre as pessoas"
+  leftType="neutral"
+  rightType="neutral"
+  leftItems={[
+    "Estamos entregando rápido o suficiente?",
+    "Como reduzir riscos na pipeline?",
+    "A qualidade do código está adequada?"
+  ]}
+  rightItems={[
+    "O trabalho é sustentável para o time?",
+    "Onde está o desgaste cognitivo?",
+    "O que está sendo evitado ou ignorado?"
+  ]}
+/>
+
+A resposta muda completamente o que faz sentido medir — e qual framework faz sentido usar.
+
+## Os quatro frameworks
+
+Ao longo desta série, vamos falar de quatro frameworks amplamente utilizados para discutir produtividade e eficiência em times de software. Eles não competem entre si, porque não tentam responder à mesma pergunta.
+
+<Callout type="tip" title="Frameworks não são alternativas">
+  O erro comum é colocá-los lado a lado como alternativas, quando na verdade cada um parte de uma definição diferente do que importa.
+</Callout>
+
+### DORA: O fluxo de entrega
+
+<Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focado em medir a capacidade de entrega de software através de métricas como frequência de deploy, lead time, MTTR e taxa de falhas.">DORA</Tooltip> olha para a capacidade de entrega do time como um sistema de fluxo. Seu foco está em entender com que frequência mudanças chegam à produção, quanto tempo levam para chegar lá e o quão estável esse processo é.
+
+**As quatro métricas:**
+
+- **Deployment Frequency** — Com que frequência código chega à produção
+- **Lead Time for Changes** — Quanto tempo entre commit e deploy
+- **Time to Restore Service** — Velocidade de recuperação após falhas
+- **Change Failure Rate** — Proporção de deploys que causam problemas
+
+O modelo categoriza times em Elite, High, Medium e Low performers. Essa classificação é útil para diagnóstico inicial, mas torna-se problemática quando tratada como objetivo em si.
+
+**Útil para:** Previsibilidade, confiabilidade e eficiência do pipeline de entrega.
+
+**Não foi desenhado para:** Experiência humana, aprendizado ou desgaste cognitivo. Quando usado fora desse contexto, começa a gerar conclusões que ele nunca se propôs a sustentar.
+
+<Callout type="info" title="O que DORA não mede">
+  DORA não captura por que as métricas são como são. Um time pode ter alta frequência de deploy porque automatizou bem — ou porque está sob pressão constante para entregar rápido.
+</Callout>
+
+### SPACE: O mapa conceitual
+
+<Tooltip client:load term="SPACE" definition="Framework que propõe cinco dimensões para medir produtividade: Satisfaction, Performance, Activity, Communication e Collaboration, e Efficiency and Flow.">SPACE</Tooltip> surge quase como uma reação à simplificação excessiva da ideia de produtividade. Em vez de oferecer um conjunto fechado de métricas, ele propõe um mapa conceitual.
+
+<Callout type="info" title="A ideia central do SPACE">
+  Produtividade em trabalho de conhecimento é multidimensional e não pode ser reduzida a um único número sem perdas graves.
+</Callout>
+
+**As cinco dimensões:**
+
+- **Satisfaction and well-being** — Sentimento de satisfação, realização e saúde no trabalho
+- **Performance** — Resultado do trabalho (qualidade, impacto, não apenas volume)
+- **Activity** — Como o trabalho é feito (contagem, mas contextualizada)
+- **Communication and collaboration** — Como pessoas e times trocam informação
+- **Efficiency and flow** — Capacidade de fazer trabalho sem fricção ou interrupção
+
+O framework não prescreve métricas específicas. Ele oferece lentes para examinar produtividade de múltiplos ângulos e **deliberadamente evita números únicos ou rankings**. A força do SPACE está em forçar a pergunta: "o que mais estamos deixando de ver?"
+
+SPACE não diz exatamente o que medir; ele força a pergunta incômoda: **por que você quer medir isso e o que está deixando de fora ao fazê-lo?** É menos prescritivo e mais filosófico — o que é justamente seu maior valor.
+
+### Developer Experience: A vivência cotidiana
+
+Já o olhar de <Tooltip client:load term="Developer Experience" definition="A experiência total de desenvolvedores ao interagir com ferramentas, processos e sistemas. Não é conforto operacional — é economia cognitiva.">Developer Experience</Tooltip> parte de um ponto diferente. Em vez de começar pelo fluxo ou pelo conceito abstrato de produtividade, ele começa pela vivência cotidiana de quem escreve, testa, revisa e mantém código.
+
+**A pergunta central não é "o quão rápido entregamos", mas "o quão difícil é fazer o trabalho certo neste ambiente".**
+
+**Fatores centrais de DevEx:**
+
+- **Feedback loops** — Quanto tempo para ver resultado de uma mudança (build, testes, deploy)
+- **Cognitive load** — Complexidade que precisa ser mantida na cabeça para trabalhar
+- **Flow state** — Capacidade de entrar e permanecer em estado de concentração profunda
+- **Tooling** — Qualidade, integração e confiabilidade das ferramentas
+- **Documentation** — Clareza sobre como sistemas funcionam e decisões foram tomadas
+- **Onboarding** — Tempo e dificuldade para novos membros se tornarem produtivos
+
+Fricção excessiva, ferramentas ruins, processos opacos e interrupções constantes não aparecem diretamente em métricas clássicas de entrega, mas corroem a qualidade, a motivação e a sustentabilidade do time ao longo do tempo.
+
+<Callout type="warning" title="DevEx como leading indicator">
+  Enquanto DORA mede resultado (o que já aconteceu), DevEx mede condições (o que está prestes a acontecer). Um time com DevEx ruim pode manter alta entrega por algum tempo — até que não consiga mais.
+</Callout>
+
+### DX Core 4: A síntese pragmática
+
+Por fim, o <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: feedback loops, cognitive load, flow state e developer satisfaction.">DX Core 4</Tooltip> aparece como uma tentativa de síntese pragmática. Ele não busca explicar tudo, nem criar um modelo teórico completo. Seu objetivo é identificar alavancas claras de ação — áreas onde investir gera impacto consistente na experiência e no fluxo de trabalho.
+
+**As quatro dimensões centrais:**
+
+- **Fast feedback loops** — Velocidade de ciclos (build, test, CI, deploy)
+- **Low cognitive load** — Redução de complexidade desnecessária
+- **Deep flow state** — Proteção contra interrupções e context switching
+- **High developer satisfaction** — Sentimento de progresso e realização
+
+Diferente do SPACE, que mapeia dimensões para reflexão, o DX Core 4 aponta diretamente para onde agir. Cada uma dessas dimensões pode ser medida, mas também pode ser **imediatamente melhorada através de ações concretas**: melhorar ferramentas, simplificar arquitetura, proteger tempo focado, ouvir feedback.
+
+**É menos ambicioso conceitualmente, mas muito mais direto na prática.** Quando bem usado, ajuda a transformar diagnósticos difusos em decisões concretas.
+
+<Callout type="tip" title="DX Core 4 como ponto de partida">
+  Se você não sabe por onde começar a melhorar Developer Experience, essas quatro dimensões oferecem um mapa de ação imediato. Não são as únicas coisas que importam, mas são as que mais frequentemente fazem diferença.
+</Callout>
+
+
+## Métricas não são neutras
+
+Porque, no fim, métricas não são neutras.
+Elas moldam comportamento, direcionam investimento e definem o que a organização passa a chamar de sucesso.
+
+### Frameworks como instrumentos políticos
+
+Escolher um framework é escolher uma narrativa sobre o que constitui trabalho bem-feito. E essa escolha não é técnica — é **política**.
+
+Quando uma organização decide medir apenas DORA, ela está dizendo implicitamente: "entrega é o que importa". Quando adiciona SPACE, reconhece que há mais em jogo. Quando investe em DevEx, admite que a experiência humana tem peso. Quando ignora todos e foca em linhas de código ou story points, revela exatamente que jogo está jogando — mesmo que não o admita.
+
+<CompareColumns
+  leftTitle="Decisões técnicas (aparentes)"
+  rightTitle="Decisões políticas (reais)"
+  leftType="neutral"
+  rightType="neutral"
+  leftItems={[
+    "Qual framework usar?",
+    "Que métricas coletar?",
+    "Como categorizar times?"
+  ]}
+  rightItems={[
+    "O que conta como sucesso?",
+    "Quem será recompensado?",
+    "Que comportamento queremos?"
+  ]}
+/>
+
+### O perigo da burocracia métrica
+
+Frameworks bem-intencionados frequentemente degeneram em rituais vazios. O que começa como tentativa honesta de entender trabalho complexo vira checklist de conformidade.
+
+**Sinais de degeneração:**
+
+- Métricas são coletadas, mas ninguém age sobre elas
+- Times otimizam para parecerem bem nos números, não para melhorarem de fato
+- Discussões sobre métodos de medição substituem discussões sobre problemas reais
+- Frameworks viram requisitos de compliance, não ferramentas de diagnóstico
+- A linguagem dos frameworks substitui conversas diretas sobre dificuldades
+
+Quando isso acontece, o framework deixou de iluminar o problema e passou a **ser o problema**.
+
+### A responsabilidade de quem mede
+
+Medir é intervir. Não existe observação neutra de sistemas sociais.
+
+<Callout type="danger" title="A escolha fundamental">
+  E tudo isso começa com uma escolha simples — e raramente explícita: **qual jogo estamos realmente tentando ganhar?**
+</Callout>
+
+Se você não escolhe conscientemente, o sistema escolhe por você. E sistemas, deixados à própria sorte, tendem a otimizar para previsibilidade, controle e ausência de conflito — não para aprendizado, qualidade ou sustentabilidade.
+
+**Antes de adotar qualquer framework, pergunte:**
+
+- Que problema estou tentando resolver com essa métrica?
+- Que comportamento ela pode incentivar inadvertidamente?
+- O que ela deixa invisível?
+- Quem se beneficia se essa métrica melhorar?
+- Quem pode ser prejudicado?
+
+Frameworks são lentes. Úteis quando você sabe o que está procurando e consciente do que está ignorando. Perigosos quando tratados como verdades objetivas sobre trabalho humano.
+
+**A pergunta não é qual framework é melhor.** A pergunta é: você sabe que jogo está jogando?
