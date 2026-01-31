@@ -92,19 +92,51 @@ The rarely asked question is **"efficient for what?"**.
 
 ### When metrics become targets
 
-<Accordion client:load >
-  <AccordionItem title="Why does this happen?">
-    Not out of perversity, but organizational dynamics. Numbers facilitate comparison, close discussions, and offer simple justifications for complex decisions.
-  </AccordionItem>
-  <AccordionItem title="What's the effect?">
-    When a metric becomes a target, it stops observing the system and starts measuring the system's ability to adapt to the metric itself.<FootnoteRef client:load id={1} />
-  </AccordionItem>
-  <AccordionItem title="The implicit game">
-    Every system plays some game, even when nobody explicitly defines it. Something is always being optimized: predictability, appearance of control, speed, political tranquility, absence of conflict.
-  </AccordionItem>
-</Accordion>
+#### Why does this happen?
+
+Not out of perversity, but organizational dynamics. Numbers facilitate comparison, close discussions, and offer simple justifications for complex decisions.
+
+#### What's the effect?
+
+When a metric becomes a target, it stops observing the system and starts measuring the system's ability to adapt to the metric itself.<FootnoteRef client:load id={1} />
+
+#### The implicit game
+
+Every system plays some game, even when nobody explicitly defines it. Something is always being optimized: predictability, appearance of control, speed, political tranquility, absence of conflict.
 
 Metrics don't create this game out of thin air; they reveal and reinforce the game that was already in motion.
+
+### Who chooses what to measure, chooses what matters
+
+There's a layer of power that rarely enters technical discussions about metrics: **who decides what to measure?**
+
+<Callout type="danger" title="It's not technical, it's political">
+  The choice of what to measure is never purely technical. It reflects organizational priorities, leadership anxieties, and existing power structures.
+</Callout>
+
+When the primary metric becomes "velocity" or "story points per sprint," it's not just a pragmatic choice. **It's an implicit declaration about what the organization values**: measurable movement over diffuse impact, quantity over quality, speed over sustainability.
+
+**Concrete example of metric-driven burnout:**
+
+An organization decides to track team velocity as the primary metric. Every sprint, there's an expectation that velocity will increase or, at minimum, stay the same. The team responds by:
+- Inflating estimates to create margin
+- Fragmenting work to increase counting
+- Avoiding important but hard-to-estimate tasks
+- Working overtime to "hit the target"
+
+**Six months later**, velocity is high, the dashboard is green, but the team is exhausted. Technical debt exploded. Important features were postponed because they "didn't fit in the sprint." Nobody remembers why they started measuring velocity — but everyone knows it needs to go up.
+
+<Callout type="warning" title="Who pays the cost?">
+  Junior developers pay more: they don't have political capital to question metrics. Minorities pay more: they navigate already hostile systems while performing under numerical pressure. Tired seniors pay: because they've seen this movie before.
+</Callout>
+
+**The question that should be asked before choosing any metric:**
+- Who benefits from this visibility?
+- What becomes invisible when we measure this?
+- What behavior are we implicitly incentivizing?
+- Who pays the cost when the system optimizes for this metric?
+
+In [Article 4](/en/why-productive-teams-fail-04), we'll see how these dynamics manifest in frameworks like DORA — and how consultancies like Gartner legitimize metrics not because they're true, but because they reduce corporate anxiety.
 
 ## High delivery as a wrong signal of health
 

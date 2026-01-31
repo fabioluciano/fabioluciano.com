@@ -25,10 +25,11 @@ import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Quiz } from '@/components/mdx/Quiz';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { DefinitionList } from '@/components/mdx/DefinitionList';
 
 ## Developer Experience não é conforto — é capacidade
 
-<Tooltip client:load term="Developer Experience" definition="A experiência total de desenvolvedores ao interagir com ferramentas, processos e sistemas durante o ciclo de desenvolvimento de software.">Developer Experience</Tooltip> virou um termo popular rápido demais. E, como acontece com quase todo termo que ganha tração em tecnologia, ele foi **reduzido cedo demais** ao que é visível: ferramentas melhores, pipelines mais rápidas, menos cliques, menos fricção no dia a dia. Tudo isso importa. Mas não é o ponto central.
+<Tooltip client:load term="Developer Experience" definition="A experiência total de desenvolvedores ao interagir com ferramentas, processos e sistemas durante o ciclo de desenvolvimento de software.">Developer Experience</Tooltip> virou um termo popular rápido demais. E, como acontece com quase todo termo que ganha tração em tecnologia, ele foi **reduzido cedo demais** ao que é visível: ferramentas melhores, pipelines mais rápidos, menos cliques, menos fricção no dia a dia. Tudo isso importa. Mas não é o ponto central.
 
 <Callout type="info">
   Developer Experience não é sobre tornar a vida do desenvolvedor mais agradável. É sobre tornar o trabalho **intelectualmente sustentável**.
@@ -38,117 +39,42 @@ import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footno
 
 ### Os três tipos de esforço
 
-Quando falamos de esforço mental, emocional e social em Developer Experience, estamos descrevendo o **custo invisível que existe entre querer mudar algo e conseguir colocar isso em produção com segurança**. Esse custo não aparece em dashboards, mas decide a qualidade do software e a saúde do time.
+Quando falamos de esforço mental, emocional e social em Developer Experience, estamos descrevendo o **custo invisível que existe entre querer mudar algo e conseguir colocar isso em produção com segurança**. Esse custo não aparece em painéis, mas decide a qualidade do software e a saúde do time.
 
-#### Esforço mental (cognitivo)
-
-É a carga de pensar sobre o que não deveria exigir pensamento.
-
-<CompareColumns
-  leftTitle="Em um bom ambiente de DevEx"
-  rightTitle="Em um ambiente ruim"
-  leftType="positive"
-  rightType="negative"
-  leftItems={[
-    "Modelar o domínio",
-    "Tomar decisões técnicas relevantes",
-    "Entender impactos de negócio"
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Esforço mental (cognitivo)",
+      definition: "A carga de pensar sobre o que não deveria exigir pensamento. Em vez de focar em modelar o domínio e tomar decisões técnicas relevantes, o desenvolvedor gasta energia cognitiva lembrando como configurar ambientes, decifrando pipelines opacos e navegando documentação desatualizada. Cresce quando não há padrões claros, tudo depende de conhecimento tribal, cada exceção vira regra, e o sistema exige mudança de contexto constante.",
+      icon: "code",
+      emphasis: true,
+      relatedTerms: []
+    },
+    {
+      term: "Esforço emocional",
+      definition: "O custo de sentir-se inseguro, exposto ou em constante alerta. Aparece quando implantação é traumática, erro vira caça às bruxas, retorno chega só como crítica, e ninguém sabe exatamente o que 'é bom o suficiente'. Times assim entregam cansados, defensivos e no curto prazo. DevEx saudável reduz esse esforço tornando falhas seguras, deixando expectativas explícitas, criando previsibilidade e substituindo heroísmo por sistemas confiáveis.",
+      icon: "info",
+      emphasis: true,
+      caveat: "Esse tipo de esforço é frequentemente invisível em métricas, mas corrói a sustentabilidade do time"
+    },
+    {
+      term: "Esforço social",
+      definition: "O custo de depender de pessoas para desbloquear o que deveria ser automático ou bem definido. Manifesta-se quando você precisa 'pedir permissão' o tempo todo, decisões passam por canais informais e políticos, tudo depende de uma ou duas pessoas-chave, informação circula por DM (não por sistemas), e o processo é negociado a cada entrega. Boa DevEx não elimina colaboração — ela elimina fricção social desnecessária.",
+      icon: "package",
+      emphasis: true,
+      caveat: "Gargalos humanos e disputas silenciosas de poder são sintomas desse tipo de esforço"
+    }
   ]}
-  rightItems={[
-    "Lembrar como configurar o ambiente dessa vez",
-    "Decifrar pipelines opacos",
-    "Navegar em documentação desatualizada",
-    "Entender por que 'funciona na máquina de fulano'"
-  ]}
+  variant="glossary"
+  columns={1}
+  showIcons={true}
+  indexable={true}
 />
 
-Esse esforço mental cresce quando:
-- Não há padrões claros
-- Tudo depende de conhecimento tribal
-- Cada exceção vira regra
-- O sistema exige mundaça de contexto constante
+Quando mental, emocional e social estão desalinhados, vemos: times que parecem produtivos mas estão esgotados, código que funciona hoje e ninguém quer tocar amanhã, organizações que investem em ferramentas mas não reduzem atrito, e líderes confusos sobre por que "entregar mais" não melhora o resultado. **Débito cognitivo é tão real quanto débito técnico — só que mais difícil de refatorar.**
 
-<Callout type="danger" title="O resultado">
-  Não é só lentidão. É **empobrecimento da decisão técnica**. Quando o cérebro está ocupado apagando incêndio operacional, ele não pensa bem sobre arquitetura, qualidade ou futuro.
-</Callout>
-
-**Débito cognitivo é tão real quanto débito técnico — só que mais difícil de refatorar.**
-
-#### Esforço emocional
-
-Aqui entramos no custo de sentir-se inseguro, exposto ou em constante alerta.
-
-Esforço emocional aparece quando:
-- Deploy é um evento traumático
-- Erro vira caça às bruxas
-- Feedback chega só como crítica tardia
-- Ninguém sabe exatamente o que "é bom o suficiente"
-- Falhas são personalizadas em vez de tratadas como falhas do sistema("Quem errou?" e não "O que no sistema permitiu que isso acontecesse?")
-
-<Callout type="warning" title="O que isso gera">
-  - Medo de mudar código
-  - Aversão a responsabilidade
-  - Excesso de cautela ou, no extremo oposto, apatia
-  - Desgaste contínuo que parece "normal", mas não é
-</Callout>
-
-Times assim até entregam — mas entregam **cansados, defensivos e no curto prazo**.
-
-DevEx saudável reduz o esforço emocional ao:
-- Tornar falhas seguras
-- Deixar expectativas explícitas
-- Criar previsibilidade
-- Substituir heroísmo por sistemas confiáveis
-
-#### Esforço social
-
-É o custo de depender de pessoas para desbloquear o que deveria ser automático ou bem definido.
-
-Esforço social alto aparece quando:
-- Você precisa "pedir permissão" o tempo todo
-- Decisões passam por canais informais e políticos
-- Tudo depende de uma ou duas pessoas-chave
-- Informação circula por DM, não por sistemas
-- O processo é negociado a cada entrega
-
-<Callout type="warning" title="Isso cria">
-  - Gargalos humanos
-  - Disputas silenciosas de poder
-  - Ansiedade social ("com quem eu falo agora?")
-  - Times que evitam mudanças porque o custo político é alto demais
-</Callout>
-
-Boa DevEx não elimina colaboração — **ela elimina fricção social desnecessária**.
-
-<CompareColumns
-  rightTitle="Colaboração saudável"
-  leftTitle="Não baseada em"
-  leftType="negative"
-  rightType="positive"
-  rightItems={[
-    "Clara",
-    "Registrada",
-    "Reproduzível",
-    "Distribuída"
-  ]}
-  leftItems={[
-    "Favores",
-    "Memória",
-    "Influência"
-  ]}
-/>
-
-#### Juntando tudo
-
-Quando mental, emocional e social estão desalinhados, o que vemos é:
-- Times que parecem produtivos, mas estão esgotados
-- Código que funciona hoje e ninguém quer tocar amanhã
-- Organizações que investem em ferramentas, mas não reduzem atrito
-- Líderes confusos sobre por que "entregar mais" não melhora o resultado
-
-<Callout type="tip" title="O que realmente é DevEx">
-  DevEx trata de **remover esforço onde ele não gera valor**, para que o esforço que sobra possa ser investido onde importa: pensar bem, decidir melhor e evoluir o software com intenção.
-</Callout>
+DevEx trata de **remover esforço onde ele não gera valor**, para que o esforço que sobra possa ser investido onde importa: pensar bem, decidir melhor e evoluir o software com intenção.
 
 ### Quando a capacidade é alta vs. baixa
 
@@ -183,8 +109,8 @@ Ambientes confusos, arquiteturas rígidas, processos mal definidos e dependênci
   <Step title="Cada mudança exige mais atenção">
     O desenvolvedor precisa mapear mentalmente todas as dependências antes de tocar em qualquer código.
   </Step>
-  <Step title="Cada deploy gera ansiedade">
-    Sem confiança no sistema, cada release se torna um momento de tensão coletiva.
+  <Step title="Cada implantação gera ansiedade">
+    Sem confiança no sistema, cada lançamento se torna um momento de tensão coletiva.
   </Step>
   <Step title="Cada incidente consome mais energia do que deveria">
     A falta de observabilidade transforma debugging em arqueologia.
@@ -210,28 +136,29 @@ Esse custo raramente aparece em métricas tradicionais. **O sistema continua ent
     Atalhos viram padrão. Dívida técnica cresce. Pessoas-chave ficam sobrecarregadas.
   </TimelineEvent>
   <TimelineEvent date="Mês 12+" title="Colapso silencioso" status="pending">
-    Burnout, turnover, decisões defensivas. Produtividade parece ok, mas o time está quebrando.
+    Burnout, rotatividade, decisões defensivas. Produção parece ok, mas o time está quebrando.
   </TimelineEvent>
 </Timeline>
 
 ## Que problemas estamos tentando resolver, afinal?
 
-Falar de Developer Experience **não é falar de felicidade, perks ou ergonomia**. É falar de problemas sistêmicos que organizações confundem com problemas individuais.
+Falar de Developer Experience **não é falar de felicidade, benefícios ou ergonomia**. É falar de problemas sistêmicos que organizações confundem com problemas individuais.
 
-<Accordion client:load>
-  <AccordionItem title="Times que entregam muito, mas vivem exaustos">
-    A métrica de entrega está verde, mas o custo humano está no vermelho. O sistema extrai mais do que sustenta.
-  </AccordionItem>
-  <AccordionItem title="Crescimento de retrabalho sem causa aparente">
-    Bugs reaparecem, features precisam ser refeitas. Não é incompetência — é consequência de decisões apressadas.
-  </AccordionItem>
-  <AccordionItem title="Dependência excessiva de pessoas-chave">
-    O "bus factor" está em 1. Se a pessoa X sair, metade do conhecimento vai junto.
-  </AccordionItem>
-  <AccordionItem title="Burnout tratado como falha pessoal">
-    "Fulano não aguentou a pressão." Quando na verdade, o sistema está quebrando pessoas sistematicamente.
-  </AccordionItem>
-</Accordion>
+### Times que entregam muito, mas vivem exaustos
+
+A métrica de entrega está verde, mas o custo humano está no vermelho. Iterações concluídas, funcionalidades shipadas, velocidade estável — tudo parece produtivo nos painéis. Mas o time está operando no limite, acumulando cansaço cognitivo que não aparece em nenhuma métrica. O sistema extrai mais energia do que sustenta, e isso só se torna visível quando alguém desmorona ou pede demissão.
+
+### Crescimento de retrabalho sem causa aparente
+
+Bugs que foram "corrigidos" voltam em outras formas. Funcionalidades precisam ser refeitas semanas depois porque ninguém entendeu direito o requisito na primeira vez. Refatorações que deveriam simplificar acabam criando mais complexidade. Isso não é incompetência técnica — é sintoma de um sistema que força decisões apressadas, onde não há tempo para pensar direito antes de agir.
+
+### Dependência excessiva de pessoas-chave
+
+Quando o conhecimento crítico está concentrado em uma ou duas pessoas, o risco organizacional dispara. O "bus factor"<FootnoteRef client:load id={2} /> mede exatamente isso: quantas pessoas precisam sair para o projeto colapsar. Se está em 1, significa que uma única saída leva metade do conhecimento embora — não porque a documentação não existe, mas porque o sistema nunca deu tempo para criá-la, e o conhecimento vive apenas nas cabeças das pessoas.
+
+### Burnout tratado como falha pessoal
+
+"Fulano não aguentou a pressão." A narrativa organizacional transforma exaustão sistêmica em fraqueza individual. O discurso é sempre sobre resiliência pessoal, gestão de tempo, equilíbrio emocional — como se o problema estivesse na pessoa, não no sistema que sistematicamente quebra pessoas.
 
 <Callout type="tip" title="DevEx como lente">
   DevEx entra nessa conversa não como solução mágica, mas como **lente**. Uma forma de enxergar onde o sistema está desperdiçando energia humana para manter a aparência de eficiência.
@@ -245,9 +172,9 @@ Falar de Developer Experience **não é falar de felicidade, perks ou ergonomia*
   leftType="neutral"
   rightType="positive"
   leftItems={[
-    "Quantas features entregamos?",
-    "Qual o velocity do sprint?",
-    "Quantos deploys por dia?",
+    "Quantas funcionalidades entregamos?",
+    "Qual o velocidade da iteração?",
+    "Quantas implantações por dia?",
     "Qual o lead time?"
   ]}
   rightItems={[
@@ -270,6 +197,64 @@ Quando ela é boa, times conseguem sustentar qualidade, aprendizado e ritmo sem 
   Uma vez que entendemos DevEx como **capacidade cognitiva** e não como conforto, fica impossível ignorar o paradoxo que vem a seguir: times que entregam muito ainda assim quebram por dentro.
 </Callout>
 
+## O lado sombrio: quando DevEx vira arma
+
+Até aqui, DevEx parece claramente positivo — quem seria contra reduzir esforço desnecessário? Mas existe um lado sombrio que precisa ser nomeado **antes que você o encontre sem aviso**.
+
+O conceito de Developer Experience, quando mal empregado, pode ser **weaponizado** de duas formas particularmente perigosas:
+
+### 1. Culpabilização individual disfarçada de preocupação
+
+<Callout type="danger" title="O discurso">
+  "Investimos em DevEx. Temos as melhores ferramentas. Se você ainda está sofrendo, talvez o problema seja de **resiliência pessoal**."
+</Callout>
+
+Organizações que compram ferramentas caras, adotam processos modernos e criam "squads de DevEx" às vezes usam isso como blindagem. O argumento se torna:
+
+> "Fizemos nossa parte. Se você não está feliz, é com você."
+
+Isso transforma DevEx de **lente sistêmica** em **responsabilidade individual**. O sistema continua disfuncional, mas agora a narrativa é: "Não é o sistema, é você que não sabe usar as ferramentas certas."
+
+### 2. Teatro de Developer Experience
+
+<CompareColumns
+  leftTitle="DevEx real"
+  rightTitle="Teatro de DevEx"
+  leftType="positive"
+  rightType="negative"
+  leftItems={[
+    "Reduz esforço cognitivo sistematicamente",
+    "Muda processos que causam atrito",
+    "Questiona estruturas de poder",
+    "Aceita que mudança é lenta e profunda"
+  ]}
+  rightItems={[
+    "Compra ferramentas modernas e para por aí",
+    "Mantém processos inalterados",
+    "Preserva estruturas de poder existentes",
+    "Vende transformação sem transformar nada"
+  ]}
+/>
+
+**Exemplo concreto:** Uma organização compra IDEs de última geração, migra para Kubernetes, cria painéis bonitos de CI/CD — e continua com:
+- Aprovações manuais em 5 camadas
+- Implantações que exigem ticket e espera de 3 dias
+- Arquitetura onde ninguém entende as dependências
+- Cultura onde erro vira caça às bruxas
+
+As ferramentas são novas. **O sistema é o mesmo.** Mas agora a organização pode dizer: "Temos excelente DevEx."
+
+<Callout type="warning" title="O problema não é a ferramenta">
+  O problema é acreditar que ferramenta substitui mudança sistêmica. Pior: usar "DevEx" como desculpa para **não** mudar.
+</Callout>
+
+### Por que isso importa agora
+
+Ao longo desta série, vamos examinar frameworks que prometem medir e melhorar produtividade: DORA, SPACE, DevEx Framework, DX Core 4. Todos têm valor. **Todos podem ser usados como teatro.**
+
+No [Artigo 4](/pt/por-que-times-produtivos-fracassam-04), veremos como até frameworks bem-intencionados podem **esconder mais do que revelam** — especialmente quando legitimados por consultorias que vendem consenso, não verdade.
+
+Por ora, basta entender: **DevEx é lente para enxergar sistemas, não checklist de ferramentas.** Se alguém está vendendo DevEx como produto, desconfie. Se alguém está usando DevEx para culpar indivíduos, resista.
 
 ## FAQ
 
@@ -278,7 +263,7 @@ Quando ela é boa, times conseguem sustentar qualidade, aprendizado e ritmo sem 
     Não. Qualquer time que desenvolve software se beneficia de pensar em DevEx. Na verdade, times pequenos sofrem mais rapidamente com DevEx ruim porque têm menos margem para compensação.
   </FAQItem>
   <FAQItem question="Como convencer a liderança a investir em DevEx?">
-    Conecte DevEx a resultados de negócio: redução de turnover, menos retrabalho, maior velocidade sustentável. Métricas DORA podem ajudar a criar essa ponte.
+    Conecte DevEx a resultados de negócio: redução de rotatividade, menos retrabalho, maior velocidade sustentável. Métricas DORA podem ajudar a criar essa ponte.
   </FAQItem>
   <FAQItem question="DevEx é responsabilidade de Platform Engineering?">
     Platform Engineering é uma das formas de melhorar DevEx, mas não a única. DevEx é responsabilidade compartilhada entre liderança técnica, gestão e o próprio time.
@@ -290,5 +275,8 @@ Quando ela é boa, times conseguem sustentar qualidade, aprendizado e ritmo sem 
 <FootnoteList>
   <FootnoteItem id={1}>
     O programa DORA (DevOps Research and Assessment) do Google Cloud tem publicado pesquisas anuais desde 2014 sobre o impacto de práticas de desenvolvimento na performance organizacional. O "State of DevOps Report" é referência na área.
+  </FootnoteItem>
+  <FootnoteItem id={2}>
+    Bus factor (ou truck number) é uma métrica de risco que indica quantas pessoas-chave precisam ser "atropeladas por um ônibus" para que um projeto colapse. Um bus factor de 1 significa que o projeto depende criticamente de uma única pessoa. Quanto maior o bus factor, menor o risco de perda de conhecimento crítico.
   </FootnoteItem>
 </FootnoteList>

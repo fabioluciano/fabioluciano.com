@@ -38,9 +38,21 @@
     font-feature-settings: 'liga' 1, 'calt' 1;
   }
 
+  /* Ensure text is always selectable */
+  * {
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+  }
+
   ::selection {
-    background-color: oklch(var(--p) / 0.2);
-    color: oklch(var(--p));
+    background-color: rgba(59, 130, 246, 0.3) !important;
+    color: inherit !important;
+  }
+
+  ::-moz-selection {
+    background-color: rgba(59, 130, 246, 0.3) !important;
+    color: inherit !important;
   }
 
   :focus-visible {

@@ -59,11 +59,11 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
   const Icon = config.icon;
 
   return (
-    <div className={`alert ${config.alertClass} my-6 not-prose`}>
+    <div className={`alert ${config.alertClass} my-6`}>
       <Icon className="h-6 w-6 flex-shrink-0" />
       <div className="flex flex-col gap-1">
-        {title && <h4 className="font-bold">{title}</h4>}
-        <div className="text-sm">{children}</div>
+        {title && <h4 className="font-bold not-prose">{title}</h4>}
+        <div className="text-sm prose prose-sm max-w-none [&>ul]:list-disc [&>ul]:ml-4 [&>ol]:list-decimal [&>ol]:ml-4">{children}</div>
       </div>
     </div>
   );

@@ -28,7 +28,8 @@
     "viewAll": "View all",
     "share": "Share",
     "copyLink": "Copy link",
-    "linkCopied": "Link copied!"
+    "linkCopied": "Link copied!",
+    "page": "Page"
   },
   "blog": {
     "title": "Blog",

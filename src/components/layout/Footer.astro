@@ -42,7 +42,6 @@ const quickLinks = [
   { href: 'https://cv.fabioluciano.com', label: locale === 'pt' ? 'Currículo' : 'Resume', icon: FiUser, external: true },
   { href: '/rss-pt.xml', label: 'RSS Feed (PT)', icon: FiRss },
   { href: '/rss-en.xml', label: 'RSS Feed (EN)', icon: FiRss },
-  { href: '/sitemap-index.xml', label: 'Sitemap', icon: FiMap },
 ];
 ---
 
@@ -191,14 +190,6 @@ const quickLinks = [
         <p class="text-sm text-base-content/50 flex items-center gap-1">
           &copy; {currentYear} {author.author.name}.
           {locale === 'pt' ? 'Todos os direitos reservados.' : 'All rights reserved.'}
-        </p>
-        <p class="text-sm text-base-content/40 flex items-center gap-1">
-          {locale === 'pt' ? 'Feito com' : 'Made with'}
-          <FiHeart className="h-4 w-4 text-error animate-pulse" />
-          {locale === 'pt' ? 'usando' : 'using'}
-          <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Astro</a>
-          +
-          <a href="https://daisyui.com" target="_blank" rel="noopener noreferrer" class="text-secondary hover:underline">DaisyUI</a>
         </p>
       </div>
     </div>

@@ -11,13 +11,37 @@ comments: true
 translationSlug: helm-4
 ---
 
+import { CommandReference } from '@/components/mdx/CommandReference';
+
 A versão **Helm 4** não é apenas uma atualização incremental; é uma revisão significativa que alinha a ferramenta às melhores práticas modernas do K8s, focando em estabilidade, segurança e eficiência.
 
 ### 1. Server-Side Apply (SSA)
 
 A principal mudança arquitetural. O Helm 4 abandona a complexa lógica de *three-way merge* do lado do cliente em favor do **Server-Side Apply (SSA)** nativo do Kubernetes.
 
-<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Característica</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 3 (Antigo)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 4 (SSA)</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Mecanismo</strong></p></td><td colspan="1" rowspan="1"><p><em>Three-way Merge</em> Local</p></td><td colspan="1" rowspan="1"><p>Propriedade de Campo no Servidor</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Resolução de Conflito</strong></p></td><td colspan="1" rowspan="1"><p>Propenso a falhas de mesclagem (<code>merge conflicts</code>)</p></td><td colspan="1" rowspan="1"><p>O K8s rastreia o "proprietário" do campo (<code>field owner</code>)</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Vantagem</strong></p></td><td colspan="1" rowspan="1"><p>N/A</p></td><td colspan="1" rowspan="1"><p>Implantações mais robustas, especialmente com <em>Operators</em> e automações concorrentes.</p></td></tr></tbody></table>
+<CommandReference
+  client:load
+  title="Comparação: Helm 3 vs Helm 4 (SSA)"
+  showCategories={false}
+  enableCopy={false}
+  commands={[
+    {
+      cmd: "Mecanismo",
+      args: "Helm 3: Three-way Merge Local",
+      description: "Helm 4: Propriedade de Campo no Servidor"
+    },
+    {
+      cmd: "Resolução de Conflito",
+      args: "Helm 3: Propenso a falhas de mesclagem (merge conflicts)",
+      description: "Helm 4: O K8s rastreia o 'proprietário' do campo (field owner)"
+    },
+    {
+      cmd: "Vantagem",
+      args: "Helm 3: N/A",
+      description: "Helm 4: Implantações mais robustas, especialmente com Operators e automações concorrentes"
+    }
+  ]}
+/>
 
 O SSA garante que o Helm apenas declare sua **intenção** para os campos definidos no *Chart*, delegando a resolução de estado final ao K8s.
 
@@ -70,4 +94,21 @@ A extensão do Helm ganhou um *framework* mais seguro e formalizado.
 
 Para alinhar a semântica dos comandos, algumas *flags* de linha de comando foram renomeadas**.**
 
-<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Flag Antiga (Helm 3)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Flag Nova (Helm 4)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Finalidade</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--atomic</code></p></td><td colspan="1" rowspan="1"><p><code>--rollback-on-failure</code></p></td><td colspan="1" rowspan="1"><p>Reverte a operação em caso de falha.</p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--force</code></p></td><td colspan="1" rowspan="1"><p><code>--force-replace</code></p></td><td colspan="1" rowspan="1"><p>Força a substituição de recursos incompatíveis.</p></td></tr></tbody></table>
+<CommandReference
+  client:load
+  title="Mudanças de Flags CLI - Helm 3 vs Helm 4"
+  showCategories={false}
+  enableCopy={false}
+  commands={[
+    {
+      cmd: "--atomic",
+      args: "Helm 3",
+      description: "Helm 4: --rollback-on-failure (Reverte a operação em caso de falha)"
+    },
+    {
+      cmd: "--force",
+      args: "Helm 3",
+      description: "Helm 4: --force-replace (Força a substituição de recursos incompatíveis)"
+    }
+  ]}
+/>

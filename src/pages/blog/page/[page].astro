@@ -1,0 +1,31 @@
+---
+// =============================================================================
+// Blog Pagination Redirect - Redirects to default locale
+// =============================================================================
+
+import SilentRedirect from '@/layouts/SilentRedirect.astro';
+import { getSiteConfig } from '@/config';
+import { getPostsByLocale } from '@/lib/posts';
+
+export async function getStaticPaths() {
+  const config = getSiteConfig();
+  const postsPerPage = config.pagination.postsPerPage;
+  const defaultLocale = 'pt'; // Your default locale
+  const posts = await getPostsByLocale(defaultLocale);
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+  const paths = [];
+
+  // Generate paths for pages 2 and onwards
+  for (let page = 2; page <= totalPages; page++) {
+    paths.push({
+      params: { page: String(page) },
+    });
+  }
+
+  return paths;
+}
+
+const { page } = Astro.params;
+---
+
+<SilentRedirect to={`/pt/blog/page/${page}`} />

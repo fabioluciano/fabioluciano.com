@@ -12,6 +12,10 @@ export default defineConfig({
   site: 'https://fabioluciano.com',
   output: 'static',
 
+  devToolbar: {
+    enabled: false,
+  },
+
   integrations: [
     react(),
     mdx(),

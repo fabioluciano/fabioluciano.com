@@ -11,13 +11,37 @@ comments: true
 translationSlug: helm-4
 ---
 
+import { CommandReference } from '@/components/mdx/CommandReference';
+
 **Helm 4** is not just an incremental update; it's a significant overhaul that aligns the tool with modern K8s best practices, focusing on stability, security, and efficiency.
 
 ### 1. Server-Side Apply (SSA)
 
 The main architectural change. Helm 4 abandons the complex client-side *three-way merge* logic in favor of Kubernetes native **Server-Side Apply (SSA)**.
 
-<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Feature</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 3 (Old)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Helm 4 (SSA)</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Mechanism</strong></p></td><td colspan="1" rowspan="1"><p>Local <em>Three-way Merge</em></p></td><td colspan="1" rowspan="1"><p>Server-side Field Ownership</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Conflict Resolution</strong></p></td><td colspan="1" rowspan="1"><p>Prone to merge conflicts</p></td><td colspan="1" rowspan="1"><p>K8s tracks the field owner</p></td></tr><tr><td colspan="1" rowspan="1"><p><strong>Advantage</strong></p></td><td colspan="1" rowspan="1"><p>N/A</p></td><td colspan="1" rowspan="1"><p>More robust deployments, especially with Operators and concurrent automations.</p></td></tr></tbody></table>
+<CommandReference
+  client:load
+  title="Comparison: Helm 3 vs Helm 4 (SSA)"
+  showCategories={false}
+  enableCopy={false}
+  commands={[
+    {
+      cmd: "Mechanism",
+      args: "Helm 3: Local Three-way Merge",
+      description: "Helm 4: Server-side Field Ownership"
+    },
+    {
+      cmd: "Conflict Resolution",
+      args: "Helm 3: Prone to merge conflicts",
+      description: "Helm 4: K8s tracks the field owner"
+    },
+    {
+      cmd: "Advantage",
+      args: "Helm 3: N/A",
+      description: "Helm 4: More robust deployments, especially with Operators and concurrent automations"
+    }
+  ]}
+/>
 
 SSA ensures that Helm only declares its **intent** for the fields defined in the *Chart*, delegating the final state resolution to K8s.
 
@@ -70,4 +94,21 @@ Helm's extension capabilities gained a more secure and formalized framework.
 
 To align command semantics, some command-line flags have been renamed.
 
-<table><tbody><tr><td colspan="1" rowspan="1"><p><strong>Old Flag (Helm 3)</strong></p></td><td colspan="1" rowspan="1"><p><strong>New Flag (Helm 4)</strong></p></td><td colspan="1" rowspan="1"><p><strong>Purpose</strong></p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--atomic</code></p></td><td colspan="1" rowspan="1"><p><code>--rollback-on-failure</code></p></td><td colspan="1" rowspan="1"><p>Reverts the operation on failure.</p></td></tr><tr><td colspan="1" rowspan="1"><p><code>--force</code></p></td><td colspan="1" rowspan="1"><p><code>--force-replace</code></p></td><td colspan="1" rowspan="1"><p>Forces replacement of incompatible resources.</p></td></tr></tbody></table>
+<CommandReference
+  client:load
+  title="CLI Flag Changes - Helm 3 vs Helm 4"
+  showCategories={false}
+  enableCopy={false}
+  commands={[
+    {
+      cmd: "--atomic",
+      args: "Helm 3",
+      description: "Helm 4: --rollback-on-failure (Reverts the operation on failure)"
+    },
+    {
+      cmd: "--force",
+      args: "Helm 3",
+      description: "Helm 4: --force-replace (Forces replacement of incompatible resources)"
+    }
+  ]}
+/>

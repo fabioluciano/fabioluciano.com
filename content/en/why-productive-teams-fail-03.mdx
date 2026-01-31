@@ -21,15 +21,16 @@ translationSlug: por-que-times-produtivos-fracassam-03
 import { Callout } from '@/components/mdx/Callout';
 import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Tooltip } from '@/components/mdx/Glossary';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
 
 Software teams don't break down due to lack of metrics.
 They break down because they measure with conviction things they don't fully understand.
 
 "Productivity," "efficiency," and "performance" are words used with excessive confidence in technical and executive discourse, as if they were stable, universal, and self-explanatory concepts. They're not. In practice, they function more as rhetorical shortcuts than as precise definitions. Each person in the organization hears these words and projects a different expectation onto them — and yet, everyone agrees to measure them.
 
-<Callout type="warning" title="The problem of conceptual ambiguity">
-  It's in this nebulous space that metrics frameworks emerge. They appear as attempts to organize conceptual chaos, offering models, indicators, and common languages. The problem is that, when used without reflection, these frameworks start being treated as ready-made answers, when in fact they're just lenses.
-</Callout>
+## The problem of conceptual ambiguity
+
+It's in this nebulous space that metrics frameworks emerge. They appear as attempts to organize conceptual chaos, offering models, indicators, and common languages. The problem is that, when used without reflection, these frameworks start being treated as ready-made answers, when in fact they're just lenses.
 
 And every lens magnifies some things while distorting or hiding others.
 
@@ -141,9 +142,83 @@ Unlike SPACE, which maps dimensions for reflection, DX Core 4 points directly to
 
 **It's less ambitious conceptually, but much more direct in practice.** When used well, it helps transform diffuse diagnoses into concrete decisions.
 
+One of the most critical aspects of DX Core 4 is the emphasis on fast feedback loops. Long waits between action and result don't just delay work — they kill momentum<FootnoteRef client:load id={1} />, that feeling of continuous progress that keeps teams engaged and productive.
+
 <Callout type="tip" title="DX Core 4 as a starting point">
   If you don't know where to start improving Developer Experience, these four dimensions offer an immediate action map. They're not the only things that matter, but they're the ones that most frequently make a difference.
 </Callout>
+
+## The Risk: When Frameworks Become Ideology
+
+So far, we've presented four frameworks with respect. Each has real value when used consciously. But there's a risk that needs to be named before you encounter them in a degenerated state: **frameworks can become ideologies**.
+
+<Callout type="danger" title="From tool to doctrine">
+  When a framework stops being a lens and becomes absolute truth, it stops illuminating problems and starts hiding them under a veneer of technical rationality.
+</Callout>
+
+### How degeneration happens
+
+**Phase 1: Honest adoption** — A team or organization discovers the framework, sees value, begins applying it consciously.
+
+**Phase 2: Normalization** — The framework becomes common language. "Our DORA is good," "we need to improve our SPACE satisfaction," "poor DevEx here."
+
+**Phase 3: Bureaucratization** — Frameworks become requirements, not tools. Metrics are collected because "that's what you do," not because they answer questions.
+
+**Phase 4: Ideology** — The framework becomes unquestionable. Questioning it is seen as resistance to "modernity" or "technical maturity."
+
+<Callout type="warning" title="Signs you've reached Phase 4">
+
+- Discussions about the framework replace discussions about the real problem
+- Criticisms of the framework are treated as heresy, not contribution
+- Numbers become automatic justification for decisions ("because DORA says," "because SPACE indicates")
+- The organization stops asking "why do we measure this?" and starts treating metrics as axioms
+
+</Callout>
+
+### What the next articles will reveal
+
+In the next four articles, we'll examine each framework critically — not to destroy them, but to **recover awareness of their limits, risks, and hidden assumptions**.
+
+**[Article 4: DORA](/en/why-productive-teams-fail-04)** — We'll see that correlation is not causation. That metrics can describe **and** create realities. And how Gartner legitimizes frameworks not because they're true, but because they reduce corporate anxiety.
+
+**[Article 5: SPACE](/en/why-productive-teams-fail-05)** — We'll explore how complexity can be weaponized. How "it's multidimensional" can become an excuse for inaction. And why organizations resist SPACE precisely when it would be most useful.
+
+**[Article 6: DevEx](/en/why-productive-teams-fail-06)** — We'll discover that "DevEx" became a marketing buzzword. That improving experience isn't technical — it's political. And that cosmetics (new tools) don't substitute for systemic change (power redistribution).
+
+**[Article 7: DX Core 4](/en/why-productive-teams-fail-07)** — We'll understand that pragmatism can be a trap. That 4 dimensions can become a reductionist checklist. And that choosing where to act requires more than frameworks — it requires political courage.
+
+### Why this series doesn't start with answers
+
+As we saw in [Article 2](/en/why-productive-teams-fail-02), metrics aren't neutral — and choosing what to measure **is choosing what to see and what to ignore**.
+
+Now we add another layer: **choosing a framework is choosing a narrative about what constitutes success**.
+
+This choice is never purely technical. It reflects organizational priorities, leadership anxieties, power structures. When you adopt DORA without questioning, you're implicitly saying "delivery is what matters." When you ignore DevEx, you're saying "human experience is secondary."
+
+<CompareColumns
+  leftTitle="Well-used frameworks"
+  rightTitle="Frameworks as ideology"
+  leftType="positive"
+  rightType="negative"
+  leftItems={[
+    "Illuminate previously invisible aspects",
+    "Enable more precise conversations",
+    "Facilitate systematic diagnostics",
+    "Are reviewed and adjusted constantly"
+  ]}
+  rightItems={[
+    "Hide complexity under a single number",
+    "Replace difficult conversations with dashboards",
+    "Become compliance rituals",
+    "Are treated as unquestionable truths"
+  ]}
+/>
+
+### This series' commitment
+
+**We won't pretend frameworks are neutral.** Each carries assumptions about what quality work is, who matters, and what can be sacrificed. These assumptions may be right or wrong — but they're rarely explicit.
+
+**In the next articles**, we'll make them explicit. Not to reject frameworks, but to use them consciously. So that when you choose to measure something, you know exactly what game you're playing — and are willing to bear the consequences of that choice.
 
 
 ## Metrics are not neutral
@@ -209,3 +284,10 @@ If you don't choose consciously, the system chooses for you. And systems, left t
 Frameworks are lenses. Useful when you know what you're looking for and aware of what you're ignoring. Dangerous when treated as objective truths about human work.
 
 **The question isn't which framework is better.** The question is: do you know what game you're playing?
+
+
+<FootnoteList>
+  <FootnoteItem id={1}>
+    Momentum, in the context of software development, refers to the psychological state of continuous progress and engagement. It's the feeling of moving forward consistently, where each action generates visible results quickly, creating a virtuous cycle of motivation and productivity. When momentum is lost — through slow builds, bureaucratic processes, or prolonged waits — the cost isn't just temporal: it's cognitive and emotional. Teams lose focus, mental energy dissipates, and regaining context requires additional effort. Protecting momentum is protecting the team's ability to work in a flow state.
+  </FootnoteItem>
+</FootnoteList>

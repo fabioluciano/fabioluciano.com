@@ -25,6 +25,7 @@ import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Quiz } from '@/components/mdx/Quiz';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { DefinitionList } from '@/components/mdx/DefinitionList';
 
 ## Developer Experience Isn't Comfort — It's Capacity
 
@@ -40,115 +41,40 @@ import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footno
 
 When we talk about mental, emotional, and social effort in Developer Experience, we're describing the **invisible cost that exists between wanting to change something and being able to put it in production safely**. This cost doesn't appear on dashboards, but it determines software quality and team health.
 
-#### Mental (Cognitive) Effort
-
-It's the burden of thinking about what shouldn't require thought.
-
-<CompareColumns
-  leftTitle="In a good DevEx environment"
-  rightTitle="In a bad environment"
-  leftType="positive"
-  rightType="negative"
-  leftItems={[
-    "Model the domain",
-    "Make relevant technical decisions",
-    "Understand business impacts"
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Mental (Cognitive) Effort",
+      definition: "The burden of thinking about what shouldn't require thought. Instead of focusing on modeling the domain and making relevant technical decisions, developers spend cognitive energy remembering how to configure environments, deciphering opaque pipelines, and navigating outdated documentation. This effort grows when there are no clear patterns, everything depends on tribal knowledge, every exception becomes the rule, and the system requires constant context switching.",
+      icon: "code",
+      emphasis: true,
+      relatedTerms: []
+    },
+    {
+      term: "Emotional Effort",
+      definition: "The cost of feeling insecure, exposed, or constantly on alert. It appears when deploy is traumatic, errors turn into witch hunts, feedback arrives only as late criticism, and nobody knows exactly what 'good enough' means. Teams like this deliver tired, defensive, and short-term. Healthy DevEx reduces this effort by making failures safe, making expectations explicit, creating predictability, and replacing heroism with reliable systems.",
+      icon: "info",
+      emphasis: true,
+      caveat: "This type of effort is often invisible in metrics but erodes team sustainability"
+    },
+    {
+      term: "Social Effort",
+      definition: "The cost of depending on people to unblock what should be automatic or well-defined. It manifests when you need to 'ask permission' all the time, decisions go through informal and political channels, everything depends on one or two key people, information circulates through DMs (not systems), and the process is negotiated with each delivery. Good DevEx doesn't eliminate collaboration — it eliminates unnecessary social friction.",
+      icon: "package",
+      emphasis: true,
+      caveat: "Human bottlenecks and silent power disputes are symptoms of this type of effort"
+    }
   ]}
-  rightItems={[
-    "Remember how to configure the environment this time",
-    "Decipher opaque pipelines",
-    "Navigate outdated documentation",
-    "Understand why 'it works on someone's machine'"
-  ]}
+  variant="glossary"
+  columns={1}
+  showIcons={true}
+  indexable={true}
 />
 
-This mental effort grows when:
-- There are no clear patterns
-- Everything depends on tribal knowledge
-- Every exception becomes the rule
-- The system requires constant context switching
+When mental, emotional, and social are misaligned, we see: teams that seem productive but are exhausted, code that works today and nobody wants to touch tomorrow, organizations that invest in tools but don't reduce friction, and leaders confused about why "delivering more" doesn't improve results. **Cognitive debt is as real as technical debt — only harder to refactor.**
 
-<Callout type="danger" title="The result">
-  It's not just slowness. It's **impoverishment of technical decision-making**. When the brain is busy putting out operational fires, it doesn't think well about architecture, quality, or the future.
-</Callout>
-
-**Cognitive debt is as real as technical debt — only harder to refactor.**
-
-#### Emotional Effort
-
-Here we enter the cost of feeling insecure, exposed, or constantly on alert.
-
-Emotional effort appears when:
-- Deploy is a traumatic event
-- Errors turn into witch hunts
-- Feedback arrives only as late criticism
-- Nobody knows exactly what "good enough" means
-- Failures are personalized instead of treated as system failures ("Who messed up?" instead of "What in the system allowed this to happen?")
-
-<Callout type="warning" title="What this generates">
-  - Fear of changing code
-  - Aversion to responsibility
-  - Excessive caution or, at the opposite extreme, apathy
-  - Continuous exhaustion that seems "normal," but isn't
-</Callout>
-
-Teams like this still deliver — but they deliver **tired, defensive, and short-term**.
-
-Healthy DevEx reduces emotional effort by:
-- Making failures safe
-- Making expectations explicit
-- Creating predictability
-- Replacing heroism with reliable systems
-
-#### Social Effort
-
-It's the cost of depending on people to unblock what should be automatic or well-defined.
-
-High social effort appears when:
-- You need to "ask permission" all the time
-- Decisions go through informal and political channels
-- Everything depends on one or two key people
-- Information circulates through DMs, not systems
-- The process is negotiated with each delivery
-
-<Callout type="warning" title="This creates">
-  - Human bottlenecks
-  - Silent power disputes
-  - Social anxiety ("who do I talk to now?")
-  - Teams that avoid changes because the political cost is too high
-</Callout>
-
-Good DevEx doesn't eliminate collaboration — **it eliminates unnecessary social friction**.
-
-<CompareColumns
-  rightTitle="Healthy collaboration"
-  leftTitle="Not based on"
-  leftType="negative"
-  rightType="positive"
-  rightItems={[
-    "Clear",
-    "Recorded",
-    "Reproducible",
-    "Distributed"
-  ]}
-  leftItems={[
-    "Favors",
-    "Memory",
-    "Influence"
-  ]}
-/>
-
-#### Putting It All Together
-
-When mental, emotional, and social are misaligned, what we see is:
-- Teams that seem productive but are exhausted
-- Code that works today and nobody wants to touch tomorrow
-- Organizations that invest in tools but don't reduce friction
-- Leaders confused about why "delivering more" doesn't improve results
-
-<Callout type="tip" title="What DevEx really is">
-  DevEx is about **removing effort where it doesn't generate value**, so that the remaining effort can be invested where it matters: thinking well, deciding better, and evolving software with intention.
-</Callout>
+DevEx is about **removing effort where it doesn't generate value**, so that the remaining effort can be invested where it matters: thinking well, deciding better, and evolving software with intention.
 
 ### When Capacity Is High vs. Low
 
@@ -218,20 +144,21 @@ This cost rarely appears in traditional metrics. **The system keeps delivering.*
 
 Talking about Developer Experience **isn't about talking about happiness, perks, or ergonomics**. It's about talking about systemic problems that organizations confuse with individual problems.
 
-<Accordion client:load>
-  <AccordionItem title="Teams that deliver a lot but live exhausted">
-    The delivery metric is green, but the human cost is in the red. The system extracts more than it sustains.
-  </AccordionItem>
-  <AccordionItem title="Growing rework with no apparent cause">
-    Bugs reappear, features need to be redone. It's not incompetence — it's the consequence of rushed decisions.
-  </AccordionItem>
-  <AccordionItem title="Excessive dependence on key people">
-    The "bus factor" is 1. If person X leaves, half the knowledge goes with them.
-  </AccordionItem>
-  <AccordionItem title="Burnout treated as personal failure">
-    "So-and-so couldn't handle the pressure." When in reality, the system is systematically breaking people.
-  </AccordionItem>
-</Accordion>
+### Teams that deliver a lot but live exhausted
+
+The delivery metric is green, but the human cost is in the red. Sprints completed, features shipped, velocity stable — everything looks productive on dashboards. But the team is operating at the limit, accumulating cognitive fatigue that doesn't appear in any metric. The system extracts more energy than it sustains, and this only becomes visible when someone collapses or quits.
+
+### Growing rework with no apparent cause
+
+Bugs that were "fixed" return in other forms. Features need to be redone weeks later because nobody properly understood the requirement the first time. Refactorings that should simplify end up creating more complexity. This isn't technical incompetence — it's a symptom of a system that forces rushed decisions, where there's no time to think properly before acting.
+
+### Excessive dependence on key people
+
+When critical knowledge is concentrated in one or two people, organizational risk skyrockets. The "bus factor"<FootnoteRef client:load id={2} /> measures exactly this: how many people need to leave for the project to collapse. If it's 1, it means a single departure takes half the knowledge away — not because documentation doesn't exist, but because the system never gave time to create it, and knowledge lives only in people's heads.
+
+### Burnout treated as personal failure
+
+"So-and-so couldn't handle the pressure." The organizational narrative transforms systemic exhaustion into individual weakness. The discourse is always about personal resilience, time management, emotional balance — as if the problem were in the person, not in the system that systematically breaks people.
 
 <Callout type="tip" title="DevEx as a lens">
   DevEx enters this conversation not as a magic solution, but as a **lens**. A way to see where the system is wasting human energy to maintain the appearance of efficiency.
@@ -270,6 +197,65 @@ When it's good, teams can sustain quality, learning, and pace without breaking. 
   Once we understand DevEx as **cognitive capacity** and not as comfort, it becomes impossible to ignore the paradox that follows: teams that deliver a lot still break down from within.
 </Callout>
 
+## The Dark Side: When DevEx Becomes a Weapon
+
+So far, DevEx seems clearly positive — who would be against reducing unnecessary effort? But there's a dark side that needs to be named **before you encounter it without warning**.
+
+The Developer Experience concept, when misused, can be **weaponized** in two particularly dangerous ways:
+
+### 1. Individual Blame Disguised as Concern
+
+<Callout type="danger" title="The discourse">
+  "We invested in DevEx. We have the best tools. If you're still suffering, maybe the problem is **personal resilience**."
+</Callout>
+
+Organizations that buy expensive tools, adopt modern processes, and create "DevEx squads" sometimes use this as a shield. The argument becomes:
+
+> "We did our part. If you're not happy, that's on you."
+
+This transforms DevEx from a **systemic lens** into **individual responsibility**. The system remains dysfunctional, but now the narrative is: "It's not the system, it's you not knowing how to use the right tools."
+
+### 2. Developer Experience Theater
+
+<CompareColumns
+  leftTitle="Real DevEx"
+  rightTitle="DevEx Theater"
+  leftType="positive"
+  rightType="negative"
+  leftItems={[
+    "Systematically reduces cognitive effort",
+    "Changes processes that cause friction",
+    "Questions power structures",
+    "Accepts that change is slow and deep"
+  ]}
+  rightItems={[
+    "Buys modern tools and stops there",
+    "Keeps processes unchanged",
+    "Preserves existing power structures",
+    "Sells transformation without transforming anything"
+  ]}
+/>
+
+**Concrete example:** An organization buys state-of-the-art IDEs, migrates to Kubernetes, creates beautiful CI/CD dashboards — and continues with:
+- Manual approvals across 5 layers
+- Deploys that require tickets and 3-day waits
+- Architecture where nobody understands the dependencies
+- Culture where errors become witch hunts
+
+The tools are new. **The system is the same.** But now the organization can say: "We have excellent DevEx."
+
+<Callout type="warning" title="The problem isn't the tool">
+  The problem is believing that tools substitute for systemic change. Worse: using "DevEx" as an excuse to **not** change.
+</Callout>
+
+### Why This Matters Now
+
+Throughout this series, we'll examine frameworks that promise to measure and improve productivity: DORA, SPACE, DevEx Framework, DX Core 4. All have value. **All can be used as theater.**
+
+In [Article 4](/en/why-productive-teams-fail-04), we'll see how even well-intentioned frameworks can **hide more than they reveal** — especially when legitimized by consultancies that sell consensus, not truth.
+
+For now, it's enough to understand: **DevEx is a lens for seeing systems, not a checklist of tools.** If someone is selling DevEx as a product, be suspicious. If someone is using DevEx to blame individuals, resist.
+
 
 ## FAQ
 
@@ -290,5 +276,8 @@ When it's good, teams can sustain quality, learning, and pace without breaking. 
 <FootnoteList>
   <FootnoteItem id={1}>
     Google Cloud's DORA (DevOps Research and Assessment) program has published annual research since 2014 on the impact of development practices on organizational performance. The "State of DevOps Report" is a reference in the field.
+  </FootnoteItem>
+  <FootnoteItem id={2}>
+    Bus factor (or truck number) is a risk metric indicating how many key people need to be "hit by a bus" for a project to collapse. A bus factor of 1 means the project critically depends on a single person. The higher the bus factor, the lower the risk of losing critical knowledge.
   </FootnoteItem>
 </FootnoteList>

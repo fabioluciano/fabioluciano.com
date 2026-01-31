@@ -48,7 +48,7 @@ Quando esquecemos disso, números deixam de ser instrumentos e passam a ser trat
     O primeiro efeito de uma métrica é direcionar atenção. O que não é medido tende a desaparecer das discussões.
   </Step>
   <Step title="O que se torna visível passa a ser discutido">
-    Reuniões gravitam em torno de números. Dashboards definem agendas.
+    Reuniões gravitam em torno de números. Painéis definem agendas.
   </Step>
   <Step title="O que é discutido vira prioridade">
     Recursos, tempo e energia fluem para aquilo que aparece nos relatórios.
@@ -68,7 +68,7 @@ A confusão começa a ganhar corpo quando tratamos coisas diferentes como se fos
   rightType="neutral"
   leftItems={[
     "Atividade",
-    "Output",
+    "Produção",
     "Movimento"
   ]}
   rightItems={[
@@ -92,23 +92,55 @@ A pergunta raramente feita é **"eficiente para quê?"**.
 
 ### Quando métricas viram metas
 
-<Accordion client:load >
-  <AccordionItem title="Por que isso acontece?">
-    Não por perversidade, mas por dinâmica organizacional. Números facilitam comparação, encerram discussões e oferecem justificativas simples para decisões complexas.
-  </AccordionItem>
-  <AccordionItem title="Qual o efeito?">
-    Quando uma métrica vira meta, ela deixa de observar o sistema e passa a medir a habilidade do sistema de se adaptar à própria métrica.<FootnoteRef client:load id={1} />
-  </AccordionItem>
-  <AccordionItem title="O jogo implícito">
-    Todo sistema passa a jogar algum jogo, mesmo quando ninguém o define explicitamente. Algo sempre está sendo otimizado: previsibilidade, aparência de controle, velocidade, tranquilidade política, ausência de conflito.
-  </AccordionItem>
-</Accordion>
+#### Por que isso acontece?
+
+Não por perversidade, mas por dinâmica organizacional. Números facilitam comparação, encerram discussões e oferecem justificativas simples para decisões complexas.
+
+#### Qual o efeito?
+
+Quando uma métrica vira meta, ela deixa de observar o sistema e passa a medir a habilidade do sistema de se adaptar à própria métrica.<FootnoteRef client:load id={1} />
+
+#### O jogo implícito
+
+Todo sistema passa a jogar algum jogo, mesmo quando ninguém o define explicitamente. Algo sempre está sendo otimizado: previsibilidade, aparência de controle, velocidade, tranquilidade política, ausência de conflito.
 
 As métricas não criam esse jogo do nada; elas revelam e reforçam o jogo que já estava em andamento.
 
+### Quem escolhe o que medir, escolhe o que importa
+
+Existe uma camada de poder que raramente entra na discussão técnica sobre métricas: **quem decide o que medir?**
+
+<Callout type="danger" title="Não é técnico, é político">
+  A escolha do que medir nunca é puramente técnica. Ela reflete prioridades organizacionais, ansiedades da liderança, e estruturas de poder existentes.
+</Callout>
+
+Quando a métrica principal vira "velocidade" ou "story points por iteração", não é apenas uma escolha pragmática. **É uma declaração implícita sobre o que a organização valoriza**: movimento mensurável sobre impacto difuso, quantidade sobre qualidade, velocidade sobre sustentabilidade.
+
+**Exemplo concreto de burnout por métrica:**
+
+Uma organização decide acompanhar velocidade do time como métrica principal. Toda iteração, há expectativa de que velocidade suba ou, no mínimo, se mantenha. O time responde:
+- Inflando estimativas para criar margem
+- Fragmentando trabalho para aumentar contagem
+- Evitando tarefas importantes mas difíceis de estimar
+- Trabalhando horas extras para "bater a meta"
+
+**Seis meses depois**, a velocidade está alta, o painel está verde, mas o time está exausto. Débito técnico explodiu. Funcionalidades importantes foram adiadas porque "não cabiam na iteração". Ninguém lembra por que começaram a medir velocidade — mas todos sabem que ele precisa subir.
+
+<Callout type="warning" title="Quem paga o custo?">
+  Desenvolvedores júnior pagam mais: não têm capital político para questionar métricas. Minorias pagam mais: navegam sistemas já hostis enquanto performam sob pressão numérica. Seniors cansados pagam: porque já viram esse filme antes.
+</Callout>
+
+**A pergunta que deveria ser feita antes de escolher qualquer métrica:**
+- Quem se beneficia desta visibilidade?
+- O que fica invisível quando medimos isso?
+- Qual comportamento estamos incentivando implicitamente?
+- Quem paga o custo quando o sistema otimiza para essa métrica?
+
+No [Artigo 4](/pt/por-que-times-produtivos-fracassam-04), veremos como essas dinâmicas se manifestam em frameworks como DORA — e como consultorias como Gartner legitimam métricas não porque elas são verdadeiras, mas porque reduzem a ansiedade corporativa.
+
 ## Entrega alta como sinal errado de saúde
 
-É assim que surgem os times que entregam muito e ainda assim quebram por dentro. O backlog anda, o roadmap progride, os deploys acontecem. Para quem observa de fora, **tudo parece saudável**.
+É assim que surgem os times que entregam muito e ainda assim quebram por dentro. A backlog anda, o roteiro progride, as implantações acontecem. Para quem observa de fora, **tudo parece saudável**.
 
 <Timeline>
   <TimelineEvent date="Fase 1" title="Reconhecimento" status="completed">
@@ -150,7 +182,7 @@ As métricas não criam esse jogo do nada; elas revelam e reforçam o jogo que j
   ]}
 />
 
-Um time com DevEx ruim não necessariamente entrega menos. **Ele entrega custando mais.** O output continua alto, mas a energia necessária para sustentá-lo cresce em silêncio.
+Um time com DevEx ruim não necessariamente entrega menos. **Ele entrega custando mais.** A produção continua alta, mas a energia necessária para sustentá-la cresce em silêncio.
 
 O sinal clássico de DevEx quebrada não é queda de produtividade, mas produtividade alta acompanhada de exaustão crônica.
 

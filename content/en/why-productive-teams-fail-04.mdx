@@ -1,0 +1,628 @@
+---
+title: "DORA: Flow Metrics, Invisible Capabilities, and What Really Sustains Continuous Delivery"
+description: "DORA doesn't measure productivity. It measures symptoms. And what really matters lies in the 24 capabilities that nobody remembers to implement."
+publishedAt: 2026-01-30
+locale: en
+category: platform-engineering
+tags:
+  - developer-experience
+  - platform-engineering
+  - metrics
+  - dora
+draft: false
+toc: true
+comments: true
+series: why-productive-teams-fail
+seriesOrder: 4
+translationSlug: por-que-times-produtivos-fracassam-04
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { ProsCons } from '@/components/mdx/ProsCons';
+import { Tooltip } from '@/components/mdx/Glossary';
+import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+
+DORA has become common currency in conversations about DevOps and software delivery. Its four metrics — deployment frequency, lead time for changes, mean time to recovery, and change failure rate — are cited in presentations, used to justify investments, and included in corporate dashboards.
+
+But very few people remember that **DORA isn't about metrics**. DORA is about capabilities.
+
+<Callout type="warning" title="The fundamental misconception">
+  DORA metrics are outcome indicators. They don't tell you what to do. They signal whether what you're doing is working. The real work lies in the **24 technical and organizational capabilities** that sustain these metrics.
+</Callout>
+
+## The epistemological problem with metrics
+
+Before diving into the metrics and capabilities, it's worth questioning something rarely discussed: **do metrics describe reality or create it?**
+
+When DORA categorizes teams as "Elite", "High", "Medium", and "Low performers", is it merely observing patterns — or establishing a hierarchy that organizations will pursue? When deployment frequency becomes a success indicator, are we measuring organizational health — or creating a game where "faster" becomes synonymous with "better", regardless of context?
+
+<Callout type="warning" title="The hidden premise">
+  DORA starts from statistical correlations observed across thousands of organizations. But correlation isn't universal law. What works for the majority may not work for you. And what measures one thing well doesn't necessarily measure another.
+</Callout>
+
+This distinction matters because when we forget that metrics are snapshots — not absolute truths — we start treating them as ends in themselves. And then the system stops asking "are we solving the right problem?" and only asks "are we improving the numbers?".
+
+<ProsCons
+  client:load
+  prosTitle="What DORA assumes"
+  consTitle="What it often ignores"
+  context="Implicit premises of the DORA framework"
+  variant="warning"
+  pros={[
+    "Organizational contexts are comparable",
+    "Speed is a universal virtue",
+    "Metrics reveal objective truth",
+    "Improvement is always measurable"
+  ]}
+  cons={[
+    { text: "Each context has its unique constraints", emphasis: true },
+    { text: "Speed has human and technical costs", emphasis: true },
+    "Metrics create incentives and behaviors",
+    "Not everything valuable shows up in dashboards"
+  ]}
+/>
+
+This isn't an argument against metrics — it's a warning about what happens when we stop questioning what they really mean. With this critical lens established, we can look at the four DORA metrics with more nuance.
+
+## DORA metrics as symptoms
+
+<Tooltip client:load term="DORA Metrics" definition="Set of 4 metrics that evaluate software delivery capability: deployment frequency, lead time, recovery time, and change failure rate.">The four DORA metrics</Tooltip> function as thermometers, not as treatment.
+
+**Why doesn't DORA measure productivity?** Because productivity in software isn't about delivery speed — it's about **value generated sustainably**. DORA measures symptoms of a healthy delivery system (fast flow, low risk, agile recovery), but it doesn't measure:
+
+- Whether what's being delivered solves real problems
+- Whether the architecture is evolving or rotting
+- Whether the team can sustain this pace without breaking
+- Whether there's learning or just mechanical repetition
+- Whether technical decisions are improving or being postponed
+
+**A team can have excellent DORA metrics and still:**
+- Be delivering features nobody uses
+- Accumulating unsustainable technical debt
+- Burning people out in the process
+- Avoiding complex problems in favor of easy deliveries
+
+<Callout type="danger" title="The dangerous confusion">
+  DORA measures **pipeline health**, not productivity. An efficient delivery system is a necessary but not sufficient condition for real productivity. Confusing the two leads organizations to optimize for speed while destroying value and people.
+</Callout>
+
+<ProsCons
+  client:load
+  prosTitle="What the metrics show"
+  consTitle="What they don't say"
+  context="Inherent limitations of the 4 DORA metrics"
+  variant="balanced"
+  pros={[
+    "How often code goes to production",
+    "How long from commit to deploy",
+    "How long to restore service after incident",
+    "How many changes cause failures"
+  ]}
+  cons={[
+    "Why frequency is low",
+    "Where the bottleneck is in the process",
+    "Why incidents happen",
+    "What makes changes risky"
+  ]}
+/>
+
+### Deployment Frequency
+
+Measures how often code goes to production. High frequency signals that the pipeline is reliable, perceived risk is low, and changes can be small.
+
+**Doesn't measure:** Whether these deliveries matter. Whether the team is sustainable. Whether there's technical debt growing in parallel.
+
+### Lead Time for Changes
+
+Time from commit until the code is running in production. Low lead time indicates a lean pipeline, fewer manual steps, less bureaucracy.
+
+**Doesn't measure:** Quality of changes. Code review time. Cognitive load to do the work.
+
+### Mean Time to Recovery (MTTR)
+
+How long it takes to restore service after a failure. Low MTTR indicates good observability, clear incident response processes, and quick rollback capability.
+
+**Doesn't measure:** Why the incident happened. How many incidents could have been prevented. Emotional toll on the team.
+
+### Change Failure Rate
+
+Percentage of changes that cause degradation or incidents in production. Low rate indicates effective tests, stable environments, and safe deployments.
+
+**Doesn't measure:** Test coverage. Design quality. Technical decisions that increase or reduce fragility.
+
+<Callout type="info" title="Metrics as conversation">
+  DORA metrics are useful because they direct conversations. They force questions: why does it take so long to deploy? Why do our deployments break? But the answers aren't in the metrics — they're in the **capabilities**.
+</Callout>
+
+## The 24 capabilities nobody implements
+
+The real work of DORA research lies in identifying the **technical and organizational capabilities** that differentiate high-performing teams. They're grouped into five categories:
+
+### 1. Technical Capabilities
+
+#### Version control for everything
+
+Code, configurations, infrastructure, scripts. Everything versioned. No "manual changes on the server". No lost configurations. Rollback always possible.
+
+#### Deployment automation
+
+Automatic, repeatable, and reliable deployments. No manual steps. No "you have to run this script first". The process is the same in dev, staging, and production.
+
+#### Continuous Integration
+
+Frequent commits, tests running automatically, fast feedback. If the build breaks, everyone knows immediately.
+
+#### Trunk-based development
+
+Short-lived branches. Frequent merges. Fewer conflicts. Real continuous integration, not "weekend CI".
+
+#### Test automation
+
+Unit, integration, and contract tests. Meaningful coverage, not just cosmetic metrics. Confidence to change code.
+
+#### Test data management
+
+Isolated, reproducible, and secure test data. Test environments that actually resemble production.
+
+#### Shift left on security
+
+Security from the start. Static analysis, dependency review, properly managed secrets. Not "we'll look at that later".
+
+#### Continuous Delivery
+
+Code always deployable. Deployment is a business decision, not a technical feat. Pipeline reliable enough for deployment at any time.
+
+#### Loose coupling
+
+Changes in one service don't break others. Clear contracts. Explicit dependencies. Independent evolution.
+
+#### Architecture
+
+Teams can test, deploy, and change their systems without excessive coordination with other teams. Architecture enables autonomy.
+
+### 2. Process Capabilities
+
+#### Customer feedback
+
+Short feedback cycles. Validate hypotheses quickly. Learn from real users, not internal speculation.
+
+#### Value stream
+
+Understand the complete flow: from idea to delivered value. Identify bottlenecks, waste, and unnecessary steps.
+
+#### Work in small batches
+
+Small, frequent, and incremental changes. Less risk, faster feedback, less rework.
+
+#### Team experimentation
+
+Teams have autonomy to test ideas, change processes, learn from mistakes. Improvement doesn't come from above, it comes from practice.
+
+### 3. Management Capabilities
+
+#### Change approval
+
+Lightweight approvals, based on trust and automated controls — not committees. Peer review, not bureaucratic gates.
+
+#### Monitoring and observability
+
+Visibility into what's happening in production. Structured logs, metrics, traces. Effective debugging.
+
+#### Proactive notification
+
+Problems detected before becoming incidents. Meaningful alerts, not noise.
+
+#### Database change management
+
+Schema changes versioned, tested, and deployed as code. No manual scripts, no "hope it works".
+
+#### WIP limits
+
+Work in progress limited. Focus on finishing before starting new work. Real throughput, not illusion of movement.
+
+#### Visual management
+
+Work state visible to the team. Dashboards, boards, clear signals of progress and blockers.
+
+### 4. Cultural Capabilities
+
+#### Westrum organizational culture
+
+Generative culture: information flows, collaboration is expected, failures are learning opportunities, not blame.
+
+#### Learning culture
+
+Time and space to learn. Share knowledge. Invest in technical development. Not just "deliver more".
+
+#### Job satisfaction
+
+Meaningful work. Autonomy. Sense of progress. Teams that feel valued deliver better.
+
+#### Transformational leadership
+
+Leadership that inspires, intellectually challenges, individually supports, and encourages innovation. Not command-and-control.
+
+<Callout type="danger" title="Metrics without capabilities">
+  Implementing DORA dashboards without investing in capabilities is cosmetic. Numbers may even improve for a while — through heroic effort, shortcuts, or statistical illusion. But they don't sustain.
+</Callout>
+
+## The critique nobody makes: when DORA becomes dogma
+
+Implementing the 24 capabilities is fundamental. They represent the real work of building sustainable delivery systems. But there's a conversation that rarely happens in meeting rooms, conferences, or articles about DevOps: **what if the DORA metrics themselves are leading us in the wrong direction?**
+
+This isn't about denying the framework's value. DORA brought rigor and evidence to discussions that were previously just anecdotal. But there's a problem growing silently: when metrics become absolute truths, when correlations become universal laws, when numbers replace judgment.
+
+<Callout type="warning" title="The uncomfortable question">
+  DORA measures **delivery capability**. It doesn't measure whether those deliveries make sense, how much it costs to sustain them, or what's being sacrificed to keep the numbers green.
+</Callout>
+
+### The five structural critiques
+
+#### 1. Context-blindness: same metrics, opposite realities
+
+Two teams can have identical deployment frequency — 10 deployments per day — and be living completely opposite realities.
+
+**Team A:** Deploys frequently because they built a robust automated pipeline, reliable tests, and a culture of trust. Small changes, automatic rollback, zero anxiety.
+
+**Team B:** Deploys frequently because they're under constant managerial pressure. Features are broken into artificially small PRs to "raise the number". Tests were reduced to speed up CI. Team lives in permanent alert state.
+
+**Both appear as "Elite performers" on the dashboard.**
+
+DORA doesn't distinguish built capability from dangerous shortcut. Metrics are blind to **how** and **why** — they only see **how much**.
+
+<Callout type="danger" title="What this means">
+  Two teams with identical metrics can be on opposite trajectories: one toward sustainability, another toward collapse. And DORA doesn't differentiate.
+</Callout>
+
+#### 2. Reverse gaming: optimizing in the wrong direction
+
+When metrics become targets, systems start gaming against them. Not out of malice, but through organizational dynamics<FootnoteRef client:load id={2} />.
+
+**Real examples of gaming:**
+
+- **Deployment Frequency:** Features are broken into dozens of tiny PRs. A change that should be atomic becomes 15 deployments "to raise the frequency".
+
+- **Lead Time:** Commits are made but not merged until the last moment. PRs stay in draft. The "official lead time" drops, but real work time stays the same.
+
+- **MTTR (Mean Time to Recovery):** Auto-rollback is configured aggressively. Any error becomes automatic rollback, counted as "fast recovery" — even when it should be investigated.
+
+- **Change Failure Rate:** Incidents are reclassified as "planned maintenance". Problematic changes are hidden in "normal" deployments. The rate drops on the dashboard, but problems keep happening.
+
+<ProsCons
+  client:load
+  prosTitle="What the metric shows"
+  consTitle="What's really happening"
+  context="Gaming: when numbers improve but reality worsens"
+  variant="warning"
+  pros={[
+    "High deployment frequency",
+    "Very low lead time",
+    "Fast recovery",
+    "Low failure rate"
+  ]}
+  cons={[
+    { text: "Artificially fragmented features", emphasis: true },
+    { text: "Hidden Work in Progress", emphasis: true },
+    { text: "Uninvestigated problems", emphasis: true },
+    { text: "Masked incidents", emphasis: true }
+  ]}
+/>
+
+The system isn't improving — it's learning to lie to the indicator.
+
+#### 3. The invisible human cost of performance
+
+A team can maintain excellent DORA metrics while people break inside.
+
+**Real scenario:** Team maintains "Elite performer" status for 8 consecutive months. High deployment frequency, low lead time, impressive MTTR. In retrospectives, everything seems fine. On dashboards, everything is green.
+
+Then, in a single month, three key developers resign. When questioned, the answer is uniform: **exhaustion**.
+
+What metrics didn't show:
+- Constant work outside hours to maintain frequency
+- Chronic anxiety before each deploy
+- No time for learning or technical improvement
+- Technical debt accumulating silently
+- Rushed decisions to "not break the rhythm"
+
+<Callout type="danger" title="DORA stays green">
+  Metrics don't know — and can't know — whether high performance is sustainable or is being extracted through human wear.
+</Callout>
+
+A team can be "performing well" according to DORA and simultaneously heading toward collective burnout. The metric doesn't measure cognitive, emotional, or social cost.
+
+#### 4. The fallacy of universal speed
+
+DORA implicitly assumes that faster is always better. But this premise isn't universal — it's contextual.
+
+**Example: Financial compliance system**
+
+According to DORA, this team is a "Low performer":
+- Deployment frequency: 2x per month
+- Lead time: 3 weeks
+- Change failure rate: ~5%
+
+But context reveals another story:
+- Every change goes through mandatory audit
+- Deployments require approved maintenance window
+- Rollback isn't trivial (legacy database, external contracts)
+- The cost of failure isn't reputational — it's regulatory
+
+**This team is being cautious for good reasons.** Accelerating could increase unacceptable risk. "Low performer" in DORA doesn't mean "bad team" — it just means speed isn't the right goal for this system.
+
+<Callout type="warning" title="Not every system needs to be fast">
+  For certain domains — safety-critical systems, financial infrastructure, embedded hardware — stability, predictability, and careful analysis matter more than speed.
+</Callout>
+
+DORA doesn't help decide when speed is the wrong goal. And when applied blindly, it can penalize teams doing exactly what they should be doing.
+
+#### 5. The epistemological critique: correlation isn't law
+
+The deepest critique — and most rarely articulated — is philosophical.
+
+DORA comes from empirical research: thousands of organizations were observed, patterns were identified, correlations were established. Teams with high deployment frequency **tend** to have better overall performance. Teams with low MTTR **tend** to be more resilient.
+
+**But correlation isn't causation. And tendency isn't universal law.**
+
+Yet DORA is frequently treated as:
+- Absolute scientific truth
+- Organizational maturity checklist
+- Moral ruler to judge teams
+- Unquestionable justification for technical decisions
+
+This transforms an observation instrument into a **management ideology**.
+
+<Callout type="danger" title="When DORA stops being a tool">
+  When used for ranking between teams, when metrics become individual performance targets, when numbers replace conversations — DORA stops illuminating problems and becomes **the** problem.
+</Callout>
+
+The framework describes what was observed in specific contexts. It doesn't prescribe what should be done in all contexts. And it's definitely not a guarantee that "improving the numbers" means improving the system.
+
+### The synthesis phrase of the critique
+
+**DORA measures how well a team can change software — not whether those changes make sense, how much it costs to sustain them, or what's being sacrificed to maintain them.**
+
+It's a thermometer, not a diagnosis. And thermometers don't tell you if the fever is a symptom of something serious or just the body healthily fighting an infection.
+
+## Why we believe: Gartner, legitimacy, and scientific theater
+
+If these critiques are so evident — context matters, metrics can be manipulated, numbers don't capture human wear — why is DORA treated as unquestionable truth in so many organizations?
+
+The answer passes through a name that rarely appears in technical discussions, but exercises disproportionate influence over corporate decisions: **Gartner**.
+
+### What Gartner really is (and isn't)
+
+<Callout type="info" title="Honest definition">
+  Gartner isn't a scientific body, doesn't produce experimental knowledge, and doesn't validate practices neutrally. It is, fundamentally, **a consulting company that sells reduction of perceived decision risk**.
+</Callout>
+
+When a CIO or VP of Engineering needs to justify millions in DevOps transformation investment, the problem isn't technical — it's political:
+
+- "What if it goes wrong?"
+- "How do I justify this to the board?"
+- "Who else is doing this?"
+- "How do I know it's not just a fad?"
+
+Citing Gartner solves this problem. Not because Gartner discovered a technical truth nobody else knew. But because it offers something more valuable to executives: **reputational cover**.
+
+<ProsCons
+  client:load
+  prosTitle="What Gartner seems to be"
+  consTitle="What Gartner really is"
+  context="Perception vs reality of Gartner's role"
+  variant="warning"
+  pros={[
+    "Independent scientific research",
+    "Neutral technology validation",
+    "Best practices discovery",
+    "Quality certifying body"
+  ]}
+  cons={[
+    { text: "Corporate advisory", emphasis: true },
+    "Market consensus mapping",
+    "Organization of existing narratives",
+    { text: "Reputational insurance for executives", emphasis: true }
+  ]}
+/>
+
+Gartner's value isn't in being right. **It's in being defensible.**
+
+If an initiative fails, but was based on Gartner recommendation, the failure becomes "market-aligned decision that didn't work in this context". If it had no Gartner endorsement and fails, it becomes "risky bet from a reckless leader".
+
+### Magic Quadrant: measuring acceptability, not quality
+
+Gartner's most famous product — the **Magic Quadrant** — is frequently interpreted as a technical quality ranking. It's not.
+
+It measures **corporate acceptability**: how safe is it to choose this tool without being questioned? How widely adopted is it already? How well does the vendor company position itself in the market?
+
+#### What the Magic Quadrant really evaluates
+
+The Magic Quadrant classifies vendors into four quadrants based on two axes:
+
+- **Ability to Execute**: company size, market reach, financial viability, customer support
+- **Completeness of Vision**: alignment with market trends, perceived innovation, product strategy
+
+Note what **isn't** being directly measured:
+- Technical quality of the solution
+- Ease of use
+- Fit for specific contexts
+- Real cost-benefit
+- Developer experience
+
+A technically superior product from a small startup never reaches the "Leaders" quadrant. A mediocre product from a giant vendor has structural advantage.
+
+#### Why executives trust it anyway
+
+Because the Magic Quadrant solves their problem: **reducing decision anxiety**.
+
+Choosing a "Leader" in the Magic Quadrant means:
+- Decision can be explained in a board meeting
+- External consultants will validate the choice
+- Other executives will recognize the brand
+- If it fails, blame is shared with "the market"
+
+Choosing a tool outside the Quadrant requires active justification. Choosing within the Quadrant is the default choice — it doesn't need to be justified, it needs to be **contested** to not happen.
+
+### Why Gartner recommends DORA
+
+Now it's clearer why DORA consistently appears in Gartner reports and recommendations. Not because DORA is infallible, but because it has three properties that executives (and Gartner) value:
+
+**1. It's simple and communicable**
+
+Four metrics. Easy to explain in a slide. Easy to compare over time. Easy to report to non-technical stakeholders.
+
+**This is executive currency.** Complex, nuanced, context-dependent metrics don't fit in 30-minute meetings with the C-level. Simplicity sells — even when it reduces reality to the point of distorting it.
+
+**2. It has "sufficient scientific backing"**
+
+DORA comes from research with thousands of organizations, annual reports, academic language, statistical correlations. This creates **symbolic authority** — even without strong causation.
+
+For Gartner, this is enough to legitimize use. It doesn't need to be perfect. It needs to be defensible.
+
+**3. It reinforces a convenient narrative**
+
+DORA sustains a story executives want to tell:
+
+> "Faster teams are better teams. Let's invest in automation, DevOps, and agile transformation to raise our numbers."
+
+This narrative:
+- Justifies budget for tools
+- Creates a sense of measurable progress
+- Enables comparison with competitors
+- Aligns technology with "efficiency" (C-level magic word)
+
+Gartner doesn't create this narrative from scratch — it organizes, packages, and validates it.
+
+<Callout type="danger" title="The critical point">
+  When Gartner recommends DORA, it's doing so as a **governance framework**, not as a complete explanatory model of reality. The problem is this distinction disappears in implementation.
+</Callout>
+
+### The side effect: from observation to control
+
+What starts as:
+
+> "Let's observe our delivery capability"
+
+quickly becomes:
+
+> "Let's manage people by these numbers"
+
+At that moment:
+- Metrics become performance targets
+- Correlation becomes cause
+- Observation becomes control
+- Framework becomes morality
+
+And neither Gartner nor DORA were designed for this — but the corporate system incentivizes exactly this use.
+
+### The phrase that summarizes everything
+
+<Callout type="danger" title="The truth about Gartner and DORA">
+  **Gartner doesn't sell truth. It sells defensible consensus.**
+
+  DORA enters this package as a metric "scientific enough" to be used — and "simple enough" to be misused.
+</Callout>
+
+Executives turn to Gartner not to discover what's right, but to ensure their decisions are hard to contest. DORA works perfectly in this role: it offers clear numbers, has an appearance of rigor, and reinforces narratives already in progress.
+
+The problem isn't that Gartner recommends DORA. The problem is that organizations treat this recommendation as scientific validation, when it's actually market consensus mapping. And consensus isn't synonymous with wisdom.
+
+## DORA's structural limits
+
+After understanding the critiques of the framework and Gartner's role in its legitimization, it's easier to see where DORA ends — not due to design failure, but due to **inherent limitations** of any metrics system.
+
+DORA is powerful for measuring a system's **delivery capability**. But there are fundamental questions it doesn't answer — and never proposed to answer:
+
+<ProsCons
+  client:load
+  prosTitle="What DORA sees"
+  consTitle="What DORA doesn't see"
+  context="Structural limits of the framework"
+  variant="balanced"
+  pros={[
+    "Pipeline speed",
+    "Deploy stability",
+    "Recovery capability",
+    "Change frequency"
+  ]}
+  cons={[
+    { text: "Quality of technical decisions", emphasis: true },
+    { text: "Sustainability of the pace", emphasis: true },
+    { text: "Team's cognitive wear", emphasis: true },
+    "Real impact for the user"
+  ]}
+/>
+
+### What's missing in the framework
+
+- **Team satisfaction**: DORA doesn't measure burnout, turnover, or cognitive load — only output.
+- **Code quality**: Metrics don't tell if code is maintainable, testable, or comprehensible.
+- **Business value**: Frequent deployment doesn't guarantee what's being delivered solves real problems.
+- **Developer Experience**: Friction, clarity, tools, and processes remain completely invisible.
+- **Organizational cost**: The political, social, and emotional effort to maintain the numbers doesn't show.
+- **Context and choices**: DORA doesn't help decide if speed is the right goal for your system.
+
+<Callout type="warning" title="What happens when we ignore the limits">
+  When organizations treat DORA as a complete framework — instead of one lens among several — they create systems that optimize for metrics while wearing out people, accumulating technical debt, and producing changes nobody asked for.
+</Callout>
+
+These gaps aren't bugs. They're inherent characteristics of any framework that tries to reduce organizational and human complexity to comparable numbers.
+
+<Callout type="tip" title="DORA as starting point, not destination">
+  DORA works best as a starting point, not as complete truth. It forces important conversations about flow, capabilities, and continuous delivery. But it needs to be complemented with other lenses — SPACE, DevEx, qualitative conversations with the team — to create an honest view of what's happening.
+</Callout>
+
+## Capabilities first, metrics second — but with eyes open
+
+If there's one thing DORA work makes clear, it's that **metrics are consequence, not cause**. But there's another truth, less comfortable: **metrics are also political instruments**, not just technical ones.
+
+You don't improve deployment frequency by creating a dashboard. You improve by investing in automation, tests, trunk-based development, and a culture of experimentation.
+
+You don't reduce MTTR just by asking people to be faster. You reduce it with observability, clear runbooks, automated rollback, and blameless culture.
+
+<Callout type="info" title="The order matters">
+  Implement the capabilities. Observe the results. Use metrics to validate progress, not to force behavior. And always ask: **what aren't these metrics showing?**
+</Callout>
+
+### The complete truth about DORA
+
+DORA measures **how well a team can change software in production**. It doesn't measure:
+- Whether those changes make sense
+- How much it costs to sustain them
+- What's being sacrificed to maintain them
+
+This doesn't make DORA useless. It makes it **incomplete** — and potentially dangerous when used as the only lens.
+
+The 24 capabilities aren't a checklist. They're investments that compete for time, attention, and resources with features, deadlines, and short-term pressures. And in this competition, metrics frequently win — because they're easier to measure than real value.
+
+### Living with DORA consciously
+
+If your organization uses (or requires) DORA metrics, you don't need to reject them. But you need to use them **consciously**:
+
+**Always ask:**
+- Are we measuring because we want to understand — or because we need to report?
+- Who benefits if these numbers improve?
+- What would be invisible if we only looked at metrics?
+- Does our context really benefit from more speed?
+
+**Always complement:**
+- DORA metrics with regular conversations about wear and satisfaction
+- Quantitative dashboards with qualitative observation
+- Delivery numbers with business value perception
+- External comparisons with understanding of your own context
+
+**And remember:**
+
+<Callout type="danger" title="The choice that precedes metrics">
+  Before choosing DORA (or any framework), choose the problem you want to solve. If this choice isn't conscious, the system will make it for you. And systems don't care about burnout, context, or people — they optimize for what's measured.
+</Callout>
+
+**The question isn't whether it's worth investing in capabilities. The question is: are you willing to question the metrics that justify (or don't justify) that investment?**
+
+<FootnoteList>
+  <FootnoteItem id={2}>
+    **Goodhart's Law** states that "when a measure becomes a target, it ceases to be a good measure". Formulated by economist Charles Goodhart in 1975, this law describes how systems adapt to optimize metrics instead of real objectives — a phenomenon widely documented in economics, social sciences, and increasingly in software engineering.
+  </FootnoteItem>
+</FootnoteList>

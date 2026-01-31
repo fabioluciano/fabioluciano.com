@@ -1,0 +1,167 @@
+---
+// =============================================================================
+// Blog Pagination Page - Dynamic pagination for all locales
+// =============================================================================
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+import { getPostsByLocale, getAllCategories, getAllTags } from '@/lib/posts';
+import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
+import { getSiteConfig } from '@/config';
+import { LOCALES } from '@/config/locales';
+
+export async function getStaticPaths() {
+  const config = getSiteConfig();
+  const postsPerPage = config.pagination.postsPerPage;
+  const paths = [];
+
+  for (const lang of LOCALES) {
+    const posts = await getPostsByLocale(lang);
+    const totalPages = Math.ceil(posts.length / postsPerPage);
+
+    // Generate paths for pages 2 and onwards (page 1 is /blog)
+    for (let page = 2; page <= totalPages; page++) {
+      paths.push({
+        params: { lang, page: String(page) },
+        props: { posts, totalPages, currentPage: page },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { lang, page } = Astro.params as { lang: Locale; page: string };
+const { posts, totalPages, currentPage } = Astro.props;
+
+const t = useTranslations(lang);
+const urlPrefix = getUrlPrefix(lang);
+const config = getSiteConfig();
+
+const categories = await getAllCategories(lang);
+const tags = await getAllTags(lang);
+
+const postsPerPage = config.pagination.postsPerPage;
+const startIndex = (currentPage - 1) * postsPerPage;
+const endIndex = startIndex + postsPerPage;
+const paginatedPosts = posts.slice(startIndex, endIndex);
+---
+
+<BaseLayout
+  title={`${t('blog.title')} - ${t('common.page')} ${currentPage}`}
+  description={t('blog.subtitle')}
+  locale={lang}
+>
+  <div class="py-8">
+    <div class="container mx-auto px-4">
+      <header class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-bold text-base-content">
+            {t('blog.title')} <span class="text-gradient">✨</span>
+          </h1>
+          <p class="text-base-content/60 mt-1">{t('blog.subtitle')}</p>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-base-content/50">
+          <span class="badge badge-primary badge-outline">{posts.length} posts</span>
+        </div>
+      </header>
+
+      <div class="lg:grid lg:grid-cols-[1fr_240px] lg:gap-8">
+        <div>
+          {paginatedPosts.length > 0 ? (
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedPosts.map((post) => (
+                <PostCard post={post} locale={lang} featured={false} urlPrefix={urlPrefix} />
+              ))}
+            </div>
+          ) : (
+            <div class="text-center py-8">
+              <p class="text-base-content/60">{t('blog.noPosts')}</p>
+            </div>
+          )}
+
+          {totalPages > 1 && (
+            <div class="flex justify-center mt-8">
+              <div class="join">
+                <a
+                  href={currentPage > 2 ? `${urlPrefix}/blog/page/${currentPage - 1}` : `${urlPrefix}/blog`}
+                  class={`join-item btn btn-sm ${currentPage === 1 ? 'btn-disabled' : ''}`}
+                >
+                  «
+                </a>
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <a
+                    href={i === 0 ? `${urlPrefix}/blog` : `${urlPrefix}/blog/page/${i + 1}`}
+                    class={`join-item btn btn-sm ${currentPage === i + 1 ? 'btn-active btn-primary' : ''}`}
+                  >
+                    {i + 1}
+                  </a>
+                ))}
+                <a
+                  href={`${urlPrefix}/blog/page/${currentPage + 1}`}
+                  class={`join-item btn btn-sm ${currentPage === totalPages ? 'btn-disabled' : ''}`}
+                >
+                  »
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <aside class="hidden lg:block">
+          <div class="sticky top-20 space-y-4">
+            {categories.length > 0 && (
+              <div class="card bg-gradient-to-br from-base-200 to-base-200/50 border border-base-300">
+                <div class="card-body p-4">
+                  <h3 class="font-semibold text-sm uppercase tracking-wider text-base-content/70 mb-2">
+                    {t('categories.title')}
+                  </h3>
+                  <ul class="space-y-1">
+                    {categories.map((category) => (
+                      <li>
+                        <a
+                          href={`${urlPrefix}/categories/${category}`}
+                          class="flex items-center justify-between text-sm py-1 px-2 rounded hover:bg-primary/10 hover:text-primary transition-colors"
+                        >
+                          <span>{category}</span>
+                          <span class="text-xs text-base-content/50">
+                            {posts.filter((p) => p.data.category === category).length}
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {tags.length > 0 && (
+              <div class="card bg-gradient-to-br from-base-200 to-base-200/50 border border-base-300">
+                <div class="card-body p-4">
+                  <h3 class="font-semibold text-sm uppercase tracking-wider text-base-content/70 mb-2">
+                    {t('tags.title')}
+                  </h3>
+                  <div class="flex flex-wrap gap-1">
+                    {tags.slice(0, 12).map((tag) => (
+                      <a
+                        href={`${urlPrefix}/tags/${tag}`}
+                        class="text-xs px-2 py-0.5 rounded-full bg-base-300/50 text-base-content/70 hover:bg-primary hover:text-primary-content transition-colors"
+                      >
+                        #{tag}
+                      </a>
+                    ))}
+                  </div>
+                  {tags.length > 12 && (
+                    <a href={`${urlPrefix}/tags`} class="text-xs text-primary hover:underline mt-2 inline-block">
+                      +{tags.length - 12} more
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
