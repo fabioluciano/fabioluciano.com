@@ -4,7 +4,7 @@
 // =============================================================================
 
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getAllSeries, getSeriesInfo, getPostSlug } from '@/lib/posts';
+import { getAllSeries, getSeriesInfo, getPostSlug, getAllPosts } from '@/lib/posts';
 import { useTranslations, getUrlPrefix, type Locale } from '@/lib/i18n';
 import { formatDate } from '@/lib/utils';
 import { LOCALES } from '@/config/locales';
@@ -28,12 +28,37 @@ const t = useTranslations(lang);
 const urlPrefix = getUrlPrefix(lang);
 
 const seriesInfo = await getSeriesInfo(seriesSlug, lang);
+
+// Find alternate language series URL
+const alternateLang: Locale = lang === 'pt' ? 'en' : 'pt';
+let alternateUrl: string | null = null;
+
+if (seriesInfo && seriesInfo.posts.length > 0) {
+  const allPosts = await getAllPosts();
+
+  // Find a post in this series that has a translationSlug
+  for (const post of seriesInfo.posts) {
+    if (post.data.translationSlug) {
+      // Find the translated post
+      const translatedPost = allPosts.find(
+        (p) => p.data.locale === alternateLang && getPostSlug(p) === post.data.translationSlug
+      );
+
+      // If found, get the series slug from the translated post
+      if (translatedPost && translatedPost.data.series) {
+        alternateUrl = `${getUrlPrefix(alternateLang)}/series/${translatedPost.data.series}`;
+        break;
+      }
+    }
+  }
+}
 ---
 
 <BaseLayout
   title={seriesInfo?.name || seriesSlug}
   description={seriesInfo?.posts[0]?.data.description || ''}
   locale={lang}
+  alternateUrl={alternateUrl}
 >
   <div class="py-12">
     <div class="container mx-auto px-4">
