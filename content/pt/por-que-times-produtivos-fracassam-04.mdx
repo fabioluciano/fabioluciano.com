@@ -110,7 +110,7 @@ Esse não é um argumento contra métricas — é um alerta sobre o que acontece
 
 ### Frequência de Implantação (Deployment Frequency)
 
-Mede com que frequência código vai para produção. Alta frequência sinaliza que o pipeline é confiável, o risco percebido é baixo e mudanças podem ser pequenas.
+Mede com que frequência código vai para produção. Alta frequência sinaliza que a pipeline é confiável, o risco percebido é baixo e mudanças podem ser pequenas.
 
 **Não mede:** Se essas entregas importam. Se o time está sustentável. Se há dívida técnica crescendo em paralelo.
 
@@ -276,11 +276,11 @@ DORA não distingue capacidade construída de atalho perigoso. As métricas são
   Dois times com métricas idênticas podem estar em trajetórias opostas: um rumo à sustentabilidade, outro rumo ao colapso. E o DORA não diferencia.
 </Callout>
 
-#### 2. Gaming reverso: otimizando na direção errada
+#### 2. Manipulação reversa: otimizando na direção errada
 
 Quando métricas viram metas, sistemas começam a jogar contra elas. Não por malícia, mas por dinâmica organizacional<FootnoteRef client:load id={2} />.
 
-**Exemplos reais de gaming:**
+**Exemplos reais de manipulação de métricas:**
 
 - **Deployment Frequency:** Funcionalidades são quebradas em dezenas de PRs minúsculos. Uma mudança que deveria ser atômica vira 15 implantações "para subir a frequência".
 
@@ -294,7 +294,7 @@ Quando métricas viram metas, sistemas começam a jogar contra elas. Não por ma
   client:load
   prosTitle="O que a métrica mostra"
   consTitle="O que está realmente acontecendo"
-  context="Gaming: quando números melhoram mas a realidade piora"
+  context="Manipulação: quando números melhoram mas a realidade piora"
   variant="warning"
   pros={[
     "Alta frequência de deploy",

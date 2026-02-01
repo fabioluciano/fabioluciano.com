@@ -15,29 +15,62 @@ const { headings, locale = 'pt' } = Astro.props;
 
 // Filter to only show h2 and h3
 const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+
+// Group h3s under their parent h2
+interface TocItem {
+  heading: MarkdownHeading;
+  children: MarkdownHeading[];
+}
+
+const tocStructure: TocItem[] = [];
+let currentH2: TocItem | null = null;
+
+filteredHeadings.forEach((heading) => {
+  if (heading.depth === 2) {
+    currentH2 = { heading, children: [] };
+    tocStructure.push(currentH2);
+  } else if (heading.depth === 3 && currentH2) {
+    currentH2.children.push(heading);
+  }
+});
 ---
 
-<nav class="space-y-2" aria-label={locale === 'pt' ? 'Índice' : 'Table of contents'}>
-  <h2 class="text-sm font-semibold uppercase tracking-wider text-base-content/60 mb-4">
+<nav
+  class="w-72 px-6 py-5 rounded-2xl bg-base-200/50 border border-base-300/40"
+  aria-label={locale === 'pt' ? 'Índice' : 'Table of contents'}
+>
+  <h2 class="text-xs font-bold uppercase tracking-widest text-base-content/50 mb-5">
     {locale === 'pt' ? 'Neste artigo' : 'On this page'}
   </h2>
 
-  <ul class="space-y-1 text-sm">
+  <ul class="space-y-0.5 text-sm">
     {
-      filteredHeadings.map((heading) => (
-        <li
-          class:list={[
-            'border-l-2 border-base-300 transition-colors',
-            heading.depth === 3 ? 'ml-3' : '',
-          ]}
-        >
+      tocStructure.map((item) => (
+        <li class="toc-section" data-section={item.heading.slug}>
           <a
-            href={`#${heading.slug}`}
-            class="toc-link block py-1 pl-3 text-base-content/60 hover:text-primary hover:border-primary transition-colors"
-            data-heading={heading.slug}
+            href={`#${item.heading.slug}`}
+            class="toc-link toc-h2 block py-1.5 pl-4 border-l-2 border-base-300/40 text-base-content/70 hover:text-primary hover:border-primary/70 transition-all duration-200"
+            data-heading={item.heading.slug}
           >
-            {heading.text}
+            {item.heading.text}
           </a>
+
+          {item.children.length > 0 && (
+            <ul class="toc-children overflow-hidden transition-all duration-300 ease-out max-h-0 opacity-0 ml-4">
+              {item.children.map((child) => (
+                <li>
+                  <a
+                    href={`#${child.slug}`}
+                    class="toc-link toc-h3 block py-1 pl-4 border-l border-base-300/30 text-base-content/50 hover:text-primary/80 hover:border-primary/50 transition-all duration-200 text-[13px]"
+                    data-heading={child.slug}
+                    data-parent={item.heading.slug}
+                  >
+                    {child.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
         </li>
       ))
     }
@@ -48,20 +81,59 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
   @reference "../../styles/global.css";
 
   .toc-link.active {
-    @apply text-primary border-primary;
+    @apply text-primary border-primary font-medium bg-primary/10 rounded-r-md;
   }
 
-  li:has(.toc-link.active) {
-    @apply border-primary;
+  .toc-h3.active {
+    @apply text-primary/90 border-primary/60 font-normal bg-primary/5 rounded-r-md;
+  }
+
+  .toc-children.expanded {
+    @apply max-h-[500px] opacity-100 mt-2;
   }
 </style>
 
 <script>
   function setupTocHighlight() {
     const tocLinks = document.querySelectorAll('.toc-link');
+    const tocSections = document.querySelectorAll('.toc-section');
     const headings = document.querySelectorAll('h2[id], h3[id]');
 
     if (tocLinks.length === 0 || headings.length === 0) return;
+
+    // Track which h2 section each heading belongs to
+    const headingToSection = new Map<string, string>();
+    let currentH2Id: string | null = null;
+
+    headings.forEach((heading) => {
+      if (heading.tagName === 'H2') {
+        currentH2Id = heading.id;
+        headingToSection.set(heading.id, heading.id);
+      } else if (heading.tagName === 'H3' && currentH2Id) {
+        headingToSection.set(heading.id, currentH2Id);
+      }
+    });
+
+    function expandSection(sectionSlug: string) {
+      // Collapse all sections
+      tocSections.forEach((section) => {
+        const children = section.querySelector('.toc-children');
+        if (children) {
+          children.classList.remove('expanded');
+        }
+      });
+
+      // Expand the active section
+      const activeSection = document.querySelector(
+        `.toc-section[data-section="${sectionSlug}"]`
+      );
+      if (activeSection) {
+        const children = activeSection.querySelector('.toc-children');
+        if (children) {
+          children.classList.add('expanded');
+        }
+      }
+    }
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -76,6 +148,12 @@ const filteredHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
             );
             if (activeLink) {
               activeLink.classList.add('active');
+            }
+
+            // Expand the section containing this heading
+            const sectionSlug = headingToSection.get(entry.target.id);
+            if (sectionSlug) {
+              expandSection(sectionSlug);
             }
           }
         });
