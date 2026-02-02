@@ -248,6 +248,104 @@ Leadership that inspires, intellectually challenges, individually supports, and 
   Implementing DORA dashboards without investing in capabilities is cosmetic. Numbers may even improve for a while — through heroic effort, shortcuts, or statistical illusion. But they don't sustain.
 </Callout>
 
+## The Westrum Culture Model: the capability that sustains all others
+
+Among the 24 DORA capabilities, one deserves special attention: **Westrum organizational culture**<FootnoteRef client:load id={3} />. Not because it's more important than the others, but because it determines whether the others can function.
+
+### The three types of organizational culture
+
+Ron Westrum, a sociologist who studied safety in high-risk organizations (aviation, healthcare, nuclear energy), identified three types of culture based on **how information flows**:
+
+| Type | How it treats information | How it treats failures | How it treats new ideas |
+|------|--------------------------|------------------------|------------------------|
+| **Pathological** | Information is power, withheld | Seeks scapegoats | Crushes |
+| **Bureaucratic** | Information flows through formal channels | Seeks justice | Creates problems |
+| **Generative** | Information flows to those who need it | Seeks learning | Implements |
+
+<Callout type="warning" title="Why culture matters for DORA">
+
+DORA research found a strong correlation between generative culture and high performance in software delivery. It's no coincidence: **metrics improve when people can talk about problems without fear of punishment**.
+
+</Callout>
+
+### Characteristics of each type
+
+**Pathological Culture:**
+- Messengers are punished ("don't bring problems, bring solutions")
+- Responsibilities are avoided or transferred
+- Cooperation is discouraged; departments compete with each other
+- Failures are hidden until they explode
+- New ideas are seen as threats to the status quo
+
+**Bureaucratic Culture:**
+- Messengers are tolerated if they follow the right channels
+- Responsibilities are rigidly compartmentalized
+- Cooperation happens only when mandatory
+- Failures lead to more processes and controls
+- New ideas are filtered through committees
+
+**Generative Culture:**
+- Messengers are trained and valued
+- Responsibilities are shared
+- Cooperation is the norm; silos are actively fought
+- Failures are treated as learning opportunities
+- New ideas are welcomed and tested quickly
+
+### How culture affects DORA metrics
+
+The connection between culture and metrics isn't abstract — it's mechanical:
+
+**Deployment Frequency:** In pathological cultures, nobody wants to be responsible for a deploy that breaks. Result: deploys accumulate, become large and risky. In generative cultures, small and frequent deploys are safe because errors are treated as learning, not as crimes.
+
+**Lead Time:** In bureaucratic cultures, every change needs multiple formal approvals. Result: lead time inflated by waiting in queues. In generative cultures, trust enables more agile approvals and collaborative reviews.
+
+**MTTR:** In pathological cultures, incidents become witch hunts. Result: people hide problems or delay escalation. In generative cultures, incidents are reported immediately and everyone collaborates on the solution.
+
+**Change Failure Rate:** In fear-based cultures, developers avoid risks — but also avoid improvements. Paradoxically, this can **increase** the failure rate because changes accumulate and tests are cut to speed up approvals.
+
+<ProsCons
+  client:load
+  prosTitle="What generative culture produces"
+  consTitle="What pathological culture produces"
+  context="Impact of culture on DORA metrics"
+  variant="balanced"
+  pros={[
+    "Problems are detected early",
+    "Information flows to those who need it",
+    "Experimentation is safe",
+    "Learning is continuous"
+  ]}
+  cons={[
+    { text: "Problems are hidden until they explode", emphasis: true },
+    { text: "Information is withheld as power", emphasis: true },
+    "Experimentation is punished",
+    "Repetition of errors is constant"
+  ]}
+/>
+
+### The trap of measuring culture
+
+Westrum didn't create his model to be transformed into a corporate survey. But that's exactly what many organizations do: they apply questionnaires, calculate a "culture score" and declare victory when the number rises.
+
+The problem: **culture doesn't change by decree**. An organization can have declared generative values while practicing pathological behaviors. The CEO can talk about "psychological safety" while managers punish those who bring bad news.
+
+<Callout type="danger" title="The real culture test">
+
+An organization's real culture isn't what's written in the handbook. It's what happens when someone makes a serious production error at 3 AM. If the first question is "who did this?", the culture is pathological — no matter what the values slide says.
+
+</Callout>
+
+### Cultural change is slow and painful
+
+If your organization has pathological or bureaucratic culture, there's no shortcut. Cultural change requires:
+
+- **Consistent leadership:** Leaders need to model desired behavior, not just talk about it
+- **Demonstrated safety:** People need to see that those who report problems aren't punished
+- **Time:** Trust takes years to build and seconds to destroy
+- **Tolerance for discomfort:** Exposing previously hidden problems is painful before it's liberating
+
+**Why this matters for DORA:** You can implement all the technical practices — CI/CD, automated tests, observability — and still have poor metrics if the culture doesn't allow people to talk about problems. Culture is the soil where practices grow or die.
+
 ## The critique nobody makes: when DORA becomes dogma
 
 Implementing the 24 capabilities is fundamental. They represent the real work of building sustainable delivery systems. But there's a conversation that rarely happens in meeting rooms, conferences, or articles about DevOps: **what if the DORA metrics themselves are leading us in the wrong direction?**
@@ -624,5 +722,8 @@ If your organization uses (or requires) DORA metrics, you don't need to reject t
 <FootnoteList>
   <FootnoteItem id={2}>
     **Goodhart's Law** states that "when a measure becomes a target, it ceases to be a good measure". Formulated by economist Charles Goodhart in 1975, this law describes how systems adapt to optimize metrics instead of real objectives — a phenomenon widely documented in economics, social sciences, and increasingly in software engineering.
+  </FootnoteItem>
+  <FootnoteItem id={3}>
+    Westrum, Ron. **[A typology of organisational cultures](https://qualitysafety.bmj.com/content/13/suppl_2/ii22)**. BMJ Quality & Safety, 2004. The article presents the typology of organizational cultures (pathological, bureaucratic, generative) based on how organizations process information. The model was later incorporated into DORA research as one of the capabilities predictive of high performance in software delivery.
   </FootnoteItem>
 </FootnoteList>
