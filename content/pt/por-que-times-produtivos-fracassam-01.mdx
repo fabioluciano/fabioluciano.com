@@ -26,6 +26,7 @@ import { Quiz } from '@/components/mdx/Quiz';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
 import { DefinitionList } from '@/components/mdx/DefinitionList';
+import { Mermaid } from '@/components/mdx';
 
 ## Developer Experience não é conforto — é capacidade
 
@@ -70,6 +71,23 @@ Quando falamos de esforço mental, emocional e social em Developer Experience, e
   columns={1}
   showIcons={true}
   indexable={true}
+/>
+
+<Mermaid
+  client:load
+  chart={`flowchart LR
+    M((Esforço<br/>Mental))
+    E((Esforço<br/>Emocional))
+    S((Esforço<br/>Social))
+
+    M -->|Carga cognitiva<br/>gera insegurança| E
+    E -->|Insegurança aumenta<br/>dependência| S
+    S -->|Fricção social<br/>consome energia| M
+
+    style M fill:#e0e7ff,stroke:#6366f1,stroke-width:3px
+    style E fill:#fce7f3,stroke:#ec4899,stroke-width:3px
+    style S fill:#fef3c7,stroke:#f59e0b,stroke-width:3px`}
+  caption="Os três tipos de esforço não são independentes — formam um ciclo que se auto-reforça. DevEx ruim amplifica esse ciclo; DevEx boa o interrompe."
 />
 
 Quando mental, emocional e social estão desalinhados, vemos: times que parecem produtivos mas estão esgotados, código que funciona hoje e ninguém quer tocar amanhã, organizações que investem em ferramentas mas não reduzem atrito, e líderes confusos sobre por que "entregar mais" não melhora o resultado. **Débito cognitivo é tão real quanto débito técnico — só que mais difícil de refatorar.**

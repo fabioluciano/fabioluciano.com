@@ -24,6 +24,7 @@ import { ProsCons } from '@/components/mdx/ProsCons';
 import { Tooltip } from '@/components/mdx/Glossary';
 import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 Depois de olhar para o DORA, fica tentador acreditar que produtividade em software pode ser entendida — e melhorada — observando a pipeline. Em muitos aspectos, isso é verdade. Sistemas previsíveis, com baixo custo de mudança, criam condições reais para que o trabalho avance.
 
@@ -578,6 +579,35 @@ O SPACE não tenta resolver essas tensões. **Ele as torna explícitas.**
 <Callout type="tip" title="A mudança de conversa">
   Em vez de perguntar "qual métrica está ruim?", a pergunta passa a ser "qual dimensão estamos sacrificando sem perceber?". Em vez de buscar um score agregado, o modelo força escolhas conscientes. Toda decisão de otimização tem um custo — e o SPACE exige que esse custo seja visível.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`graph TB
+    S["<b>S</b> - Satisfaction<br/><small>Bem-estar</small>"]
+    P["<b>P</b> - Performance<br/><small>Qualidade</small>"]
+    A["<b>A</b> - Activity<br/><small>Atividade</small>"]
+    C["<b>C</b> - Communication<br/><small>Colaboração</small>"]
+    E["<b>E</b> - Efficiency<br/><small>Fluxo</small>"]
+
+    S -->|Tensão| A
+    A -->|Tensão| P
+    P -->|Tensão| E
+    E -->|Tensão| C
+    C -->|Tensão| S
+
+    S -.->|Sinergia| P
+    P -.->|Sinergia| S
+    A -.->|Sinergia| E
+    C -.->|Sinergia| P
+
+    style S fill:#FFE8E8,stroke:#FF6B6B,stroke-width:3px
+    style P fill:#E8FFE8,stroke:#6BCB77,stroke-width:3px
+    style A fill:#E8E8FF,stroke:#6366f1,stroke-width:3px
+    style C fill:#FFFFE8,stroke:#EAB308,stroke-width:3px
+    style E fill:#FFE8FF,stroke:#A855F7,stroke-width:3px
+`}
+  caption="As 5 dimensões do SPACE. Setas sólidas = Tensão (otimizar uma pode prejudicar outra). Setas tracejadas = Sinergia (dimensões se reforçam mutuamente)."
+/>
 
 ## Quem se beneficia da complexidade?
 

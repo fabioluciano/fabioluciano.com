@@ -24,6 +24,7 @@ import { Accordion, AccordionItem, FAQ, FAQItem } from '@/components/mdx/Accordi
 import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 ## Medir não é entender
 
@@ -54,6 +55,30 @@ Quando esquecemos disso, números deixam de ser instrumentos e passam a ser trat
     Recursos, tempo e energia fluem para aquilo que aparece nos relatórios.
   </Step>
 </Steps>
+
+<Mermaid
+  client:load
+  chart={`flowchart TD
+    A([Escolha do que medir]) --> B[Métrica se torna visível]
+    B --> C[Comportamento se adapta]
+    C --> D[Métrica 'melhora']
+    D --> E{Otimização genuína?}
+    E -->|Sim| F[Resultado real melhora]
+    E -->|Não| G[Consequências não-intencionais]
+    F --> H[Nova métrica é proposta]
+    G --> H
+    H --> A
+
+    style A fill:#6366f1,stroke:#4f46e5,color:#fff
+    style B fill:#e0e7ff,stroke:#6366f1
+    style C fill:#fce7f3,stroke:#ec4899
+    style D fill:#e0e7ff,stroke:#6366f1
+    style E fill:#fef3c7,stroke:#f59e0b
+    style F fill:#d1fae5,stroke:#10b981
+    style G fill:#fee2e2,stroke:#ef4444
+    style H fill:#e0e7ff,stroke:#6366f1`}
+  caption="Métricas não apenas medem realidade — elas a transformam. O ciclo de visibilidade mostra como a escolha do que medir molda o que times priorizam e como se comportam."
+/>
 
 Não existe métrica neutra. Existe apenas métrica assumida ou métrica usada sem consciência.
 

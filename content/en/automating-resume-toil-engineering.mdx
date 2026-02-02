@@ -12,7 +12,7 @@ translationSlug: automatizando-curriculo-toil-engenharia
 ---
 
 import { Callout, Timeline, TimelineEvent, Steps, Step, Accordion, AccordionItem, LinkCard, LinkCardGrid } from '@/components/mdx';
-import PlantUML from '@/components/mdx/PlantUMLWrapper.astro';
+import { Mermaid } from '@/components/mdx';
 
 Updating a resume was never hard. It was just **tedious**. For a long time, this was one of those processes I accepted as a natural part of professional life: open a document, update experiences, adjust dates, export a PDF, and move on. It required no intellectual effort, brought no new learning, yet it needed to be done repeatedly. Only after a few years did I realize this had a name: **toil**.
 
@@ -70,79 +70,65 @@ This change in perspective solved problems that previously seemed "natural." Hav
 
 The diagram below shows the data flow from YAML files to the final artifacts — three output formats for each language, all generated from the same source of truth:
 
-<PlantUML
-  code={`
-@startuml
-skinparam backgroundColor transparent
-skinparam defaultFontName JetBrains Mono
-skinparam shadowing false
-skinparam roundcorner 10
-skinparam arrowThickness 1.5
-skinparam arrowColor #666666
-skinparam rectangleBorderColor #888888
-skinparam cardBorderColor #AAAAAA
+<Mermaid
+  client:load
+  chart={`flowchart TB
+    subgraph sources[Data Sources]
+        common[common.yaml<br/>shared data]
+        en[resume.en.yaml<br/>translations]
+        ptbr[resume.ptbr.yaml<br/>translations]
+    end
 
-title Resume Builder - Data Flow
+    schema[JSON Resume Schema<br/>validation]
 
-together {
-  card "**common.yaml**\\nshared data" as common #E3F2FD
-  card "**resume.en.yaml**\\ntranslations" as en #E8F5E9
-  card "**resume.ptbr.yaml**\\ntranslations" as ptbr #FFEBEE
-}
+    typst[Typst Engine<br/>data-loader.typ merge]
 
-card "**JSON Resume Schema**\\nvalidation" as schema #FCE4EC
+    subgraph templates[Templates]
+        t_full[resume-full.typ]
+        t_onepage[resume-onepage.typ]
+        t_html[resume-html.typ]
+    end
 
-card "**Typst Engine**\\ndata-loader.typ (merge)" as typst #E0F7FA
+    subgraph outputs_en[EN Outputs]
+        out_full_en[EN resume.pdf]
+        out_onepage_en[EN resume-onepage.pdf]
+        out_html_en[EN index.html]
+    end
 
-together {
-  card "resume-full.typ" as t_full #FFF8E1
-  card "resume-onepage.typ" as t_onepage #FFF8E1
-  card "resume-html.typ" as t_html #FFF8E1
-}
+    subgraph outputs_pt[PT Outputs]
+        out_full_pt[PT resume.pdf]
+        out_onepage_pt[PT resume-onepage.pdf]
+        out_html_pt[PT index.html]
+    end
 
-together {
-  card "**EN** resume.pdf" as out_full_en #FFCCBC
-  card "**EN** resume-onepage.pdf" as out_onepage_en #FFCCBC
-  card "**EN** index.html" as out_html_en #C8E6C9
-}
+    gh((GitHub Pages))
 
-together {
-  card "**PT** resume.pdf" as out_full_pt #FFCCBC
-  card "**PT** resume-onepage.pdf" as out_onepage_pt #FFCCBC
-  card "**PT** index.html" as out_html_pt #C8E6C9
-}
+    common --> schema
+    en --> schema
+    ptbr --> schema
 
-cloud "**GitHub Pages**" as gh #BBDEFB
+    schema --> typst
 
-common -down-> schema
-en -down-> schema
-ptbr -down-> schema
+    typst --> t_full
+    typst --> t_onepage
+    typst --> t_html
 
-schema -down-> typst
+    t_full --> out_full_en
+    t_full --> out_full_pt
 
-typst -down-> t_full
-typst -down-> t_onepage
-typst -down-> t_html
+    t_onepage --> out_onepage_en
+    t_onepage --> out_onepage_pt
 
-t_full -down-> out_full_en
-t_full -down-> out_full_pt
+    t_html --> out_html_en
+    t_html --> out_html_pt
 
-t_onepage -down-> out_onepage_en
-t_onepage -down-> out_onepage_pt
-
-t_html -down-> out_html_en
-t_html -down-> out_html_pt
-
-out_full_en -down-> gh
-out_onepage_en -down-> gh
-out_html_en -down-> gh
-out_full_pt -down-> gh
-out_onepage_pt -down-> gh
-out_html_pt -down-> gh
-
-@enduml
+    out_full_en --> gh
+    out_onepage_en --> gh
+    out_html_en --> gh
+    out_full_pt --> gh
+    out_onepage_pt --> gh
+    out_html_pt --> gh
 `}
-  alt="Data flow diagram of the resume system"
   caption="Data flow: YAML → Validation → Typst → 6 artifacts (3 formats × 2 languages)"
 />
 

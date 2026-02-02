@@ -11,8 +11,7 @@ comments: true
 translationSlug: automating-resume-toil-engineering
 ---
 
-import { Callout, Timeline, TimelineEvent, Steps, Step, Accordion, AccordionItem, LinkCard, LinkCardGrid } from '@/components/mdx';
-import PlantUML from '@/components/mdx/PlantUMLWrapper.astro';
+import { Callout, Timeline, TimelineEvent, Steps, Step, Accordion, AccordionItem, LinkCard, LinkCardGrid, Mermaid } from '@/components/mdx';
 
 Atualizar currículo nunca foi difícil. Sempre foi apenas **chato**. Durante muito tempo, esse foi um daqueles processos que eu aceitava como parte natural da vida profissional: abrir um documento, atualizar experiências, ajustar datas, exportar um PDF e seguir em frente. Não exigia esforço intelectual, não trazia aprendizado novo e, ainda assim, precisava ser feito repetidamente. Só depois de alguns anos percebi que isso tinha nome: **toil**.
 
@@ -70,79 +69,65 @@ Essa mudança de perspectiva resolveu problemas que antes pareciam "naturais". T
 
 O diagrama abaixo mostra o fluxo de dados desde os arquivos YAML até os artefatos finais — três formatos de saída para cada idioma, todos gerados a partir da mesma fonte de verdade:
 
-<PlantUML
-  code={`
-@startuml
-skinparam backgroundColor transparent
-skinparam defaultFontName JetBrains Mono
-skinparam shadowing false
-skinparam roundcorner 10
-skinparam arrowThickness 1.5
-skinparam arrowColor #666666
-skinparam rectangleBorderColor #888888
-skinparam cardBorderColor #AAAAAA
+<Mermaid
+  client:load
+  chart={`flowchart TB
+    subgraph sources[Fontes de Dados]
+        common[common.yaml<br/>dados compartilhados]
+        en[resume.en.yaml<br/>traduções]
+        ptbr[resume.ptbr.yaml<br/>traduções]
+    end
 
-title Resume Builder - Data Flow
+    schema[JSON Resume Schema<br/>validação]
 
-together {
-  card "**common.yaml**\\nshared data" as common #E3F2FD
-  card "**resume.en.yaml**\\ntranslations" as en #E8F5E9
-  card "**resume.ptbr.yaml**\\ntranslations" as ptbr #FFEBEE
-}
+    typst[Typst Engine<br/>data-loader.typ merge]
 
-card "**JSON Resume Schema**\\nvalidation" as schema #FCE4EC
+    subgraph templates[Templates]
+        t_full[resume-full.typ]
+        t_onepage[resume-onepage.typ]
+        t_html[resume-html.typ]
+    end
 
-card "**Typst Engine**\\ndata-loader.typ (merge)" as typst #E0F7FA
+    subgraph outputs_en[Saídas EN]
+        out_full_en[EN resume.pdf]
+        out_onepage_en[EN resume-onepage.pdf]
+        out_html_en[EN index.html]
+    end
 
-together {
-  card "resume-full.typ" as t_full #FFF8E1
-  card "resume-onepage.typ" as t_onepage #FFF8E1
-  card "resume-html.typ" as t_html #FFF8E1
-}
+    subgraph outputs_pt[Saídas PT]
+        out_full_pt[PT resume.pdf]
+        out_onepage_pt[PT resume-onepage.pdf]
+        out_html_pt[PT index.html]
+    end
 
-together {
-  card "**EN** resume.pdf" as out_full_en #FFCCBC
-  card "**EN** resume-onepage.pdf" as out_onepage_en #FFCCBC
-  card "**EN** index.html" as out_html_en #C8E6C9
-}
+    gh((GitHub Pages))
 
-together {
-  card "**PT** resume.pdf" as out_full_pt #FFCCBC
-  card "**PT** resume-onepage.pdf" as out_onepage_pt #FFCCBC
-  card "**PT** index.html" as out_html_pt #C8E6C9
-}
+    common --> schema
+    en --> schema
+    ptbr --> schema
 
-cloud "**GitHub Pages**" as gh #BBDEFB
+    schema --> typst
 
-common -down-> schema
-en -down-> schema
-ptbr -down-> schema
+    typst --> t_full
+    typst --> t_onepage
+    typst --> t_html
 
-schema -down-> typst
+    t_full --> out_full_en
+    t_full --> out_full_pt
 
-typst -down-> t_full
-typst -down-> t_onepage
-typst -down-> t_html
+    t_onepage --> out_onepage_en
+    t_onepage --> out_onepage_pt
 
-t_full -down-> out_full_en
-t_full -down-> out_full_pt
+    t_html --> out_html_en
+    t_html --> out_html_pt
 
-t_onepage -down-> out_onepage_en
-t_onepage -down-> out_onepage_pt
-
-t_html -down-> out_html_en
-t_html -down-> out_html_pt
-
-out_full_en -down-> gh
-out_onepage_en -down-> gh
-out_html_en -down-> gh
-out_full_pt -down-> gh
-out_onepage_pt -down-> gh
-out_html_pt -down-> gh
-
-@enduml
+    out_full_en --> gh
+    out_onepage_en --> gh
+    out_html_en --> gh
+    out_full_pt --> gh
+    out_onepage_pt --> gh
+    out_html_pt --> gh
 `}
-  alt="Diagrama de fluxo de dados do sistema de currículo"
   caption="Fluxo de dados: YAML → Validação → Typst → 6 artefatos (3 formatos × 2 idiomas)"
 />
 

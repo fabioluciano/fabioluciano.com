@@ -23,6 +23,7 @@ import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Tooltip } from '@/components/mdx/Glossary';
 import { DefinitionList } from '@/components/mdx/DefinitionList';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 Times de software não quebram por falta de métricas.
 Eles quebram porque medem com convicção coisas que não entendem completamente.
@@ -254,8 +255,55 @@ Diferente do SPACE, que mapeia dimensões para reflexão, o DX Core 4 aponta dir
 Um dos aspectos mais críticos do DX Core 4 é a ênfase em Ciclos de Feedback rápidos. Esperas longas entre ação e resultado não apenas atrasam o trabalho — elas matam o momentum<FootnoteRef client:load id={1} />, aquela sensação de progresso contínuo que mantém times engajados e produtivos.
 
 <Callout type="tip" title="DX Core 4 como ponto de partida">
-  Se você não sabe por onde começar a melhorar Developer Experience, essas quatro dimensões oferecem um mapa de ação imediato. Não são as únicas coisas que importam, mas são as que mais frequentemente fazem diferença.
+  Se você não sabe por onde começar a melhorar Developer Experience, essas quatro dimensões oferecem um mapa de ação imediato. Não são as únicas coisas que importa, mas são as que mais frequentemente fazem diferença.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`mindmap
+  root((Frameworks de Produtividade & DevEx))
+    DORA
+      Foco: Pipeline
+      Medidas
+        Deployment Frequency
+        Lead Time
+        MTTR
+        Change Failure Rate
+      Pergunta
+        Entregamos rápido e com confiança?
+    SPACE
+      Foco: Multidimensional
+      Dimensões
+        Satisfaction
+        Performance
+        Activity
+        Communication
+        Efficiency
+      Pergunta
+        O que estamos deixando de ver?
+    DevEx
+      Foco: Vivência Cotidiana
+      Dimensões
+        Feedback loops
+        Cognitive load
+        Flow state
+        Tooling
+        Documentation
+        Onboarding
+      Pergunta
+        Quão difícil é fazer o trabalho?
+    DX Core 4
+      Foco: Ação Pragmática
+      Alavancas
+        Fast feedback
+        Low cognitive load
+        Deep flow
+        High satisfaction
+      Pergunta
+        Onde agir primeiro?
+`}
+  caption="Cada framework responde a uma pergunta diferente. DORA mede fluxo de entrega, SPACE força reflexão multidimensional, DevEx captura vivência cotidiana e DX Core 4 identifica alavancas de ação. Não são alternativas — são lentes complementares."
+/>
 
 ## O risco: quando frameworks viram ideologia
 
@@ -284,25 +332,7 @@ Até aqui, apresentamos quatro frameworks com respeito. Cada um tem valor real q
 
 </Callout>
 
-### O que os próximos artigos vão revelar
-
-Nos próximos quatro artigos, vamos examinar cada framework criticamente — não para destruí-los, mas para **recuperar consciência sobre seus limites, riscos e premissas ocultas**.
-
-**[Artigo 4: DORA](/pt/por-que-times-produtivos-fracassam-04)** — Veremos que correlação não é causação. Que métricas podem descrever **e** criar realidades. E como Gartner legitima frameworks não porque são verdade, mas porque reduzem ansiedade corporativa.
-
-**[Artigo 5: SPACE](/pt/por-que-times-produtivos-fracassam-05)** — Exploraremos como complexidade pode ser instrumentalizada. Como "é multidimensional" pode virar desculpa para inação. E por que organizações resistem ao SPACE justamente quando ele seria mais útil.
-
-**[Artigo 6: DevEx](/pt/por-que-times-produtivos-fracassam-06)** — Descobriremos que "DevEx" virou jargão de marketing. Que melhorar experiência não é técnico — é político. E que cosméticos (ferramentas novas) não substituem mudança sistêmica (redistribuição de poder).
-
-**[Artigo 7: DX Core 4](/pt/por-que-times-produtivos-fracassam-07)** — Entenderemos que pragmatismo pode ser armadilha. Que 4 dimensões podem virar checklist reducionista. E que escolher onde agir exige mais do que frameworks — exige coragem política.
-
-### Por que essa série não começa com as respostas
-
-Como vimos no [Artigo 2](/pt/por-que-times-produtivos-fracassam-02), métricas não são neutras — e escolher o que medir **é escolher o que ver e o que ignorar**.
-
-Agora adicionamos outra camada: **escolher um framework é escolher uma narrativa sobre o que constitui sucesso**.
-
-Essa escolha nunca é puramente técnica. Ela reflete prioridades organizacionais, ansiedades da liderança, estruturas de poder.
+Como vimos no [Artigo 2](/pt/por-que-times-produtivos-fracassam-02), escolher o que medir é escolher o que ver e o que ignorar. Escolher um framework é escolher uma narrativa sobre o que constitui sucesso. Essa escolha nunca é puramente técnica — ela reflete prioridades organizacionais, ansiedades da liderança, estruturas de poder.
 
 <CompareColumns
   leftTitle="Frameworks bem usados"
@@ -323,11 +353,7 @@ Essa escolha nunca é puramente técnica. Ela reflete prioridades organizacionai
   ]}
 />
 
-### O compromisso desta série
-
-**Não vamos fingir que frameworks são neutros.** Cada um carrega premissas sobre o que é trabalho de qualidade, quem importa, e o que pode ser sacrificado. Essas premissas podem estar certas ou erradas — mas raramente são explícitas.
-
-**Nos próximos artigos**, vamos torná-las explícitas. Não para rejeitar frameworks, mas para usá-los conscientemente. Para que, quando você escolher medir algo, saiba exatamente que jogo está jogando — e esteja disposto a arcar com as consequências dessa escolha.
+Frameworks carregam premissas sobre o que é trabalho de qualidade, quem importa, e o que pode ser sacrificado. Essas premissas podem estar certas ou erradas — mas raramente são explícitas. Quando você escolhe medir algo, precisa saber exatamente que jogo está jogando.
 
 
 ## Métricas não são neutras

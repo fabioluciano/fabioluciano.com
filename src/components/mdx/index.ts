@@ -7,7 +7,6 @@ export { CodeTabs, CodeTab } from './CodeTabs';
 export { FileTree } from './FileTree';
 export { Terminal, Command, Output } from './Terminal';
 export { Steps, Step } from './Steps';
-export { PlantUML, PlantUMLInline } from './PlantUML';
 export { KeyboardShortcut, Kbd, ShortcutList } from './KeyboardShortcut';
 export { Timeline, TimelineEvent } from './Timeline';
 export { VideoEmbed, VideoThumbnail } from './VideoEmbed';

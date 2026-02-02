@@ -24,6 +24,7 @@ import { Accordion, AccordionItem, FAQ, FAQItem } from '@/components/mdx/Accordi
 import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 ## Measuring is not understanding
 
@@ -54,6 +55,30 @@ When we forget this, numbers stop being instruments and start being treated as t
     Resources, time, and energy flow to what appears in reports.
   </Step>
 </Steps>
+
+<Mermaid
+  client:load
+  chart={`flowchart TD
+    A([Choose what to measure]) --> B[Metric becomes visible]
+    B --> C[Behavior adapts]
+    C --> D[Metric 'improves']
+    D --> E{Genuine optimization?}
+    E -->|Yes| F[Real outcome improves]
+    E -->|No| G[Unintended consequences]
+    F --> H[New metric is proposed]
+    G --> H
+    H --> A
+
+    style A fill:#6366f1,stroke:#4f46e5,color:#fff
+    style B fill:#e0e7ff,stroke:#6366f1
+    style C fill:#fce7f3,stroke:#ec4899
+    style D fill:#e0e7ff,stroke:#6366f1
+    style E fill:#fef3c7,stroke:#f59e0b
+    style F fill:#d1fae5,stroke:#10b981
+    style G fill:#fee2e2,stroke:#ef4444
+    style H fill:#e0e7ff,stroke:#6366f1`}
+  caption="Metrics don't just measure reality — they transform it. The visibility cycle shows how the choice of what to measure shapes what teams prioritize and how they behave."
+/>
 
 There's no such thing as a neutral metric. There's only an assumed metric or a metric used without awareness.
 

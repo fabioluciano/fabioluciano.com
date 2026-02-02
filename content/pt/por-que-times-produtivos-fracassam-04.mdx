@@ -23,6 +23,7 @@ import { ProsCons } from '@/components/mdx/ProsCons';
 import { Tooltip } from '@/components/mdx/Glossary';
 import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 DORA virou moeda corrente em conversas sobre DevOps e entrega de software. Suas quatro métricas — deployment frequency, lead time for changes, mean time to recovery e change failure rate — são citadas em apresentações, usadas para justificar investimentos e incluídas em painéis corporativos.
 
@@ -247,6 +248,41 @@ Liderança que inspira, desafia intelectualmente, apoia individualmente e encora
 <Callout type="danger" title="Métricas sem capacidades">
   Implementar painéis DORA sem investir nas capacidades é cosmético. Os números podem até melhorar por um tempo — por esforço heroico, atalhos ou ilusão estatística. Mas não se sustentam.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`mindmap
+  root((24 Capacidades DORA))
+    Técnicas
+      Controle de Versão
+      Automação de Deploy
+      Integração Contínua
+      Trunk-based Dev
+      Automação de Testes
+      Dados de Teste
+      Segurança Shift Left
+      Entrega Contínua
+      Acoplamento Fraco
+      Arquitetura
+    Processo
+      Feedback do Cliente
+      Fluxo de Valor
+      Pequenos Lotes
+      Experimentação
+    Gestão
+      Aprovação de Mudanças
+      Monitoramento
+      Notificação Proativa
+      Mudanças de BD
+      Limites de WIP
+      Gestão Visual
+    Cultura
+      Cultura Westrum
+      Aprendizado
+      Satisfação
+      Liderança`}
+  caption="As 24 capacidades DORA divididas em 4 categorias: Técnicas (10), Processo (4), Gestão (6) e Cultura (4). As métricas são consequência dessas capacidades."
+/>
 
 ## O Modelo de Cultura de Westrum: a capacidade que sustenta todas as outras
 

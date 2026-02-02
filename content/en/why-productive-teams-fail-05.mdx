@@ -24,6 +24,7 @@ import { ProsCons } from '@/components/mdx/ProsCons';
 import { Tooltip } from '@/components/mdx/Glossary';
 import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 After looking at DORA, it's tempting to believe that software productivity can be understood — and improved — by observing the pipeline. In many ways, this is true. Predictable systems with low cost of change create real conditions for work to progress.
 
@@ -578,6 +579,35 @@ SPACE doesn't try to resolve these tensions. **It makes them explicit.**
 <Callout type="tip" title="The conversation shift">
   Instead of asking "which metric is bad?", the question becomes "which dimension are we sacrificing without realizing?". Instead of seeking an aggregate score, the model forces conscious choices. Every optimization decision has a cost — and SPACE demands that cost be visible.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`graph TB
+    S["<b>S</b> - Satisfaction<br/><small>Well-being</small>"]
+    P["<b>P</b> - Performance<br/><small>Quality</small>"]
+    A["<b>A</b> - Activity<br/><small>Output</small>"]
+    C["<b>C</b> - Communication<br/><small>Collaboration</small>"]
+    E["<b>E</b> - Efficiency<br/><small>Flow</small>"]
+
+    S -->|Tension| A
+    A -->|Tension| P
+    P -->|Tension| E
+    E -->|Tension| C
+    C -->|Tension| S
+
+    S -.->|Synergy| P
+    P -.->|Synergy| S
+    A -.->|Synergy| E
+    C -.->|Synergy| P
+
+    style S fill:#FFE8E8,stroke:#FF6B6B,stroke-width:3px
+    style P fill:#E8FFE8,stroke:#6BCB77,stroke-width:3px
+    style A fill:#E8E8FF,stroke:#6366f1,stroke-width:3px
+    style C fill:#FFFFE8,stroke:#EAB308,stroke-width:3px
+    style E fill:#FFE8FF,stroke:#A855F7,stroke-width:3px
+`}
+  caption="The 5 SPACE dimensions. Solid arrows = Tension (optimizing one may harm another). Dashed arrows = Synergy (dimensions reinforce each other)."
+/>
 
 ## Who benefits from complexity?
 

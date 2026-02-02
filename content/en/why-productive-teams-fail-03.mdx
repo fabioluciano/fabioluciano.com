@@ -21,7 +21,9 @@ translationSlug: por-que-times-produtivos-fracassam-03
 import { Callout } from '@/components/mdx/Callout';
 import { CompareColumns } from '@/components/mdx/CompareColumns';
 import { Tooltip } from '@/components/mdx/Glossary';
+import { DefinitionList } from '@/components/mdx/DefinitionList';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 Software teams don't break down due to lack of metrics.
 They break down because they measure with conviction things they don't fully understand.
@@ -69,12 +71,35 @@ Throughout this series, we'll discuss four widely used frameworks for discussing
 
 <Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focused on measuring software delivery capability through metrics like deployment frequency, lead time, MTTR, and failure rate.">DORA</Tooltip><FootnoteRef client:load id={2} /> — the result of years of research on DevOps practices — looks at the team's delivery capability as a flow system. Its focus is on understanding how frequently changes reach production, how long they take to get there, and how stable this process is.
 
-**The four metrics:**
-
-- **Deployment Frequency** — How often code reaches production
-- **Lead Time for Changes** — How much time between commit and deploy
-- **Time to Restore Service** — Speed of recovery after failures
-- **Change Failure Rate** — Proportion of deploys that cause problems
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Deployment Frequency",
+      definition: "How often code reaches production. High frequency signals reliable pipeline and low perceived risk.",
+      icon: "code"
+    },
+    {
+      term: "Lead Time for Changes",
+      definition: "How much time between commit and deployment to production. Measures pipeline speed.",
+      icon: "code"
+    },
+    {
+      term: "Time to Restore Service",
+      definition: "Speed of recovery after failures. Measures resilience and incident response capability.",
+      icon: "info"
+    },
+    {
+      term: "Change Failure Rate",
+      definition: "Proportion of deployments that cause problems in production. Measures delivery process quality.",
+      icon: "info"
+    }
+  ]}
+  variant="compact"
+  columns={1}
+  showIcons={true}
+  indexable={false}
+/>
 
 The model categorizes teams into Elite, High, Medium, and Low performers. This classification is useful for initial diagnosis, but becomes problematic when treated as an end in itself.
 
@@ -94,13 +119,40 @@ The model categorizes teams into Elite, High, Medium, and Low performers. This c
   Productivity in knowledge work is multidimensional and cannot be reduced to a single number without serious losses.
 </Callout>
 
-**The five dimensions:**
-
-- **Satisfaction and well-being** — Feeling of satisfaction, fulfillment, and health at work
-- **Performance** — Work outcome (quality, impact, not just volume)
-- **Activity** — How work is done (counting, but contextualized)
-- **Communication and collaboration** — How people and teams exchange information
-- **Efficiency and flow** — Ability to do work without friction or interruption
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Satisfaction and well-being",
+      definition: "Feeling of satisfaction, fulfillment, and health at work. How developers feel about their work and environment.",
+      icon: "info"
+    },
+    {
+      term: "Performance",
+      definition: "Work outcome measured by quality and impact, not just volume of deliveries.",
+      icon: "code"
+    },
+    {
+      term: "Activity",
+      definition: "How work is done. Counting actions, but always contextualized — commits, PRs, deployments are signals, not objectives.",
+      icon: "package"
+    },
+    {
+      term: "Communication and collaboration",
+      definition: "How people and teams exchange information and work together. Quality of interactions, not quantity of meetings.",
+      icon: "info"
+    },
+    {
+      term: "Efficiency and flow",
+      definition: "Ability to do work without friction or interruption. Measures obstacles that prevent sustained progress.",
+      icon: "code"
+    }
+  ]}
+  variant="default"
+  columns={2}
+  showIcons={true}
+  indexable={false}
+/>
 
 The framework doesn't prescribe specific metrics. It offers lenses to examine productivity from multiple angles and **deliberately avoids single numbers or rankings**. SPACE's strength lies in forcing the question: "what else are we failing to see?"
 
@@ -112,14 +164,45 @@ The <Tooltip client:load term="Developer Experience" definition="The total exper
 
 **The central question isn't "how fast are we delivering," but "how difficult is it to do the right work in this environment".**
 
-**Core DevEx factors:**
-
-- **Feedback loops** — How long to see the result of a change (build, tests, deploy)
-- **Cognitive load** — Complexity that needs to be kept in mind to work
-- **Flow state** — Ability to enter and remain in deep concentration
-- **Tooling** — Quality, integration, and reliability of tools
-- **Documentation** — Clarity about how systems work and decisions were made
-- **Onboarding** — Time and difficulty for new members to become productive
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Feedback loops",
+      definition: "How long to see the result of a change — compilation, tests, deployment. Fast cycles accelerate learning.",
+      icon: "code"
+    },
+    {
+      term: "Cognitive load",
+      definition: "Complexity that needs to be kept in mind to work. High cognitive load exhausts decision-making capacity.",
+      icon: "info"
+    },
+    {
+      term: "Flow state",
+      definition: "Ability to enter and remain in deep concentration. Interruptions destroy real productivity.",
+      icon: "code"
+    },
+    {
+      term: "Tooling",
+      definition: "Quality, integration, and reliability of tools. Poor tools are constant friction.",
+      icon: "package"
+    },
+    {
+      term: "Documentation",
+      definition: "Clarity about how systems work and decisions were made. Absence creates dependency on tribal knowledge.",
+      icon: "book"
+    },
+    {
+      term: "Onboarding",
+      definition: "Time and difficulty for new members to become productive. Slow onboarding reveals systemic problems.",
+      icon: "info"
+    }
+  ]}
+  variant="compact"
+  columns={2}
+  showIcons={true}
+  indexable={false}
+/>
 
 Excessive friction, poor tools, opaque processes, and constant interruptions don't appear directly in classic delivery metrics, but they erode quality, motivation, and team sustainability over time.
 
@@ -131,12 +214,39 @@ Excessive friction, poor tools, opaque processes, and constant interruptions don
 
 Finally, <Tooltip client:load term="DX Core 4" definition="Framework identifying four central dimensions of Developer Experience: feedback loops, cognitive load, flow state, and developer satisfaction.">DX Core 4</Tooltip> appears as an attempt at pragmatic synthesis. It doesn't seek to explain everything or create a complete theoretical model. Its goal is to identify clear action levers — areas where investment generates consistent impact on experience and workflow.
 
-**The four core dimensions:**
-
-- **Fast feedback loops** — Speed of cycles (build, test, CI, deploy)
-- **Low cognitive load** — Reduction of unnecessary complexity
-- **Deep flow state** — Protection against interruptions and context switching
-- **High developer satisfaction** — Feeling of progress and fulfillment
+<DefinitionList
+  client:load
+  items={[
+    {
+      term: "Fast feedback loops",
+      definition: "Speed of cycles (compilation, test, CI, deployment). The faster the feedback, the faster the learning and course correction. Long waits kill momentum.",
+      icon: "code",
+      emphasis: true
+    },
+    {
+      term: "Low cognitive load",
+      definition: "Reduction of unnecessary complexity. Simple systems allow focus on business problems, not infrastructure. Accidental complexity drains mental energy.",
+      icon: "info",
+      emphasis: true
+    },
+    {
+      term: "Deep flow state",
+      definition: "Protection against interruptions and context switching. Flow is where real productivity happens — but it's fragile. Environments that constantly break flow destroy creative capacity.",
+      icon: "code",
+      emphasis: true
+    },
+    {
+      term: "High developer satisfaction",
+      definition: "Feeling of progress and fulfillment. Satisfaction isn't comfort — it's the sense that work matters and evolves. Dissatisfied teams produce less and with lower quality.",
+      icon: "info",
+      emphasis: true
+    }
+  ]}
+  variant="glossary"
+  columns={2}
+  showIcons={true}
+  indexable={false}
+/>
 
 Unlike SPACE, which maps dimensions for reflection, DX Core 4 points directly to where to act. Each of these dimensions can be measured, but can also be **immediately improved through concrete actions**: improve tools, simplify architecture, protect focused time, listen to feedback.
 
@@ -147,6 +257,53 @@ One of the most critical aspects of DX Core 4 is the emphasis on fast feedback l
 <Callout type="tip" title="DX Core 4 as a starting point">
   If you don't know where to start improving Developer Experience, these four dimensions offer an immediate action map. They're not the only things that matter, but they're the ones that most frequently make a difference.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`mindmap
+  root((Productivity & DevEx Frameworks))
+    DORA
+      Focus: Pipeline
+      Metrics
+        Deployment Frequency
+        Lead Time
+        MTTR
+        Change Failure Rate
+      Question
+        Do we deliver fast and reliably?
+    SPACE
+      Focus: Multidimensional
+      Dimensions
+        Satisfaction
+        Performance
+        Activity
+        Communication
+        Efficiency
+      Question
+        What are we failing to see?
+    DevEx
+      Focus: Daily Experience
+      Dimensions
+        Feedback loops
+        Cognitive load
+        Flow state
+        Tooling
+        Documentation
+        Onboarding
+      Question
+        How hard is it to do the work?
+    DX Core 4
+      Focus: Pragmatic Action
+      Levers
+        Fast feedback
+        Low cognitive load
+        Deep flow
+        High satisfaction
+      Question
+        Where to act first?
+`}
+  caption="Each framework answers a different question. DORA measures delivery flow, SPACE forces multidimensional reflection, DevEx captures daily experience, and DX Core 4 identifies action levers. They're not alternatives — they're complementary lenses."
+/>
 
 ## The Risk: When Frameworks Become Ideology
 
@@ -175,25 +332,7 @@ So far, we've presented four frameworks with respect. Each has real value when u
 
 </Callout>
 
-### What the next articles will reveal
-
-In the next four articles, we'll examine each framework critically — not to destroy them, but to **recover awareness of their limits, risks, and hidden assumptions**.
-
-**[Article 4: DORA](/en/why-productive-teams-fail-04)** — We'll see that correlation is not causation. That metrics can describe **and** create realities. And how Gartner legitimizes frameworks not because they're true, but because they reduce corporate anxiety.
-
-**[Article 5: SPACE](/en/why-productive-teams-fail-05)** — We'll explore how complexity can be weaponized. How "it's multidimensional" can become an excuse for inaction. And why organizations resist SPACE precisely when it would be most useful.
-
-**[Article 6: DevEx](/en/why-productive-teams-fail-06)** — We'll discover that "DevEx" became a marketing buzzword. That improving experience isn't technical — it's political. And that cosmetics (new tools) don't substitute for systemic change (power redistribution).
-
-**[Article 7: DX Core 4](/en/why-productive-teams-fail-07)** — We'll understand that pragmatism can be a trap. That 4 dimensions can become a reductionist checklist. And that choosing where to act requires more than frameworks — it requires political courage.
-
-### Why this series doesn't start with answers
-
-As we saw in [Article 2](/en/why-productive-teams-fail-02), metrics aren't neutral — and choosing what to measure **is choosing what to see and what to ignore**.
-
-Now we add another layer: **choosing a framework is choosing a narrative about what constitutes success**.
-
-This choice is never purely technical. It reflects organizational priorities, leadership anxieties, power structures. When you adopt DORA without questioning, you're implicitly saying "delivery is what matters." When you ignore DevEx, you're saying "human experience is secondary."
+As we saw in [Article 2](/en/why-productive-teams-fail-02), choosing what to measure is choosing what to see and what to ignore. Choosing a framework is choosing a narrative about what constitutes success. This choice is never purely technical — it reflects organizational priorities, leadership anxieties, power structures.
 
 <CompareColumns
   leftTitle="Well-used frameworks"
@@ -214,11 +353,7 @@ This choice is never purely technical. It reflects organizational priorities, le
   ]}
 />
 
-### This series' commitment
-
-**We won't pretend frameworks are neutral.** Each carries assumptions about what quality work is, who matters, and what can be sacrificed. These assumptions may be right or wrong — but they're rarely explicit.
-
-**In the next articles**, we'll make them explicit. Not to reject frameworks, but to use them consciously. So that when you choose to measure something, you know exactly what game you're playing — and are willing to bear the consequences of that choice.
+Frameworks carry assumptions about what quality work is, who matters, and what can be sacrificed. These assumptions may be right or wrong — but they're rarely explicit. When you choose to measure something, you need to know exactly what game you're playing.
 
 
 ## Metrics are not neutral

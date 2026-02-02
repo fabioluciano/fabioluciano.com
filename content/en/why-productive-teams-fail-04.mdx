@@ -23,6 +23,7 @@ import { ProsCons } from '@/components/mdx/ProsCons';
 import { Tooltip } from '@/components/mdx/Glossary';
 import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
 
 DORA has become common currency in conversations about DevOps and software delivery. Its four metrics — deployment frequency, lead time for changes, mean time to recovery, and change failure rate — are cited in presentations, used to justify investments, and included in corporate dashboards.
 
@@ -247,6 +248,41 @@ Leadership that inspires, intellectually challenges, individually supports, and 
 <Callout type="danger" title="Metrics without capabilities">
   Implementing DORA dashboards without investing in capabilities is cosmetic. Numbers may even improve for a while — through heroic effort, shortcuts, or statistical illusion. But they don't sustain.
 </Callout>
+
+<Mermaid
+  client:load
+  chart={`mindmap
+  root((24 DORA Capabilities))
+    Technical
+      Version Control
+      Deployment Automation
+      Continuous Integration
+      Trunk-based Dev
+      Test Automation
+      Test Data Mgmt
+      Shift Left Security
+      Continuous Delivery
+      Loose Coupling
+      Architecture
+    Process
+      Customer Feedback
+      Value Stream
+      Small Batches
+      Experimentation
+    Management
+      Change Approval
+      Monitoring
+      Proactive Notification
+      Database Changes
+      WIP Limits
+      Visual Management
+    Cultural
+      Westrum Culture
+      Learning
+      Job Satisfaction
+      Leadership`}
+  caption="The 24 DORA capabilities divided into 4 categories: Technical (10), Process (4), Management (6), and Cultural (4). Metrics are the consequence of these capabilities."
+/>
 
 ## The Westrum Culture Model: the capability that sustains all others
 

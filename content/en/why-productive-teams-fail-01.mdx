@@ -26,6 +26,7 @@ import { Quiz } from '@/components/mdx/Quiz';
 import { Tooltip, GlossaryList, GlossaryTerm } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
 import { DefinitionList } from '@/components/mdx/DefinitionList';
+import { Mermaid } from '@/components/mdx';
 
 ## Developer Experience Isn't Comfort — It's Capacity
 
@@ -70,6 +71,23 @@ When we talk about mental, emotional, and social effort in Developer Experience,
   columns={1}
   showIcons={true}
   indexable={true}
+/>
+
+<Mermaid
+  client:load
+  chart={`flowchart LR
+    M((Mental<br/>Effort))
+    E((Emotional<br/>Effort))
+    S((Social<br/>Effort))
+
+    M -->|Cognitive load<br/>creates insecurity| E
+    E -->|Insecurity increases<br/>dependence| S
+    S -->|Social friction<br/>consumes energy| M
+
+    style M fill:#e0e7ff,stroke:#6366f1,stroke-width:3px
+    style E fill:#fce7f3,stroke:#ec4899,stroke-width:3px
+    style S fill:#fef3c7,stroke:#f59e0b,stroke-width:3px`}
+  caption="The three types of effort are not independent — they form a self-reinforcing cycle. Bad DevEx amplifies this cycle; good DevEx interrupts it."
 />
 
 When mental, emotional, and social are misaligned, we see: teams that seem productive but are exhausted, code that works today and nobody wants to touch tomorrow, organizations that invest in tools but don't reduce friction, and leaders confused about why "delivering more" doesn't improve results. **Cognitive debt is as real as technical debt — only harder to refactor.**

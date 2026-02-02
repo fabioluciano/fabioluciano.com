@@ -10,7 +10,6 @@ import { getUrlPrefix, type Locale } from '@/lib/i18n';
 import { LOCALES } from '@/config/locales';
 import MDXImageWrapper from '@/components/mdx/MDXImageWrapper.astro';
 import ImageModalWrapper from '@/components/mdx/ImageModalWrapper.astro';
-import PlantUMLWrapper from '@/components/mdx/PlantUMLWrapper.astro';
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
@@ -65,7 +64,6 @@ const alternateUrl = alternatePost
 const mdxComponents = {
   img: MDXImageWrapper,
   ImageModal: ImageModalWrapper,
-  PlantUML: PlantUMLWrapper,
 };
 ---
 
