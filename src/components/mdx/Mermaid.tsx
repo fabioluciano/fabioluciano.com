@@ -25,6 +25,7 @@ const getMermaid = async () => {
   if (!isInitialized) {
     mermaid.initialize({
       startOnLoad: false,
+      suppressErrorRendering: false,
       theme: 'base',
       themeVariables: {
         primaryColor: '#e0e7ff',
