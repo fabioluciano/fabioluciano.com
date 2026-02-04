@@ -33,40 +33,6 @@ Mas pouquíssimas pessoas lembram que **DORA não é sobre métricas**. DORA é 
   As métricas DORA são indicadores de resultado. Elas não dizem o que fazer. Elas sinalizam se o que você está fazendo está funcionando. O trabalho real está nas **24 capacidades técnicas e organizacionais** que sustentam essas métricas.
 </Callout>
 
-## O problema epistemológico das métricas
-
-Antes de mergulharmos nas métricas e capacidades, vale questionar algo raramente discutido: **métricas descrevem realidade ou a criam?**
-
-Quando o DORA categoriza times em "Elite", "High", "Medium" e "Low performers", está apenas observando padrões — ou está estabelecendo uma hierarquia que organizações passarão a perseguir? Quando deployment frequency vira indicador de sucesso, estamos medindo saúde organizacional — ou criando um jogo onde "mais rápido" se torna sinônimo de "melhor", independentemente do contexto?
-
-<Callout type="warning" title="A premissa oculta">
-  DORA parte de correlações estatísticas observadas em milhares de organizações. Mas correlação não é lei universal. O que funciona para a maioria pode não funcionar para você. E o que mede bem uma coisa não necessariamente mede outra.
-</Callout>
-
-Essa distinção importa porque, quando esquecemos que métricas são recortes — não verdades absolutas — começamos a tratá-las como objetivos em si mesmos. E aí o sistema para de perguntar "estamos resolvendo o problema certo?" e passa a perguntar apenas "estamos melhorando os números?".
-
-<ProsCons
-  client:load
-  prosTitle="O que DORA assume"
-  consTitle="O que frequentemente ignora"
-  context="Premissas implícitas do framework DORA"
-  variant="warning"
-  pros={[
-    "Contextos organizacionais são comparáveis",
-    "Velocidade é virtude universal",
-    "Métricas revelam verdade objetiva",
-    "Melhoria é sempre mensurável"
-  ]}
-  cons={[
-    { text: "Cada contexto tem suas restrições únicas", emphasis: true },
-    { text: "Velocidade tem custo humano e técnico", emphasis: true },
-    "Métricas criam incentivos e comportamentos",
-    "Nem tudo valioso aparece em painéis"
-  ]}
-/>
-
-Esse não é um argumento contra métricas — é um alerta sobre o que acontece quando paramos de questionar o que elas realmente significam. Com essa lente crítica estabelecida, podemos olhar para as quatro métricas DORA com mais nuance.
-
 ## As métricas DORA como sintomas
 
 <Tooltip client:load term="DORA Metrics" definition="Conjunto de 4 métricas que avaliam a capacidade de entrega de software: frequência de deploy, lead time, tempo de recuperação e taxa de falhas em mudanças.">As quatro métricas DORA</Tooltip> funcionam como termômetros, não como tratamento.
@@ -382,11 +348,21 @@ Se sua organização tem cultura patológica ou burocrática, não existe atalho
 
 **Por que isso importa para DORA:** Você pode implementar todas as práticas técnicas — CI/CD, testes automatizados, observabilidade — e ainda assim ter métricas ruins se a cultura não permite que pessoas falem sobre problemas. A cultura é o solo onde as práticas crescem ou morrem.
 
+## O problema epistemológico: métricas descrevem ou criam realidade?
+
+Antes de mergulharmos nas críticas estruturais, vale questionar algo raramente discutido: **métricas descrevem realidade ou a criam?**
+
+Quando o DORA categoriza times em "Elite", "High", "Medium" e "Low performers", está apenas observando padrões — ou está estabelecendo uma hierarquia que organizações passarão a perseguir? Quando deployment frequency vira indicador de sucesso, estamos medindo saúde organizacional — ou criando um jogo onde "mais rápido" se torna sinônimo de "melhor", independentemente do contexto?
+
+<Callout type="warning" title="A premissa oculta">
+  DORA parte de correlações estatísticas observadas em milhares de organizações. Mas correlação não é lei universal. O que funciona para a maioria pode não funcionar para você. E o que mede bem uma coisa não necessariamente mede outra.
+</Callout>
+
+Essa distinção importa porque, quando esquecemos que métricas são recortes — não verdades absolutas — começamos a tratá-las como objetivos em si mesmos. E aí o sistema para de perguntar "estamos resolvendo o problema certo?" e passa a perguntar apenas "estamos melhorando os números?".
+
 ## A crítica que ninguém faz: quando DORA vira dogma
 
-Implementar as 24 capacidades é fundamental. Elas representam o trabalho real de construir sistemas de entrega sustentáveis. Mas há uma conversa que raramente acontece em salas de reunião, conferências ou artigos sobre DevOps: **e se as próprias métricas DORA estiverem nos conduzindo na direção errada?**
-
-Não se trata de negar o valor do framework. DORA trouxe rigor e evidência para discussões que antes eram apenas anedóticas. Mas há um problema que cresce silenciosamente: quando métricas se tornam verdades absolutas, quando correlações viram leis universais, quando números substituem julgamento.
+Implementar as 24 capacidades é fundamental. Mas há um problema que cresce silenciosamente: quando métricas se tornam verdades absolutas, quando correlações viram leis universais, quando números substituem julgamento.
 
 <Callout type="warning" title="A pergunta incômoda">
   DORA mede **capacidade de entrega**. Não mede se essas entregas fazem sentido, nem quanto custa sustentá-las, nem o que está sendo sacrificado para manter os números verdes.
@@ -520,38 +496,28 @@ O framework descreve o que foi observado em contextos específicos. Ele não pre
 
 É um termômetro, não um diagnóstico. E termômetros não dizem se a febre é sintoma de algo sério ou apenas o corpo lutando saudavelmente contra uma infecção.
 
-## Por que acreditamos: Gartner, legitimidade e teatro científico
+## Por que acreditamos: Gartner e legitimidade
 
 Se essas críticas são tão evidentes — contexto importa, métricas podem ser manipuladas, números não capturam desgaste humano — por que o DORA é tratado como verdade inquestionável em tantas organizações?
 
 A resposta passa por um nome que raramente aparece em discussões técnicas, mas que exerce influência desproporcional sobre decisões corporativas: **Gartner**.
 
-### O que o Gartner realmente é (e não é)
-
 <Callout type="info" title="Definição honesta">
   O Gartner não é um órgão científico, não produz conhecimento experimental e não valida práticas de forma neutra. Ele é, fundamentalmente, **uma empresa de consultoria que vende redução de risco decisório percebido**.
 </Callout>
 
-Quando um CIO ou VP de Engenharia precisa justificar um investimento de milhões em transformação DevOps, o problema não é técnico — é político:
-
-- "E se der errado?"
-- "Como eu justifico isso para o board?"
-- "Quem mais está fazendo isso?"
-- "Como sei que não é modinha?"
-
-Citar o Gartner resolve esse problema. Não porque Gartner descobriu uma verdade técnica que ninguém mais sabia. Mas porque ele oferece algo mais valioso para executivos: **cobertura reputacional**.
+Quando um CIO ou VP de Engenharia precisa justificar um investimento de milhões em transformação DevOps, o problema não é técnico — é político. Citar o Gartner resolve esse problema oferecendo **cobertura reputacional**.
 
 <ProsCons
   client:load
-  prosTitle="O que Gartner parece ser"
-  consTitle="O que Gartner realmente é"
-  context="Percepção vs realidade do papel do Gartner"
+  prosTitle="O que parece ser"
+  consTitle="O que realmente é"
+  context="Percepção vs realidade"
   variant="warning"
   pros={[
     "Pesquisa científica independente",
     "Validação neutra de tecnologias",
-    "Descoberta de melhores práticas",
-    "Órgão certificador de qualidade"
+    "Descoberta de melhores práticas"
   ]}
   cons={[
     { text: "Advisory corporativo", emphasis: true },
@@ -565,69 +531,21 @@ O valor do Gartner não está em estar certo. **Está em ser defensável.**
 
 Se uma iniciativa falha, mas foi baseada em recomendação Gartner, a falha vira "decisão alinhada ao mercado que não funcionou neste contexto". Se não tinha endosso Gartner e falha, vira "aposta arriscada de um líder imprudente".
 
-### Magic Quadrant: medindo aceitabilidade, não qualidade
+### Magic Quadrant: medindo aceitabilidade
 
-O produto mais conhecido do Gartner — o **Magic Quadrant** — é frequentemente interpretado como ranking de qualidade técnica. Não é.
+O **Magic Quadrant** do Gartner mede **aceitabilidade corporativa**, não qualidade técnica. Avalia tamanho da empresa, alcance de mercado e alinhamento com tendências — não facilidade de uso, adequação contextual ou custo-benefício real.
 
-Ele mede **aceitabilidade corporativa**: quão seguro é escolher essa ferramenta sem ser questionado? Quão amplamente adotada ela já é? Quão bem a empresa vendor se posiciona no mercado?
-
-#### O que o Magic Quadrant realmente avalia
-
-O Magic Quadrant classifica vendors em quatro quadrantes com base em dois eixos:
-
-- **Ability to Execute** (capacidade de executar): tamanho da empresa, alcance de mercado, viabilidade financeira, suporte ao cliente
-- **Completeness of Vision** (completude de visão): alinhamento com tendências de mercado, inovação percebida, estratégia de produto
-
-Note o que **não** está sendo medido diretamente:
-- Qualidade técnica da solução
-- Facilidade de uso
-- Adequação a contextos específicos
-- Custo-benefício real
-- Experiência do desenvolvedor
-
-Um produto tecnicamente superior, mas de uma startup pequena, nunca chega ao quadrante "Leaders". Um produto medíocre de um vendor gigante tem vantagem estrutural.
-
-#### Por que executivos confiam mesmo assim
-
-Porque o Magic Quadrant resolve o problema deles: **reduzir ansiedade decisória**.
-
-Escolher um "Leader" no Magic Quadrant significa:
-- Decisão pode ser explicada em uma reunião de board
-- Consultores externos validarão a escolha
-- Outros executivos reconhecerão a marca
-- Se falhar, a culpa é compartilhada com "o mercado"
-
-Escolher uma ferramenta fora do Quadrant exige justificativa ativa. Escolher dentro do Quadrant é a escolha padrão — não precisa ser justificada, precisa ser **contestada** para não acontecer.
+Um produto tecnicamente superior de uma startup nunca chega ao quadrante "Leaders". Um produto medíocre de um vendor gigante tem vantagem estrutural. Escolher um "Leader" significa decisão defensável no board. Se falhar, a culpa é compartilhada com "o mercado".
 
 ### Por que o Gartner recomenda DORA
 
-Agora fica mais claro por que DORA aparece consistentemente em relatórios e recomendações Gartner. Não porque DORA seja infalível, mas porque ele tem três propriedades que executivos (e o Gartner) valorizam:
+DORA aparece consistentemente em relatórios Gartner porque tem três propriedades que executivos valorizam:
 
-**1. É simples e comunicável**
+**1. É simples e comunicável**: Quatro métricas. Cabe em um slide. Fácil de reportar para stakeholders não-técnicos.
 
-Quatro métricas. Fácil de explicar em um slide. Fácil de comparar ao longo do tempo. Fácil de reportar para stakeholders não-técnicos.
+**2. Tem "lastro científico suficiente"**: Pesquisas com milhares de organizações criam autoridade simbólica — mesmo sem causalidade forte.
 
-**Isso é moeda de troca executiva.** Métricas complexas, nuanceadas e dependentes de contexto não cabem em reuniões de 30 minutos com o C-level. Simplicidade vende — mesmo quando reduz realidade a ponto de distorcê-la.
-
-**2. Tem "lastro científico suficiente"**
-
-DORA vem de pesquisas com milhares de organizações, relatórios anuais, linguagem acadêmica, correlações estatísticas. Isso cria **autoridade simbólica** — mesmo sem causalidade forte.
-
-Para o Gartner, isso é suficiente para legitimar o uso. Não precisa ser perfeito. Precisa ser defensável.
-
-**3. Reforça uma narrativa conveniente**
-
-DORA sustenta uma história que executivos querem contar:
-
-> "Times mais rápidos são times melhores. Vamos investir em automação, DevOps e transformação ágil para subir nossos números."
-
-Essa narrativa:
-- Justifica orçamento para ferramentas
-- Cria sensação de progresso mensurável
-- Permite comparação com competidores
-- Alinha tecnologia com "eficiência" (palavra mágica do C-level)
-
-O Gartner não cria essa narrativa do zero — ele a organiza, embala e valida.
+**3. Reforça narrativa conveniente**: "Times mais rápidos são times melhores" — justifica orçamento, cria sensação de progresso mensurável, permite comparação com competidores.
 
 <Callout type="danger" title="O ponto crítico">
   Quando o Gartner recomenda DORA, ele está fazendo isso como **framework de governança**, não como modelo explicativo completo da realidade. O problema é que essa distinção desaparece na implementação.

@@ -197,7 +197,11 @@ O DevEx não surgiu do zero. Ele é descendente direto do SPACE — e dois dos a
 
 O SPACE perguntava: "Como medir produtividade de forma multidimensional?" O DevEx pergunta: "Como é trabalhar aqui, e isso pode ser medido?"
 
+---
+
 ## As três dimensões do framework
+
+Entendido o contexto histórico e as escolhas estratégicas, vamos ao núcleo operacional: as três dimensões que o DevEx propõe como lentes para avaliar experiência do desenvolvedor.
 
 O framework DevEx se estrutura em torno de **três dimensões centrais** — definidas a partir de pesquisa empírica como os fatores que mais impactam a produtividade real dos desenvolvedores.
 
@@ -621,27 +625,9 @@ Cada adição faz sentido isoladamente. O absurdo só fica visível quando se te
 
 </Callout>
 
-#### Diferença entre complexidade essencial e acidental
+#### Exemplos práticos: quando complexidade se acumula
 
-Nem toda complexidade é evitável. O desafio é distinguir:
-
-**Complexidade essencial (inevitável):**
-- Regras de negócio que refletem a realidade do domínio
-- Lógica de cálculo de impostos para 50 países diferentes
-- Orquestração de transações financeiras com requisitos regulatórios
-- Algoritmos de recomendação com ML
-
-**Isso é difícil porque o problema é difícil.** Simplificar seria remover funcionalidade ou violar requisitos.
-
-**Complexidade acidental (evitável):**
-- Precisar saber 7 ferramentas diferentes para fazer deploy
-- Ter 4 formas diferentes de configurar serviços (YAML, JSON, TOML, variáveis de ambiente)
-- Processos que exigem 12 passos manuais porque "sempre foi assim"
-- Arquitetura onde cada módulo segue convenções diferentes
-
-**Isso é difícil porque alguém escolheu que fosse difícil** (mesmo sem intenção).
-
-**Exemplo de confusão entre as duas:**
+Já vimos os três tipos de carga (intrínseca, extrínseca, germane) e a distinção crítica entre complexidade essencial e acidental. Agora, como isso se manifesta no dia-a-dia:
 
 **Problema:** Sistema de pagamentos com múltiplas integrações (PayPal, Stripe, PagSeguro, etc.)
 

@@ -69,7 +69,7 @@ Ao longo desta série, vamos falar de quatro frameworks amplamente utilizados pa
 
 ### DORA: A pipeline
 
-<Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focado em medir a capacidade de entrega de software através de métricas como frequência de implantação, lead time, MTTR e taxa de falhas.">DORA</Tooltip><FootnoteRef client:load id={2} /> — resultado de anos de pesquisa sobre práticas de DevOps — olha para a capacidade de entrega do time como um sistema de fluxo. Seu foco está em entender com que frequência mudanças chegam à produção, quanto tempo levam para chegar lá e o quão estável esse processo é.
+<Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focado em medir a capacidade de entrega de software através de métricas como frequência de implantação, lead time, MTTR e taxa de falhas.">DORA</Tooltip><FootnoteRef client:load id={2} /> olha para a capacidade de entrega do time como um sistema de fluxo.
 
 <DefinitionList
   client:load
@@ -113,7 +113,7 @@ O modelo categoriza times em Elite, High, Medium e Low performers. Essa classifi
 
 ### SPACE: O mapa conceitual
 
-<Tooltip client:load term="SPACE" definition="Framework que propõe cinco dimensões para medir produtividade: Satisfaction, Performance, Activity, Communication e Collaboration, e Efficiency and Flow.">SPACE</Tooltip> surge quase como uma reação à simplificação excessiva da ideia de produtividade. Em vez de oferecer um conjunto fechado de métricas, ele propõe um mapa conceitual.
+Onde DORA mede fluxo, <Tooltip client:load term="SPACE" definition="Framework que propõe cinco dimensões para medir produtividade: Satisfaction, Performance, Activity, Communication e Collaboration, e Efficiency and Flow.">SPACE</Tooltip> pergunta: e as pessoas? Em vez de oferecer um conjunto fechado de métricas, ele propõe um mapa conceitual.
 
 <Callout type="info" title="A ideia central do SPACE">
   Produtividade em trabalho de conhecimento é multidimensional e não pode ser reduzida a um único número sem perdas graves.
@@ -160,7 +160,7 @@ SPACE não diz exatamente o que medir; ele força a pergunta incômoda: **por qu
 
 ### DevEx: A vivência cotidiana
 
-Já o olhar de <Tooltip client:load term="Developer Experience" definition="A experiência total de desenvolvedores ao interagir com ferramentas, processos e sistemas. Não é conforto operacional — é economia cognitiva.">Developer Experience</Tooltip> parte de um ponto diferente. Em vez de começar pelo fluxo ou pelo conceito abstrato de produtividade, ele começa pela vivência cotidiana de quem escreve, testa, revisa e mantém código.
+DORA mede entrega, SPACE mede dimensões, <Tooltip client:load term="Developer Experience" definition="A experiência total de desenvolvedores ao interagir com ferramentas, processos e sistemas. Não é conforto operacional — é economia cognitiva.">DevEx</Tooltip> pergunta: quanto custa cognitivamente fazer o trabalho aqui?
 
 **A pergunta central não é "o quão rápido entregamos", mas "o quão difícil é fazer o trabalho certo neste ambiente".**
 
@@ -212,7 +212,7 @@ Fricção excessiva, ferramentas ruins, processos opacos e interrupções consta
 
 ### DX Core 4: A síntese pragmática
 
-Por fim, o <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: feedback loops, cognitive load, flow state e developer satisfaction.">DX Core 4</Tooltip> aparece como uma tentativa de síntese pragmática. Ele não busca explicar tudo, nem criar um modelo teórico completo. Seu objetivo é identificar alavancas claras de ação — áreas onde investir gera impacto consistente na experiência e no fluxo de trabalho.
+Enquanto os três anteriores focam em diferentes aspectos, <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: feedback loops, cognitive load, flow state e developer satisfaction.">DX Core 4</Tooltip> tenta sintetizar: quais são as alavancas que realmente importam?
 
 <DefinitionList
   client:load
@@ -305,23 +305,20 @@ Um dos aspectos mais críticos do DX Core 4 é a ênfase em Ciclos de Feedback r
   caption="Cada framework responde a uma pergunta diferente. DORA mede fluxo de entrega, SPACE força reflexão multidimensional, DevEx captura vivência cotidiana e DX Core 4 identifica alavancas de ação. Não são alternativas — são lentes complementares."
 />
 
-## O risco: quando frameworks viram ideologia
+## O risco oculto: quando a ferramenta vira doutrina
 
-Até aqui, apresentamos quatro frameworks com respeito. Cada um tem valor real quando usado conscientemente. Mas há um risco que precisa ser nomeado antes que você os encontre em estado degenerado: **frameworks podem virar ideologias**.
+Até aqui, tratamos os frameworks com respeito — e merecem. Mas há um risco que precisa ser nomeado: **frameworks podem degenerar em ideologias**.
 
 <Callout type="danger" title="Da ferramenta à doutrina">
   Quando um framework deixa de ser lente e passa a ser verdade absoluta, ele para de iluminar problemas e começa a escondê-los sob verniz de racionalidade técnica.
 </Callout>
 
-### Como a degeneração acontece
+### As 4 fases da degeneração
 
-**Fase 1: Adoção honesta** — Um time ou organização descobre o framework, vê valor, começa a aplicá-lo conscientemente.
-
-**Fase 2: Normalização** — O framework vira linguagem comum. "Nosso DORA está bom", "precisamos melhorar nossa SPACE satisfaction", "DevEx ruim aqui".
-
-**Fase 3: Burocratização** — Frameworks viram requisitos, não ferramentas. Métricas são coletadas porque "é o que se faz", não porque respondem a perguntas.
-
-**Fase 4: Ideologia** — O framework vira inquestionável. Questioná-lo é visto como resistência à "modernidade" ou "maturidade técnica".
+1. **Adoção honesta**: Time descobre valor real
+2. **Normalização**: Framework vira linguagem comum
+3. **Burocratização**: Vira requisito, não ferramenta
+4. **Ideologia**: Questioná-lo é visto como heresia
 
 <Callout type="warning" title="Sinais de que você chegou na Fase 4">
 
@@ -358,12 +355,9 @@ Frameworks carregam premissas sobre o que é trabalho de qualidade, quem importa
 
 ## Métricas não são neutras
 
-Porque, no fim, métricas não são neutras.
-Elas moldam comportamento, direcionam investimento e definem o que a organização passa a chamar de sucesso.
+Como vimos no Artigo 2, escolher o que medir é escolher o que ver — e o que ignorar. Frameworks carregam premissas sobre o que é sucesso, quem importa, e o que pode ser sacrificado.
 
-### Frameworks como instrumentos políticos
-
-Escolher um framework é escolher uma narrativa sobre o que constitui trabalho bem-feito. E essa escolha não é técnica — é **política**.
+**Agora, aplicado aos 4 frameworks:**
 
 Quando uma organização decide medir apenas DORA, ela está dizendo implicitamente: "entrega é o que importa". Quando adiciona SPACE, reconhece que há mais em jogo. Quando investe em DevEx, admite que a experiência humana tem peso. Quando ignora todos e foca em linhas de código ou story points, revela exatamente que jogo está jogando — mesmo que não o admita.
 

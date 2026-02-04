@@ -72,13 +72,7 @@ O acrônimo representa cinco dimensões que coexistem em tensão permanente: **S
 
 ### Satisfaction and Well-being: Variável estrutural, não luxo
 
-#### Por que satisfação importa tecnicamente
-
-Satisfação costuma ser tratada como algo "soft", secundário, quase um luxo. O SPACE inverte essa lógica. Ele trata satisfação e bem-estar como **variáveis estruturais**, não como bônus emocionais. Um desenvolvedor satisfeito não é apenas alguém mais feliz; é alguém com maior capacidade de concentração, julgamento e aprendizado.
-
-<Callout type="info" title="O argumento técnico">
-  Satisfação não é sobre fazer pessoas felizes. É sobre reconhecer que **capacidade cognitiva é recurso finito** — e que sistemas que desgastam pessoas sistematicamente reduzem essa capacidade.
-</Callout>
+Como estabelecemos no Artigo 1, Developer Experience não é conforto — é economia cognitiva. No SPACE, satisfação segue a mesma lógica: é variável estrutural do sistema, não bônus emocional.
 
 #### A conexão entre satisfação e qualidade técnica
 
@@ -105,13 +99,9 @@ Desenvolvedores insatisfeitos não param de entregar. Eles mudam **como** entreg
 
 O paradoxo é que **insatisfação não aparece imediatamente na produtividade**. Ela aparece na qualidade das decisões, na disposição para colaborar, na energia disponível para problemas difíceis. O sistema continua produzindo — mas produz pior.
 
-#### O que acontece quando ignoramos satisfação
-
-Ignorar esse eixo não torna o sistema mais objetivo — apenas o torna cego para o desgaste acumulado. O sistema continua funcionando até que não funciona mais. Rotatividade, burnout e decisões defensivas são sintomas tardios de satisfação ignorada.
-
 #### Como medir satisfação (sem pesquisas vazias)
 
-A tentação é reduzir satisfação a pesquisas de clima organizacional — aquelas com perguntas genéricas que ninguém leva a sério. SPACE sugere algo diferente: medir satisfação **através de proxies comportamentais**.
+SPACE sugere medir satisfação **através de proxies comportamentais**:
 
 - **Retenção**: Quanto tempo pessoas ficam? Por que saem?
 - **Voluntariado**: Pessoas se oferecem para projetos difíceis ou evitam?
@@ -122,29 +112,7 @@ A tentação é reduzir satisfação a pesquisas de clima organizacional — aqu
   Pesquisas de satisfação capturam o que pessoas **dizem sentir**. Comportamento captura o que elas **realmente sentem**. Quando os dois divergem, confie no comportamento.
 </Callout>
 
-#### Satisfação como indicador antecedente
-
 No SPACE, satisfação funciona como **indicador antecedente**. Ela sinaliza problemas antes que apareçam em métricas de entrega. Quando satisfação cai, a produtividade ainda pode estar alta — mas está vivendo de reservas que eventualmente acabam.
-
-<ProsCons
-  client:load
-  prosTitle="Satisfação alta indica"
-  consTitle="Satisfação baixa indica"
-  context="Satisfação como sinal de saúde sistêmica"
-  variant="balanced"
-  pros={[
-    "Sistema sustentável",
-    "Capacidade de absorver pressão",
-    "Decisões técnicas de qualidade",
-    "Colaboração genuína"
-  ]}
-  cons={[
-    { text: "Sistema funcionando sob estresse", emphasis: true },
-    "Reservas cognitivas sendo consumidas",
-    { text: "Qualidade silenciosamente deteriorando", emphasis: true },
-    "Colaboração se tornando política"
-  ]}
-/>
 
 Organizações que tratam satisfação como "desejável" descobrem tarde demais que ela era **estrutural** para o funcionamento do sistema.
 
@@ -153,14 +121,10 @@ Organizações que tratam satisfação como "desejável" descobrem tarde demais 
 Performance, no SPACE, não é sinônimo de velocidade. Ela está ligada à **qualidade percebida do trabalho**, à capacidade de resolver problemas complexos e de gerar impacto real.
 
 <Callout type="tip" title="A distinção crucial">
-  Entregar rápido não é o mesmo que entregar bem. Um sistema pode gerar muita entrega técnica enquanto falha consistentemente em produzir resultado significativo.
+  Velocidade mede vazão. Performance mede qualidade.
 </Callout>
 
-#### A confusão entre velocidade e performance
-
-Organizações frequentemente tratam velocidade como sinônimo de performance. Mais commits por dia, mais tickets fechados por iteração, menos tempo entre requisição e entrega. Esses números são fáceis de coletar e satisfazem a necessidade gerencial por progresso visível.
-
-Mas velocidade mede **vazão do sistema**. Performance, no sentido SPACE, mede **qualidade do resultado**. São dimensões diferentes — e otimizar uma não garante a outra.
+A confusão persiste porque velocidade é fácil de medir (quanto tempo para fechar ticket?) e performance é difícil de definir (quanto tempo para saber se decisão técnica foi boa?). Assimetria temporal cria viés sistemático: o mensurável agora ganha atenção; o que só se revela depois é ignorado.
 
 <CompareColumns
   leftTitle="Velocidade alta"
@@ -181,22 +145,11 @@ Mas velocidade mede **vazão do sistema**. Performance, no sentido SPACE, mede *
   ]}
 />
 
-#### Por que a confusão persiste
-
-A preferência por velocidade não é acidente. Ela existe porque **velocidade é fácil de medir e performance é difícil de definir**.
-
-Quanto tempo leva para saber se uma decisão técnica foi boa? Meses, às vezes anos. Quanto tempo para saber se um ticket foi fechado? Segundos. A assimetria temporal cria um viés sistemático: o que é mensurável agora ganha atenção; o que só se revela depois é ignorado.
-
-<Callout type="warning" title="O custo invisível da velocidade">
-  Um time pode fechar 50 tickets por iteração enquanto acumula débito técnico que triplicará o custo de manutenção em seis meses. Nos painéis de hoje, esse time parece excelente. Nos problemas de amanhã, ele será a causa.
-</Callout>
-
 #### O que performance realmente captura
 
 No modelo SPACE, performance tenta capturar algo mais próximo de <Tooltip client:load term="eficácia" definition="Eficiência é fazer as coisas da maneira certa (otimizar recursos). Eficácia é fazer as coisas certas (atingir objetivos). Um sistema pode ser altamente eficiente — entregar rápido, com baixo custo — e ainda assim ineficaz, se estiver resolvendo o problema errado.">**eficácia**</Tooltip>: o trabalho produzido resolve o problema que deveria resolver? O código escrito funciona de forma confiável? As decisões tomadas se sustentam no tempo?
 
 Isso inclui:
-
 - **Qualidade do código**: Bugs introduzidos, retrabalho necessário, manutenibilidade
 - **Resolução real de problemas**: A funcionalidade entregue resolve a necessidade do usuário?
 - **Sustentabilidade técnica**: As decisões de hoje criam ou reduzem problemas futuros?
@@ -206,57 +159,13 @@ Isso inclui:
   Não é "quanto produzimos?" — é "o que produzimos **funciona** e **importa**?"
 </Callout>
 
-#### O dilema da mensuração
-
-Aqui está o problema: performance real é difícil de medir diretamente. Você pode contar commits, mas não pode contar "decisões técnicas que envelheceram bem". Pode medir tempo de entrega, mas não pode medir "problemas que não aconteceram porque alguém pensou melhor".
-
 Por isso, SPACE trata performance como dimensão que exige **julgamento qualitativo**, não apenas coleta automatizada. Revisões de código, retrospectivas honestas e feedback de usuários são fontes de dados tão válidas quanto métricas de pipeline.
-
-<ProsCons
-  client:load
-  prosTitle="Sinais de performance alta"
-  consTitle="Sinais de performance baixa"
-  context="Como identificar performance real além da velocidade"
-  variant="balanced"
-  pros={[
-    "Bugs raramente voltam como regressão",
-    "Código novo integra bem com existente",
-    "Decisões técnicas se sustentam no tempo",
-    "Usuários percebem valor nas entregas"
-  ]}
-  cons={[
-    { text: "Retrabalho constante nos mesmos módulos", emphasis: true },
-    "Funcionalidades entregues que ninguém usa",
-    { text: "Débito técnico crescendo silenciosamente", emphasis: true },
-    "Soluções que criam mais problemas do que resolvem"
-  ]}
-/>
 
 Quando organizações confundem velocidade com performance, elas otimizam o movimento — não o resultado. E sistemas otimizados para movimento podem mover-se muito rápido **na direção errada**.
 
 ### Activity: O sinal mais traiçoeiro
 
 Atividade é talvez a dimensão mais traiçoeira. Commits, tickets, PRs, horas conectadas — tudo isso é fácil de contar. E justamente por isso, é perigoso.
-
-<ProsCons
-  client:load
-  prosTitle="O que atividade alta pode significar"
-  consTitle="O que atividade alta realmente pode ser"
-  context="A natureza traiçoeira da dimensão Activity"
-  variant="warning"
-  pros={[
-    "Progresso consistente",
-    "Time produtivo",
-    "Alta entrega"
-  ]}
-  cons={[
-    { text: "Retrabalho constante", emphasis: true },
-    "Interrupções fragmentando o trabalho",
-    { text: "Falta de foco e clareza", emphasis: true }
-  ]}
-/>
-
-SPACE não ignora atividade, mas a trata como **sinal fraco**. Atividade sem contexto é ruído. O modelo não diz "não meça". Ele diz: **não confunda movimento com avanço**.
 
 #### Por que atividade é tão sedutora
 
@@ -293,53 +202,15 @@ Atividade alta pode significar coisas completamente opostas:
 
 Sem contexto, um painel de atividade não distingue entre as duas. Um time que refaz o mesmo trabalho três vezes por falta de clareza mostra **três vezes mais atividade** que um time que fez certo na primeira. Nos números, o time disfuncional parece mais produtivo.
 
-#### O viés da contagem
-
-A preferência por métricas de atividade revela um viés cognitivo profundo: **se podemos contar, devemos estar entendendo**. Mas contar não é entender. É apenas uma forma específica — e limitada — de representar realidade.
-
-Commits contados não dizem nada sobre a qualidade do código. Tickets fechados não dizem nada sobre o valor entregue. Horas conectadas não dizem nada sobre o trabalho real feito.
-
-<Callout type="warning" title="O que atividade não captura">
-  Pensar. Planejar. Discutir. Aprender. Revisar com cuidado. Esperar pela informação certa antes de agir. Todas essas atividades são invisíveis para métricas de contagem — e todas são essenciais para trabalho de qualidade.
-</Callout>
-
 #### Quando atividade é útil
 
 SPACE não demoniza atividade. Ela tem valor quando usada corretamente:
 
 - **Como sinal de alerta**: Uma queda brusca na atividade pode indicar bloqueios sistêmicos
-- **Como contexto para as demais dimensões do SPACE**: Muita atividade + satisfação baixa = sinal de desgaste
+- **Como contexto para as demais dimensões**: Muita atividade + satisfação baixa = sinal de desgaste
 - **Como referência individual**: Mudanças bruscas no padrão de atividade merecem atenção
 
-O erro não é medir atividade. É tratá-la como **indicador principal** quando ela deveria ser **indicador complementar**.
-
-<ProsCons
-  client:load
-  prosTitle="Uso correto de atividade"
-  consTitle="Uso incorreto de atividade"
-  context="Como interpretar métricas de atividade"
-  variant="balanced"
-  pros={[
-    "Comparar padrões ao longo do tempo",
-    "Identificar anomalias que merecem investigação",
-    "Cruzar com outras dimensões",
-    "Usar como ponto de partida para conversas"
-  ]}
-  cons={[
-    { text: "Ranquear times por atividade", emphasis: true },
-    "Usar como meta de performance",
-    { text: "Assumir que mais é melhor", emphasis: true },
-    "Ignorar o contexto do número"
-  ]}
-/>
-
-#### A pergunta que atividade não responde
-
-A pergunta fundamental que atividade não consegue responder é: **esse movimento está nos levando para onde queremos ir?**
-
-Um time pode estar extremamente ativo enquanto caminha em círculos. Pode mostrar números impressionantes de tickets, commits e deploys enquanto o produto estagna, a dívida técnica cresce e os usuários continuam insatisfeitos.
-
-Atividade mede **quanto** o sistema se move. Não mede **para onde**.
+O erro não é medir atividade. É tratá-la como **indicador principal** quando ela deveria ser **indicador complementar**. Atividade mede **quanto** o sistema se move. Não mede **para onde**.
 
 ### Communication and Collaboration: Fricção social consome energia
 
