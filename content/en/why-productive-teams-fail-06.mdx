@@ -1,6 +1,6 @@
 ---
 title: "DevEx: Flow, Feedback, and the Load Nobody Measures"
-description: "The DevEx framework proposes that experience is a technical variable — not subjective. Three dimensions (flow, feedback, cognitive load) capture what DORA and SPACE don't see."
+description: "The DevEx model proposes that experience is a technical variable — not subjective. Three dimensions (flow, feedback, mental burden) capture what DORA and SPACE don't see."
 publishedAt: 2026-02-02
 locale: en
 category: platform-engineering
@@ -24,19 +24,19 @@ import { Tooltip } from '@/components/mdx/Glossary';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
 import { Mermaid } from '@/components/mdx';
 
-In previous articles, we traversed two frameworks that changed how we measure productivity in software engineering. [DORA](/en/why-productive-teams-fail-03) gave us flow metrics — how fast and stable the system delivers. [SPACE](/en/why-productive-teams-fail-05) expanded the lens, forcing us to accept that productivity is multidimensional.
+In previous articles, we traversed two approaches that changed how we measure productivity in software engineering. [DORA](/en/why-productive-teams-fail-03) gave us flow indicators — how fast and stable the system delivers. [SPACE](/en/why-productive-teams-fail-05) expanded the lens, forcing us to accept that productivity is multidimensional.
 
-But one question remains unanswered: **if we have good metrics and recognize the complexity, why do teams still suffer?**
+But one question remains unanswered: **if we have good measurements and recognize the complexity, why do teams still suffer?**
 
-<Callout type="warning" title="The gap between measuring and living">
+<Callout type="warning" title="The missing perspective">
 
-DORA observes the system from outside — it measures what comes out of the pipeline. SPACE expands the dimensions, but is still a metrics framework. Neither directly asks: **what is it like to work inside this system?**
+DORA observes the system from outside — it measures what comes out of the pipeline. SPACE expands the dimensions, but is still a measurement model. Neither directly asks: **what is it like to work inside this system?**
 
 </Callout>
 
-This is the question that <Tooltip client:load term="DevEx" definition="Research framework (2023) that defines three dimensions for evaluating developer experience: flow state, feedback loops, and cognitive load.">DevEx</Tooltip><FootnoteRef client:load id={1} /> — the framework published in 2023 by Abi Noda, Margaret-Anne Storey, Nicole Forsgren, and Michaela Greiler — attempts to answer.
+This is the question that <Tooltip client:load term="DevEx" definition="Research approach (2023) that defines three dimensions for evaluating developer experience: flow state, response cycles, and mental burden.">DevEx</Tooltip><FootnoteRef client:load id={1} /> — the model published in 2023 by Abi Noda, Margaret-Anne Storey, Nicole Forsgren, and Michaela Greiler — attempts to answer.
 
-## What the DevEx framework proposes
+## What the DevEx approach proposes
 
 ### The central thesis: experience is a technical variable
 
@@ -61,15 +61,15 @@ DevEx's central idea is simple, but with profound implications: **developer expe
   ]}
 />
 
-None of this shows up immediately in flow metrics, but **all of it accumulates in the code, architecture, and product**.
+None of this shows up immediately in flow indicators, but **all of it accumulates in the code, architecture, and product**.
 
-<Callout type="info" title="The difference from SPACE">
+<Callout type="info" title="The conceptual shift">
 
-In SPACE<FootnoteRef client:load id={4} />, satisfaction is one dimension among five — the "S" in Satisfaction and well-being. In DevEx, experience isn't a dimension: **it's the central variable**. The framework argues that a cognitively hostile environment doesn't just make people unhappy; it produces worse software.
+In SPACE<FootnoteRef client:load id={4} />, satisfaction is one dimension among five — the "S" in Satisfaction and well-being. In DevEx, experience isn't a dimension: **it's the central variable**. This approach argues that a cognitively hostile environment doesn't just make people unhappy; it produces worse software.
 
 </Callout>
 
-### What the framework observes
+### What this model observes
 
 Unlike DORA, which observes the system from outside, DevEx observes the system **from within**. It's interested in the path developers take to accomplish tasks:
 
@@ -79,11 +79,11 @@ Unlike DORA, which observes the system from outside, DevEx observes the system *
 - **Debugging an error:** Are logs accessible? Does observability exist? Is reproducing the problem possible?
 - **Deploying to production:** Is the pipeline reliable? Is rollback safe?
 
-**Each friction in this path consumes cognitive energy. And cognitive energy is a finite resource.**
+**Each friction in this path consumes mental energy. And mental energy is a finite resource.**
 
 ### Technical complexity ≠ experiential complexity
 
-A crucial point of the framework: technical complexity is not the same as experiential complexity.
+A crucial point of this approach: technical complexity is not the same as experiential complexity.
 
 A system can be complex by nature and still offer a good experience, if its rules are clear, its tools reliable, and its boundaries well-defined. Similarly, an apparently simple system can be exhausting if it requires excessive memory, implicit decisions, and constant political navigation.
 
@@ -118,7 +118,7 @@ Since DORA established the four classic metrics in 2014, the industry had better
 
 Flow metrics (DORA) showed *what* was happening. SPACE (2021) expanded to multiple dimensions, showing *where* to look. But no framework directly asked developers: **what is it like to work inside this system?**
 
-<Callout type="info" title="What changed between 2014 and 2023">
+<Callout type="info" title="The paradigm shift">
 
 The difference wasn't technological — it was epistemological. The industry finally accepted that **subjective experience isn't noise in the data; it is data**. That what people feel while working isn't "soft" — it's a technical variable that affects code, architecture, and product.
 
@@ -148,11 +148,11 @@ DevEx made a deliberate choice: **reduce to 3 dimensions that capture the essenc
 
 **Feedback:** Captures how quickly the system responds — time between action and result, between change and confirmation.
 
-**Cognitive Load:** Captures the mental effort required to operate — how much of the brain is spent on the real problem versus navigating accidental complexity.
+**Mental Burden:** Captures the mental effort required to operate — how much of the brain is spent on the real problem versus navigating accidental complexity.
 
-<Callout type="warning" title="The choice wasn't scientific — it was strategic">
+<Callout type="warning" title="Strategic simplification">
 
-The 3 dimensions aren't "the only ones that matter." They're **the ones organizations can measure and act on without getting lost in complexity**. The framework traded comprehensiveness for actionability.
+The 3 dimensions aren't "the only ones that matter." They're **the ones organizations can measure and act on without getting lost in complexity**. This approach traded comprehensiveness for actionability.
 
 </Callout>
 
@@ -175,9 +175,9 @@ There's a detail that needs to be said: Abi Noda is founder of DX, a commercial 
 
 **Does this invalidate the framework?** No. But it contextualizes. DX sells tools to measure DevEx. The framework makes it easier to sell those tools. This doesn't mean the framework is false — it means **it solves problems that a company finds profitable to solve**.
 
-<Callout type="danger" title="Frameworks aren't neutral">
+<Callout type="danger" title="The politics of measurement">
 
-Every framework carries interests. DORA emerged from Google. SPACE emerged from Microsoft and GitHub research. DevEx has an explicit commercial connection. This doesn't invalidate them — but it reminds us that **what we choose to measure reflects what someone finds important to measure**.
+Every model carries interests. DORA emerged from Google. SPACE emerged from Microsoft and GitHub research. DevEx has an explicit commercial connection. This doesn't invalidate them — but it reminds us that **what we choose to measure reflects what someone finds important to measure**.
 
 </Callout>
 
@@ -197,16 +197,16 @@ DevEx didn't emerge from nothing. It's a direct descendant of SPACE — and two 
 
 SPACE asked: "How to measure productivity multidimensionally?" DevEx asks: "What is it like to work here, and can this be measured?"
 
-## The three dimensions of the framework
+## The three dimensions of the approach
 
-The DevEx framework is structured around **three central dimensions** — defined through empirical research as the factors that most impact real developer productivity.
+The DevEx approach is structured around **three central dimensions** — defined through empirical research as the factors that most impact real developer productivity.
 
 <Mermaid
   client:load
   chart={`graph TB
     F["<b>Flow</b><br/><small>Continuity</small>"]
     FB["<b>Feedback</b><br/><small>Response speed</small>"]
-    CL["<b>Cognitive Load</b><br/><small>Mental effort</small>"]
+    CL["<b>Mental Burden</b><br/><small>Mental effort</small>"]
 
     F -->|"Slow feedback<br/>destroys flow"| FB
     FB -->|"Ambiguous feedback<br/>increases load"| CL
@@ -237,13 +237,13 @@ The concept comes from cognitive psychology: the "flow state" described by Mihal
 - **Unstable environments:** When the development environment randomly breaks, flow becomes impossible.
 - **Constant notifications:** Each ping is a micro-interruption that accumulates cognitive cost.
 
-<Callout type="warning" title="The real cost of interruption">
+<Callout type="warning" title="Interruption economics">
 
 Each forced interruption costs more than lost time — it costs the effort of rebuilding mental context. A developer interrupted 8 times in a day hasn't lost 8 moments; they've lost the ability to do deep work that entire day.
 
 </Callout>
 
-**The metric the framework proposes:** How many hours of focused, uninterrupted work can a developer have per day? If the answer is "less than 2", there's a structural problem.
+**The measurement this model proposes:** How many hours of focused, uninterrupted work can a developer have per day? If the answer is "less than 2", there's a structural problem.
 
 #### Practical example: The real cost of interruptions
 
@@ -326,7 +326,7 @@ Buying faster IDEs doesn't solve if the code review process takes 3 days. The bo
 
 "Friday is a no-meeting day!" becomes Friday where nobody talks. The problem wasn't having meetings — it was having them poorly distributed and poorly conducted. Eliminating communication isn't optimizing flow; it's fragmenting the team.
 
-<Callout type="warning" title="Flow is not isolation">
+<Callout type="warning" title="Collaboration vs isolation">
 
 Flow doesn't mean working alone. It means working without **artificial and avoidable** interruptions. Pair programming can generate flow. Well-facilitated meetings can generate flow. Well-used asynchronous messages preserve flow. The problem was never collaboration — it was unnecessary interruption.
 
@@ -350,7 +350,7 @@ When the cycle is long (minutes or hours), behavior changes. Developers avoid ex
 - **Deployment to test environment:** If it takes hours, developers stop testing in realistic environments.
 - **Production feedback:** When something breaks, how long until someone knows?
 
-<Callout type="info" title="The feedback rule">
+<Callout type="info" title="Cycle dynamics">
 
 The longer the feedback cycle, the larger the changes developers make at once — and the greater the risks they take unknowingly. Slow feedback doesn't just slow down work; it **changes the nature of work** for the worse.
 
@@ -444,9 +444,9 @@ Each feedback type has an expected cycle. When the cycle is longer than expected
 
 Fast feedback on compilation but slow on code review doesn't help — the global bottleneck defines the behavior.
 
-#### How feedback and cognitive load interact
+#### How feedback and mental burden interact
 
-Ambiguous feedback increases cognitive load. **Each obscure error message consumes mental energy.**
+Ambiguous feedback increases mental burden. **Each obscure error message consumes mental energy.**
 
 **Scenario A — Clear feedback:**
 ```
@@ -501,19 +501,19 @@ Local build in 10 seconds, but developer only discovers they broke integration 3
 
 **Result:** Feeling of speed without real safety. Problems detected too late.
 
-<Callout type="warning" title="Feedback is a system, not an isolated metric">
+<Callout type="warning" title="System-level thinking">
 
 Optimizing one feedback cycle without looking at the whole system creates hidden bottlenecks. Fast build with slow code review, or fast code review with slow deploy, or fast deploy with nonexistent monitoring — **each bottleneck nullifies previous optimizations**.
 
 </Callout>
 
-### Cognitive load: required mental effort
+### Mental burden: required mental effort
 
-Cognitive load is the **mental effort required to understand, decide, and act** within that environment. It's everything the developer needs to keep in mind — simultaneously — to do their work.
+Mental burden is the **mental effort required to understand, decide, and act** within that environment. It's everything the developer needs to keep in mind — simultaneously — to do their work.
 
-The concept comes from John Sweller's cognitive load theory<FootnoteRef client:load id={3} />: our working memory has limited capacity. When this capacity is consumed by accidental complexity, less space remains for essential complexity.
+The concept comes from John Sweller's theory of mental burden<FootnoteRef client:load id={3} />: our working memory has limited capacity. When this capacity is consumed by accidental complexity, less space remains for essential complexity.
 
-#### The three types of cognitive load
+#### The three types of mental burden
 
 **Intrinsic load:** The complexity inherent to the problem. Solving a machine learning algorithm is intrinsically complex. This is unavoidable.
 
@@ -523,7 +523,7 @@ The concept comes from John Sweller's cognitive load theory<FootnoteRef client:l
 
 **The problem:** most development environments are saturated with extraneous load — complexity that shouldn't exist, but does due to accumulated decisions over the years.
 
-#### Signs of high cognitive load
+#### Signs of high mental burden
 
 - Developers need to "remember" many things that should be automated or documented
 - Simple decisions require consulting multiple people because nobody has complete context
@@ -533,11 +533,11 @@ The concept comes from John Sweller's cognitive load theory<FootnoteRef client:l
 
 <Callout type="danger" title="Code as symptom">
 
-When the brain is overloaded, it economizes where it can — and usually economizes on long-term quality. Architectures become more rigid, tests more fragile, documentation more sparse. Not due to lack of competence, but due to **cognitive survival**.
+When the brain is overloaded, it economizes where it can — and usually economizes on long-term quality. Architectures become more rigid, tests more fragile, documentation more sparse. Not due to lack of competence, but due to **mental survival**.
 
 </Callout>
 
-**The metric the framework proposes:** How much of a developer's mental effort is spent on the real problem versus navigating accidental complexity? If the answer is "more than 50% on accidental complexity", the system is stealing cognitive capacity that should be invested in value.
+**The indicator this approach proposes:** How much of a developer's mental effort is spent on the real problem versus navigating accidental complexity? If the answer is "more than 50% on accidental complexity", the system is stealing mental capacity that should be invested in value.
 
 #### Practical example: The system nobody understands
 
@@ -578,31 +578,31 @@ Company hires tech writer. Spends 6 months documenting everything. Result:
 
 **Real problem wasn't lack of documentation.**
 
-It was architecture that requires implicit knowledge to operate. Each microservice was created by a different person, with different patterns, without shared conventions. **Cognitive load is in the structure, not in the absence of text.**
+It was architecture that requires implicit knowledge to operate. Each microservice was created by a different person, with different patterns, without shared conventions. **Mental burden is in the structure, not in the absence of text.**
 
-#### How cognitive load accumulates silently
+#### How mental burden accumulates silently
 
-Cognitive load doesn't appear suddenly. It accumulates in small decisions, none absurd in isolation:
+Mental burden doesn't appear suddenly. It accumulates in small decisions, none absurd in isolation:
 
 **Year 1:** "Let's use Kubernetes, everyone is using it"
-- +10% cognitive load (learn K8s)
+- +10% mental burden (learn K8s)
 
 **Year 2:** "Let's add Istio for service mesh"
-- +15% cognitive load (learn Istio + how it interacts with K8s)
+- +15% mental burden (learn Istio + how it interacts with K8s)
 
 **Year 3:** "We need Prometheus + Grafana for observability"
-- +10% cognitive load (learn Prometheus query language)
+- +10% mental burden (learn Prometheus query language)
 
 **Year 4:** "Let's migrate to Terraform for infrastructure as code"
-- +15% cognitive load (learn Terraform + HCL)
+- +15% mental burden (learn Terraform + HCL)
 
 **Year 5:** "We're adding Vault for secrets management"
-- +10% cognitive load (learn Vault + access policies)
+- +10% mental burden (learn Vault + access policies)
 
 **Result after 5 years:**
 - No decision was stupid
 - Each tool solves a real problem
-- But the sum is **60% more cognitive load than at the start**
+- But the sum is **60% more mental burden than at the start**
 
 **New developer needs to learn:**
 - System programming languages (OK, expected)
@@ -615,9 +615,9 @@ Cognitive load doesn't appear suddenly. It accumulates in small decisions, none 
 
 **Six-month ramp to make a change to one endpoint.**
 
-<Callout type="danger" title="The trap of growing complexity">
+<Callout type="danger" title="Complexity creep">
 
-Each addition makes sense in isolation. The absurdity only becomes visible when trying to explain the entire system to someone new. Then someone says: "It's complex, but that's normal for systems this size." **No. It's complex because each generation added tools without questioning accumulated cognitive cost.**
+Each addition makes sense in isolation. The absurdity only becomes visible when trying to explain the entire system to someone new. Then someone says: "It's complex, but that's normal for systems this size." **No. It's complex because each generation added tools without questioning accumulated mental cost.**
 
 </Callout>
 
@@ -674,9 +674,9 @@ Not all complexity is avoidable. The challenge is distinguishing:
   ]}
 />
 
-#### When "simplifying" increases cognitive load
+#### When "simplifying" increases mental burden
 
-Not every attempt to reduce complexity works. Sometimes, "simplifications" worsen cognitive load:
+Not every attempt to reduce complexity works. Sometimes, "simplifications" worsen mental burden:
 
 **1. Abstractions that hide too much**
 
@@ -710,7 +710,7 @@ CI/CD that promises simplicity but requires 500 lines of YAML with obscure synta
 **Before:** Manual deploy (10 known steps)
 **After:** "Automatic" deploy (1 button, but if it breaks, nobody knows how to fix without reading 50 pages of documentation)
 
-<Callout type="warning" title="Simplicity is reducing load, not hiding complexity">
+<Callout type="warning" title="True simplification">
 
 Real simplification reduces required mental effort. False simplification just moves complexity elsewhere (usually somewhere less visible, where it's harder to debug). **Hiding complexity is not the same as removing it.**
 
@@ -718,45 +718,45 @@ Real simplification reduces required mental effort. False simplification just mo
 
 #### How the three dimensions reinforce or destroy each other
 
-Flow, Feedback, and Cognitive Load aren't independent — **they form a system**.
+Flow, Feedback, and Mental Burden aren't independent — **they form a system**.
 
 **Virtuous cycle:**
-- Low cognitive load → Developers understand the system quickly
+- Low mental burden → Developers understand the system quickly
 - Fast understanding → Can work in flow (don't need to constantly stop to ask)
 - Continuous flow → Make better decisions (brain isn't fragmented)
 - Good decisions → System becomes clearer (documentation, consistent architecture)
-- Clear system → Cognitive load stays low
+- Clear system → Mental burden stays low
 
 **Vicious cycle:**
-- High cognitive load → Developers don't understand the system
+- High mental burden → Developers don't understand the system
 - Lack of understanding → Constantly interrupt to ask (destroys flow)
 - Fragmented flow → Rushed or defensive decisions
 - Bad decisions → System becomes more confusing (technical debt, inconsistencies)
-- Confusing system → Cognitive load increases further
+- Confusing system → Mental burden increases further
 
 **Feedback fits into this system:**
 
-**Fast and clear feedback reduces cognitive load:**
+**Fast and clear feedback reduces mental burden:**
 - Errors are identified immediately
 - Developer doesn't need to "remember" what they were doing 30 minutes ago
 - Learning happens in real time
 
-**Slow and obscure feedback increases cognitive load:**
+**Slow and obscure feedback increases mental burden:**
 - Developer needs to maintain mental context for long periods
 - Ambiguous error messages require investigation (more load)
 - Trial-and-error cycle becomes exhausting
 
-<Callout type="info" title="DevEx is a system, not a checklist">
+<Callout type="info" title="Systemic interdependence">
 
-You can't "improve DevEx" by optimizing one dimension while ignoring the others. Fast feedback doesn't help if cognitive load is too high to take advantage of it. Flow doesn't help if feedback is too slow to sustain continuity. **The three dimensions need to be addressed as an interdependent system.**
+You can't "improve DevEx" by optimizing one dimension while ignoring the others. Fast feedback doesn't help if mental burden is too high to take advantage of it. Flow doesn't help if feedback is too slow to sustain continuity. **The three dimensions need to be addressed as an interdependent system.**
 
 </Callout>
 
 ## Measurement methodology
 
-The DevEx framework proposes a measurement approach based on **two complementary types of metrics**:
+The DevEx approach proposes a measurement methodology based on **two complementary types of indicators**:
 
-### Perceptual metrics
+### Perceptual indicators
 
 These are collected directly from developers, usually via periodic surveys. The goal is to capture **subjective experience** — something system data can't reveal.
 
@@ -773,7 +773,7 @@ These are collected directly from developers, usually via periodic surveys. The 
   - *"Does the current build time negatively impact your work? Why?"*
   - *"Do the available tools meet your needs? What's missing?"*
 
-### Workflow metrics
+### Workflow measurements
 
 These are collected automatically from systems and tools. The goal is to have **objective data** that complements subjective perception.
 
@@ -792,27 +792,27 @@ These are collected automatically from systems and tools. The goal is to have **
 
 ### Why combine both types
 
-**For each dimension, the framework suggests:**
+**For each dimension, the model suggests:**
 
 | Dimension | Perceptual Metric | Workflow Metric |
 |-----------|-------------------|-----------------|
 | **Flow** | "How often can you enter a deep focus state?" | Number of meetings per day, time between context switches |
 | **Feedback** | "How satisfied are you with build/CI time?" | Build time, test execution time, PR review time |
-| **Cognitive Load** | "How easy is it to understand the codebase?" | Cyclomatic complexity, documentation coverage |
+| **Mental Burden** | "How easy is it to understand the codebase?" | Cyclomatic complexity, documentation coverage |
 
-<Callout type="info" title="Why two metrics?">
+<Callout type="info" title="Dual perspective">
 
-Objective metrics alone can deceive. A 5-minute build seems fast — but if the developer needs to run it 10 times a day to debug, the experience is terrible. Perceptual metrics capture what numbers don't show: **lived reality**.
+Objective measurements alone can deceive. A 5-minute build seems fast — but if the developer needs to run it 10 times a day to debug, the experience is terrible. Perceptual indicators capture what numbers don't show: **lived reality**.
 
 </Callout>
 
 ## DevEx, DORA, and SPACE: complementarity
 
-So far, we've seen three frameworks in the series. A natural question arises: **how do they relate?**
+So far, we've seen three approaches in the series. A natural question arises: **how do they relate?**
 
-### What each framework sees
+### What each model sees
 
-Each framework emerges from a different concern and, therefore, illuminates distinct aspects of the same system:
+Each approach emerges from a different concern and, therefore, illuminates distinct aspects of the same system:
 
 | Framework | Central question | What it observes | What it ignores |
 |-----------|-----------------|------------------|-----------------|
@@ -820,7 +820,7 @@ Each framework emerges from a different concern and, therefore, illuminates dist
 | **SPACE** | "Are we measuring correctly?" | Multiple productivity dimensions | How dimensions *feel* |
 | **DevEx** | "What's it like to work here?" | Lived experience as technical variable | Delivery metrics, output |
 
-<Callout type="info" title="The house metaphor">
+<Callout type="info" title="Different perspectives">
 
 DORA looks at the house from outside: "How many people enter and leave? How often?" SPACE maps the rooms: "What dimensions exist?" DevEx asks those who live there: "What's it like to live here?"
 
@@ -845,10 +845,10 @@ To illustrate how the frameworks complement each other, consider a common scenar
 **What DevEx would see:**
 - Flow state rarely achieved (constant interruptions)
 - Slow feedback (30-minute builds, PRs waiting days)
-- High cognitive load (confusing architecture, nonexistent documentation)
+- High mental burden (confusing architecture, nonexistent documentation)
 - *Diagnosis:* "The environment is cognitively hostile. People are leaving because working here is exhausting."
 
-<Callout type="warning" title="Same symptom, different causes">
+<Callout type="warning" title="Complementary diagnoses">
 
 The three diagnoses don't contradict each other — they complement. DORA shows *that* something is wrong. SPACE shows *where* the problem manifests. DevEx shows *why* the problem exists in everyday experience.
 
@@ -856,7 +856,7 @@ The three diagnoses don't contradict each other — they complement. DORA shows 
 
 ### How to use all three together
 
-The frameworks don't compete — they **complement**. A mature organization can:
+These approaches don't compete — they **complement**. A mature organization can:
 
 1. **Use DORA** to monitor pipeline health (flow metrics)
 2. **Use SPACE** to ensure it's not optimizing just one dimension at the expense of others
@@ -877,7 +877,7 @@ The frameworks don't compete — they **complement**. A mature organization can:
 - Evaluate collaboration quality between teams
 
 **Step 3 — DevEx for deep diagnosis:**
-- Measure cognitive load (surveys + code complexity)
+- Measure mental burden (surveys + code complexity)
 - Evaluate feedback cycles (build time, PR review)
 - Identify flow destroyers (meetings, interruptions)
 
@@ -895,7 +895,7 @@ The frameworks don't compete — they **complement**. A mature organization can:
   pros={[
     { text: "Experience as technical variable", emphasis: true },
     "Perceptual + objective metrics",
-    "Focus on cognitive load and flow",
+    "Focus on mental burden and flow",
     "Captures invisible costs"
   ]}
   cons={[
@@ -916,7 +916,7 @@ The frameworks don't compete — they **complement**. A mature organization can:
 | Justify tooling investment | DORA + DevEx | Combines delivery metrics with perception |
 | Redesign team processes | SPACE + DevEx | Balances dimensions with real experience |
 
-### Tensions between frameworks
+### Tensions between approaches
 
 Despite complementarity, there are tensions that need to be recognized:
 
@@ -928,9 +928,9 @@ Despite complementarity, there are tensions that need to be recognized:
 
 **The risk of optimizing separately:** Improving DevEx without looking at DORA can create "comfortable" environments that don't deliver. Improving DORA without looking at DevEx can create fast pipelines that exhaust people. Improving SPACE without focus can dilute effort across too many dimensions.
 
-<Callout type="warning" title="Frameworks as lenses, not answers">
+<Callout type="warning" title="Multiple lenses needed">
 
-No framework is complete. Each illuminates different aspects of the same system. The value lies in using multiple lenses — not in choosing one and ignoring the others. Maturity lies in knowing which lens to use for which question.
+No model is complete. Each illuminates different aspects of the same system. The value lies in using multiple lenses — not in choosing one and ignoring the others. Maturity lies in knowing which lens to use for which question.
 
 </Callout>
 
@@ -940,16 +940,16 @@ Like DORA and SPACE before it, DevEx is not a neutral tool. It carries assumptio
 
 ### What DevEx doesn't see: The organizational dimension
 
-The DevEx framework focuses on individual and team experience — how developers feel while working, how much flow they achieve, how fast they receive feedback. **But it systematically ignores the organizational structures that produce this experience.**
+The DevEx model focuses on individual and team experience — how developers feel while working, how much flow they achieve, how fast they receive feedback. **But it systematically ignores the organizational structures that produce this experience.**
 
 **Concrete example:**
 
-Team reports high cognitive load. DevEx survey confirms: developers spend 60% of their time navigating accidental complexity. Company invests in:
+Team reports high mental burden. DevEx survey confirms: developers spend 60% of their time navigating accidental complexity. Company invests in:
 - Better documentation
 - Faster tools
 - Architecture training
 
-**Six months later, cognitive load remains high.**
+**Six months later, mental burden remains high.**
 
 **Real cause DevEx didn't capture:**
 - Approval structure requires sign-off from 4 hierarchical levels
@@ -961,9 +961,9 @@ Team reports high cognitive load. DevEx survey confirms: developers spend 60% of
 
 DevEx measures symptoms. It doesn't ask who created the conditions that produce those symptoms.
 
-<Callout type="danger" title="Framework limits as organizational mirror">
+<Callout type="danger" title="Organizational blind spots">
 
-When a framework ignores organizational dimensions, it allows organizations to treat political problems as if they were technical. "Let's improve DevEx" becomes a substitute for "let's redistribute power and change incentives". One is palatable. The other is threatening.
+When an approach ignores organizational dimensions, it allows organizations to treat political problems as if they were technical. "Let's improve DevEx" becomes a substitute for "let's redistribute power and change incentives". One is palatable. The other is threatening.
 
 </Callout>
 
@@ -981,7 +981,7 @@ There's a predictable risk: DevEx becomes an HR or internal marketing initiative
 
 **Developers report:**
 - Slow build: 20 minutes
-- High cognitive load: confusing architecture
+- High mental burden: confusing architecture
 - Fragmented flow: 12 meetings per week
 
 **Company responds:**
@@ -994,9 +994,9 @@ There's a predictable risk: DevEx becomes an HR or internal marketing initiative
 - Developers more cynical ("it's just theater")
 - Company points to "DevEx investment" as evidence it "cares"
 
-**DevEx became a check-box. Something to show in all-hands and recruitment.** The framework was instrumentalized to perform care without actually exercising it.
+**DevEx became a check-box. Something to show in all-hands and recruitment.** The model was instrumentalized to perform care without actually exercising it.
 
-<Callout type="warning" title="Surveys without power to change aren't DevEx">
+<Callout type="warning" title="Measurement without power">
 
 Measuring experience without giving autonomy to change it is worse than not measuring. It creates expectation that something will improve, followed by frustration when nothing changes. **DevEx without authority to intervene is just corporate satisfaction research.**
 
@@ -1004,7 +1004,7 @@ Measuring experience without giving autonomy to change it is worse than not meas
 
 ### The political instrumentalization of DevEx
 
-Productivity frameworks are never neutral. They carry interests — from who created them, who funds them, who implements them. DevEx is no exception.
+Productivity models are never neutral. They carry interests — from who created them, who funds them, who implements them. DevEx is no exception.
 
 **Question rarely asked: Who decides what is "good experience"?**
 
@@ -1027,9 +1027,9 @@ Productivity frameworks are never neutral. They carry interests — from who cre
 
 **DevEx became a bargain:** "We'll improve your tools. In exchange, we continue demanding the same unsustainable throughput."
 
-<Callout type="danger" title="Who controls the definition, controls the outcome">
+<Callout type="danger" title="Definition as power">
 
-If "improving DevEx" only means optimizing tools and processes without touching workload, autonomy, or pressure, the framework becomes an instrument for maintaining the status quo disguised as progressive improvement.
+If "improving DevEx" only means optimizing tools and processes without touching workload, autonomy, or pressure, the approach becomes an instrument for maintaining the status quo disguised as progressive improvement.
 
 </Callout>
 
@@ -1063,7 +1063,7 @@ Company implements "excellent DevEx": fast tools, clear processes, impeccable do
 
 **DevEx optimized not for sustainable work, but for continuous extraction.**
 
-<Callout type="danger" title="Optimization without limits is exhaustion">
+<Callout type="danger" title="The intensification trap">
 
 If improving experience only serves to increase throughput without questioning total workload, DevEx becomes an instrument of intensification, not sustainability. **The problem stops being friction and becomes infinite demand.**
 
@@ -1114,7 +1114,7 @@ Not everyone experiences DevEx the same way. And not everyone pays the same pric
   ]}
 />
 
-DevEx doesn't distribute benefits equally. And frameworks that ignore this perpetuate inequalities under a veneer of "improvement for all".
+DevEx doesn't distribute benefits equally. And models that ignore this perpetuate inequalities under a veneer of "improvement for all".
 
 ### When focusing on DevEx is escapism
 
@@ -1148,7 +1148,7 @@ Rigid hierarchy. Political decisions. Perverse incentives. But:
 
 **DevEx became band-aid for deep organizational wound.**
 
-<Callout type="warning" title="DevEx doesn't substitute purpose">
+<Callout type="warning" title="Purpose over process">
 
 Excellent technical environment doesn't compensate for meaningless work, valueless product, or dysfunctional organization. **Good tools facilitate work — but don't create reason to do it.**
 
@@ -1177,30 +1177,30 @@ Excellent technical environment doesn't compensate for meaningless work, valuele
   ]}
 />
 
-### The question the framework doesn't ask
+### The question the model doesn't ask
 
-DevEx measures flow, feedback, and cognitive load. But doesn't ask: **productivity for what?**
+DevEx measures flow, feedback, and mental burden. But doesn't ask: **productivity for what?**
 
 **If the goal is:**
 - Maximize work extraction → DevEx becomes intensification tool
 - Create valuable software → DevEx is useful instrument
 - Keep developers engaged while organization is dysfunctional → DevEx is theater
 
-**The framework doesn't answer "what is this productivity for?"** It assumes productivity is intrinsically good. But productivity applied to valueless product, or sustained by exploitation, or used to maintain status quo — **isn't achievement. It's a problem.**
+**The approach doesn't answer "what is this productivity for?"** It assumes productivity is intrinsically good. But productivity applied to valueless product, or sustained by exploitation, or used to maintain status quo — **isn't achievement. It's a problem.**
 
-<Callout type="danger" title="Technical frameworks don't substitute political questions">
+<Callout type="danger" title="Beyond technical solutions">
 
-DevEx offers lenses to see experience problems. But **it doesn't offer criteria to decide when experience matters more than other things**, or when improving experience serves dubious purposes. This requires judgment that no framework provides.
+DevEx offers lenses to see experience problems. But **it doesn't offer criteria to decide when experience matters more than other things**, or when improving experience serves dubious purposes. This requires judgment that no model provides.
 
 </Callout>
 
 ## DevEx as a piece of the puzzle
 
-The DevEx framework fills an important gap: it formalizes the intuition that **systems difficult to live in produce worse software**. Not as opinion, but as structured research with measurement methodology.
+The DevEx approach fills an important gap: it formalizes the intuition that **systems difficult to live in produce worse software**. Not as opinion, but as structured research with measurement methodology.
 
 But — like DORA and SPACE before it — DevEx is a lens, not a complete answer.
 
-<Callout type="tip" title="What DevEx teaches us">
+<Callout type="tip" title="The core contribution">
 
 DevEx's central contribution isn't just the three dimensions or the measurement methodology. It's the assertion that **experience is a technical variable** — one that deserves the same analytical rigor we give to throughput, latency, or availability.
 
@@ -1208,19 +1208,19 @@ DevEx's central contribution isn't just the three dimensions or the measurement 
 
 ### The question that remains
 
-Throughout this series, we've accumulated frameworks: DORA for flow, SPACE for multidimensionality, DevEx for lived experience. Each illuminates a different aspect of the same problem.
+Throughout this series, we've accumulated approaches: DORA for flow, SPACE for multidimensionality, DevEx for lived experience. Each illuminates a different aspect of the same problem.
 
 But having multiple lenses isn't the same as knowing where to focus. **When everything seems important, where exactly should we intervene?**
 
 <FootnoteList>
   <FootnoteItem id={1}>
-    Noda, Abi; Storey, Margaret-Anne; Forsgren, Nicole; Greiler, Michaela. **[DevEx: What Actually Drives Productivity](https://queue.acm.org/detail.cfm?id=3595878)**. ACM Queue, 2023. The paper proposes a framework based on three dimensions — flow state, feedback loops, and cognitive load — for systematically measuring and improving developer experience.
+    Noda, Abi; Storey, Margaret-Anne; Forsgren, Nicole; Greiler, Michaela. **[DevEx: What Actually Drives Productivity](https://queue.acm.org/detail.cfm?id=3595878)**. ACM Queue, 2023. The paper proposes a framework based on three dimensions — flow state, response cycles, and mental burden — for systematically measuring and improving developer experience.
   </FootnoteItem>
   <FootnoteItem id={2}>
     Csikszentmihalyi, Mihaly. **[Flow: The Psychology of Optimal Experience](https://www.harpercollins.com/products/flow-mihaly-csikszentmihalyi)**. Harper & Row, 1990. The book presents decades of research on deep concentration states and their conditions. The work has become a fundamental reference for understanding productivity in creative and intellectual work.
   </FootnoteItem>
   <FootnoteItem id={3}>
-    Sweller, John. **[Cognitive Load Theory](https://link.springer.com/book/10.1007/978-1-4419-8126-4)**. Springer, 2011. The theory proposes that learning is optimized when cognitive load is properly managed, distinguishing between intrinsic load (inherent to the material), extraneous load (imposed by instructional design), and germane load (dedicated to building mental schemas).
+    Sweller, John. **[Mental Burden Theory](https://link.springer.com/book/10.1007/978-1-4419-8126-4)**. Springer, 2011. The theory proposes that learning is optimized when mental burden is properly managed, distinguishing between intrinsic load (inherent to the material), extraneous load (imposed by instructional design), and germane load (dedicated to building mental schemas).
   </FootnoteItem>
   <FootnoteItem id={4}>
     Forsgren, Nicole; Storey, Margaret-Anne; Maddila, Chandra; Zimmermann, Thomas; Houck, Brian; Butler, Jenna. **[The SPACE of Developer Productivity](https://queue.acm.org/detail.cfm?id=3454124)**. ACM Queue, 2021. The paper introduces five dimensions for measuring developer productivity: Satisfaction, Performance, Activity, Communication, and Efficiency.

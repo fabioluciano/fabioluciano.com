@@ -50,15 +50,15 @@ But as organizations mature operationally, a discomfort begins to emerge. **As w
 
 This is where the <Tooltip client:load term="SPACE" definition="Framework proposing five dimensions to measure productivity: Satisfaction, Performance, Activity, Communication & Collaboration, and Efficiency & Flow.">SPACE</Tooltip><FootnoteRef client:load id={2} /> model becomes relevant.
 
-<Callout type="info" title="Not a correction, an expansion">
+<Callout type="info" title="An expansion, not correction">
   Not as a correction to DORA, but as an expansion of the problem. Where DORA asks "how well does the system deliver changes?", SPACE asks something more uncomfortable: "what are we calling productivity — and who is paying the cost of that definition?"
 </Callout>
 
 ## SPACE offers intellectual friction, not answers
 
-The SPACE model emerges from research tied to productivity work in engineering within large technology organizations, especially in initiatives associated with GitHub and applied academic research. **It wasn't created to generate ready-made metrics, but to organize thinking.** And that alone places it in a different category from most popular frameworks.
+The SPACE approach emerges from research tied to productivity work in engineering within large technology organizations, especially in initiatives associated with GitHub and applied academic research. **It wasn't created to generate ready-made indicators, but to organize thinking.** And that alone places it in a different category from most popular models.
 
-<Callout type="warning" title="The subversive premise">
+<Callout type="warning" title="The radical premise">
   Productivity in knowledge work is inherently multidimensional. Any attempt to reduce it to a single indicator inevitably sacrifices important aspects of work. The problem isn't just technical. It's epistemological.
 </Callout>
 
@@ -76,8 +76,8 @@ The acronym represents five dimensions that coexist in permanent tension: **Sati
 
 Satisfaction is often treated as something "soft", secondary, almost a luxury. SPACE inverts this logic. It treats satisfaction and well-being as **structural variables**, not emotional bonuses. A satisfied developer is not just someone happier; it's someone with greater capacity for concentration, judgment, and learning.
 
-<Callout type="info" title="The technical argument">
-  Satisfaction isn't about making people happy. It's about recognizing that **cognitive capacity is a finite resource** — and that systems that systematically wear people down reduce that capacity.
+<Callout type="info" title="The capacity argument">
+  Satisfaction isn't about making people happy. It's about recognizing that **mental capacity is a finite resource** — and that systems that systematically wear people down reduce that capacity.
 </Callout>
 
 #### The connection between satisfaction and technical quality
@@ -118,7 +118,7 @@ The temptation is to reduce satisfaction to organizational climate surveys — t
 - **Discussion quality**: Are technical debates honest or political?
 - **Spontaneous feedback**: Do people talk about problems or keep them to themselves?
 
-<Callout type="warning" title="The problem with surveys">
+<Callout type="warning" title="The survey paradox">
   Satisfaction surveys capture what people **say they feel**. Behavior captures what they **actually feel**. When the two diverge, trust the behavior.
 </Callout>
 
@@ -130,7 +130,7 @@ In SPACE, satisfaction functions as a **leading indicator**. It signals problems
   client:load
   prosTitle="High satisfaction indicates"
   consTitle="Low satisfaction indicates"
-  context="Satisfaction as a sign of systemic health"
+  context="Satisfaction as an indicator of systemic health"
   variant="balanced"
   pros={[
     "Sustainable system",
@@ -140,7 +140,7 @@ In SPACE, satisfaction functions as a **leading indicator**. It signals problems
   ]}
   cons={[
     { text: "System operating under stress", emphasis: true },
-    "Cognitive reserves being consumed",
+    "Mental reserves being consumed",
     { text: "Quality silently deteriorating", emphasis: true },
     "Collaboration becoming political"
   ]}
@@ -152,7 +152,7 @@ Organizations that treat satisfaction as "desirable" discover too late that it w
 
 Performance, in SPACE, is not synonymous with speed. It's tied to the **perceived quality of work**, the ability to solve complex problems, and to generate real impact.
 
-<Callout type="tip" title="The crucial distinction">
+<Callout type="tip" title="Speed vs quality">
   Delivering fast is not the same as delivering well. A system can generate a lot of technical output while consistently failing to produce meaningful results.
 </Callout>
 
@@ -187,13 +187,13 @@ The preference for speed is no accident. It exists because **speed is easy to me
 
 How long does it take to know if a technical decision was good? Months, sometimes years. How long to know if a ticket was closed? Seconds. This temporal asymmetry creates a systematic bias: what's measurable now gets attention; what only reveals itself later is ignored.
 
-<Callout type="warning" title="The invisible cost of speed">
+<Callout type="warning" title="Hidden debt">
   A team can close 50 tickets per sprint while accumulating technical debt that will triple maintenance costs in six months. On today's dashboards, that team looks excellent. In tomorrow's problems, they'll be the cause.
 </Callout>
 
 #### What performance really captures
 
-In the SPACE model, performance tries to capture something closer to <Tooltip client:load term="effectiveness" definition="Efficiency is doing things right (optimizing resources). Effectiveness is doing the right things (achieving goals). A system can be highly efficient — delivering fast, at low cost — and still be ineffective if it's solving the wrong problem.">**effectiveness**</Tooltip>: does the work produced solve the problem it was supposed to solve? Does the code written work reliably? Do the decisions made hold up over time?
+In SPACE, performance tries to capture something closer to <Tooltip client:load term="effectiveness" definition="Efficiency is doing things right (optimizing resources). Effectiveness is doing the right things (achieving goals). A system can be highly efficient — delivering fast, at low cost — and still be ineffective if it's solving the wrong problem.">**effectiveness**</Tooltip>: does the work produced solve the problem it was supposed to solve? Does the code written work reliably? Do the decisions made hold up over time?
 
 This includes:
 
@@ -202,7 +202,7 @@ This includes:
 - **Technical sustainability**: Do today's decisions create or reduce future problems?
 - **Business impact**: Does the technical work translate into perceptible value?
 
-<Callout type="info" title="The question performance asks">
+<Callout type="info" title="The performance lens">
   It's not "how much did we produce?" — it's "does what we produced **work** and **matter**?"
 </Callout>
 
@@ -210,7 +210,7 @@ This includes:
 
 Here's the problem: real performance is hard to measure directly. You can count commits, but you can't count "technical decisions that aged well". You can measure delivery time, but you can't measure "problems that didn't happen because someone thought better".
 
-That's why SPACE treats performance as a dimension that requires **qualitative judgment**, not just automated collection. Code reviews, honest retrospectives, and user feedback are data sources as valid as pipeline metrics.
+That's why SPACE treats performance as a dimension that requires **qualitative judgment**, not just automated collection. Code reviews, honest retrospectives, and user reaction loops are data sources as valid as pipeline indicators.
 
 <ProsCons
   client:load
@@ -256,19 +256,13 @@ Activity is perhaps the most treacherous dimension. Commits, tickets, PRs, hours
   ]}
 />
 
-SPACE doesn't ignore activity, but treats it as a **weak signal**. Activity without context is noise. The model doesn't say "don't measure". It says: **don't confuse movement with progress**.
+SPACE doesn't ignore activity, but treats it as a **weak signal**. Activity without context is noise. The approach doesn't say "don't measure". It says: **don't confuse movement with progress**.
 
-#### Why activity is so seductive
-
-Activity is the dimension organizations most like to measure — and the one that should least be treated as a primary indicator. The reason is simple: **activity is visible, immediate, and unambiguous**.
-
-You can open a dashboard right now and see how many commits were made today. How many tickets were moved. How many hours each person was online. This visibility creates an illusion of control.
+Activity is the dimension organizations most like to measure — and the one that should least be treated as a primary indicator. The reason is simple: **activity is visible, immediate, and unambiguous**. You can open a dashboard right now and see how many commits were made today. How many tickets were moved. How many hours each person was online. This visibility creates an illusion of control.
 
 <Callout type="danger" title="The visibility trap">
   What's easy to see tends to receive more attention. What receives more attention tends to be optimized. When activity is what's most visible, activity is what gets optimized — even if it's not what matters.
 </Callout>
-
-#### What high activity really means
 
 High activity can mean completely opposite things:
 
@@ -293,17 +287,13 @@ High activity can mean completely opposite things:
 
 Without context, an activity dashboard doesn't distinguish between the two. A team that redoes the same work three times due to lack of clarity shows **three times more activity** than a team that got it right the first time. In the numbers, the dysfunctional team looks more productive.
 
-#### The counting bias
-
-The preference for activity metrics reveals a deep cognitive bias: **if we can count it, we must be understanding it**. But counting is not understanding. It's just a specific — and limited — way of representing reality.
+The preference for activity measurements reveals a deep cognitive bias: **if we can count it, we must be understanding it**. But counting is not understanding. It's just a specific — and limited — way of representing reality.
 
 Counted commits say nothing about code quality. Closed tickets say nothing about value delivered. Hours connected say nothing about real work done.
 
-<Callout type="warning" title="What activity doesn't capture">
-  Thinking. Planning. Discussing. Learning. Reviewing carefully. Waiting for the right information before acting. All these activities are invisible to counting metrics — and all are essential for quality work.
+<Callout type="warning" title="The invisible work">
+  Thinking. Planning. Discussing. Learning. Reviewing carefully. Waiting for the right information before acting. All these activities are invisible to counting measurements — and all are essential for quality work.
 </Callout>
-
-#### When activity is useful
 
 SPACE doesn't demonize activity. It has value when used correctly:
 
@@ -317,7 +307,7 @@ The mistake isn't measuring activity. It's treating it as a **primary indicator*
   client:load
   prosTitle="Correct use of activity"
   consTitle="Incorrect use of activity"
-  context="How to interpret activity metrics"
+  context="How to interpret activity indicators"
   variant="balanced"
   pros={[
     "Compare patterns over time",
@@ -333,8 +323,6 @@ The mistake isn't measuring activity. It's treating it as a **primary indicator*
   ]}
 />
 
-#### The question activity doesn't answer
-
 The fundamental question activity cannot answer is: **is this movement taking us where we want to go?**
 
 A team can be extremely active while walking in circles. It can show impressive numbers of tickets, commits, and deploys while the product stagnates, technical debt grows, and users remain dissatisfied.
@@ -345,8 +333,8 @@ Activity measures **how much** the system moves. Not **where to**.
 
 Communication and collaboration appear as their own axis because software work is rarely individual. Dependencies, alignments, reviews, and collective decisions are part of the real cost of producing software.
 
-<Callout type="warning" title="Invisible cost">
-  Social friction also impacts productivity. Excessive meetings, noisy channels, and poorly distributed decisions consume cognitive energy the same way poorly designed systems do.
+<Callout type="warning" title="The social overhead">
+  Social friction also impacts productivity. Excessive meetings, noisy channels, and poorly distributed decisions consume mental energy the same way poorly designed systems do.
 </Callout>
 
 #### Why collaboration is its own dimension
@@ -374,11 +362,11 @@ A team can have excellent collaboration and still deliver little — because it'
   ]}
 />
 
-#### The cognitive cost of coordination
+#### The mental cost of coordination
 
-Coordinating work with other people consumes cognitive energy. Every meeting, every Slack thread, every PR review, every expectation alignment — all of this has a cost. And this cost rarely appears in traditional metrics.
+Coordinating work with other people consumes mental energy. Every meeting, every Slack thread, every PR review, every expectation alignment — all of this has a cost. And this cost rarely appears in traditional measurements.
 
-<Callout type="info" title="The hidden math">
+<Callout type="info" title="Time fragmentation">
   If a developer spends 2 hours a day in meetings, alignments, and communications, 6 hours remain for focused work. But the real impact is worse: context switching between meetings and deep code work fragments useful time even further.
 </Callout>
 
@@ -412,7 +400,7 @@ Organizations that value collaboration sometimes fall into the opposite trap: **
 
 This creates a system where coordination friction is so high that **doing anything becomes exhausting**. Competent people are forced to spend more energy navigating the process than solving problems.
 
-<Callout type="danger" title="When collaboration becomes obstacle">
+<Callout type="danger" title="Collaboration overload">
   If a senior developer needs three meetings and five approvals to make a change that would take 30 minutes, the problem isn't lack of collaboration — it's excess. The system is optimized for control, not results.
 </Callout>
 
@@ -431,7 +419,7 @@ The goal isn't to maximize collaboration, but to **optimize the cost-benefit rat
 
 The quality of collaboration is rarely an individual problem. It reflects **organizational structure**. Poorly divided teams, poorly defined responsibilities, and misaligned incentives create friction that no communication tool can solve.
 
-<Callout type="tip" title="Conway's Law inverted">
+<Callout type="tip" title="Structural constraints">
   Conway's Law<FootnoteRef client:load id={1} /> suggests that systems tend to reflect the communication structure of the organizations that create them. If communication between teams is difficult, the system's architecture probably reflects that difficulty. Improving collaboration sometimes requires **redesigning the system** — not just adding more communication channels.
 </Callout>
 
@@ -439,7 +427,7 @@ The quality of collaboration is rarely an individual problem. It reflects **orga
 
 Efficiency and flow close the model by connecting it, in part, with what DORA already observes. Here enter wait time, interruptions, context switching, and systemic bottlenecks.
 
-<Callout type="info" title="Flow in the SPACE context">
+<Callout type="info" title="Contextualizing flow">
   In SPACE, flow is not treated as an end in itself. It's just one dimension among others. Excellent flow doesn't compensate for a system that wears people down. It just accelerates that wear.
 </Callout>
 
@@ -477,7 +465,7 @@ The confusion between real and apparent efficiency is common. A developer who re
 
 Both are important, and both are fragile.
 
-<Callout type="warning" title="The fragility of flow">
+<Callout type="warning" title="Flow's vulnerability">
   Entering a flow state takes time. A single interruption can cost 20-30 minutes of recovery. Systems that interrupt frequently **structurally prevent** flow from happening.
 </Callout>
 
@@ -511,7 +499,7 @@ A common conceptual error is confusing efficiency with utilization. **Maximum ut
 
 Systems operating at 100% capacity have no margin to absorb variation. Any unexpected event — an urgent bug, a delayed dependency, a sick person — creates a cascade of delays. Paradoxically, **reducing utilization can increase throughput**.
 
-<Callout type="tip" title="The queueing theory lesson">
+<Callout type="tip" title="System dynamics">
   High-utilization systems have exponentially longer wait times. A system at 90% utilization has much longer queues than one at 70%. Slack in the system isn't waste — it's **response capacity**.
 </Callout>
 
@@ -544,7 +532,7 @@ The theory of constraints is relevant here: **optimizing any part of the system 
 
 The risk of optimizing efficiency is creating systems that **extract maximum from people**. Eliminating all slack, all pauses, all breathing room may seem efficient in the short term — but creates fragile systems that break under pressure.
 
-<Callout type="danger" title="Sustainable efficiency">
+<Callout type="danger" title="Long-term thinking">
   Real efficiency includes sustainability. A system that operates at maximum efficiency for three months and then collapses is **less efficient** than one that operates at 80% for years. The time horizon matters.
 </Callout>
 
@@ -576,8 +564,8 @@ The most important point — and most frequently ignored — is that **these dim
 
 SPACE doesn't try to resolve these tensions. **It makes them explicit.**
 
-<Callout type="tip" title="The conversation shift">
-  Instead of asking "which metric is bad?", the question becomes "which dimension are we sacrificing without realizing?". Instead of seeking an aggregate score, the model forces conscious choices. Every optimization decision has a cost — and SPACE demands that cost be visible.
+<Callout type="tip" title="Reframing the question">
+  Instead of asking "which indicator is bad?", the question becomes "which dimension are we sacrificing without realizing?". Instead of seeking an aggregate score, the approach forces conscious choices. Every optimization decision has a cost — and SPACE demands that cost be visible.
 </Callout>
 
 <Mermaid
@@ -631,7 +619,7 @@ With SPACE, the conversation can easily turn into something else.
 
 ### When complexity becomes excuse
 
-Organizations that avoid difficult decisions **love** SPACE. Not because it's useless — but because it can be used to **delay action**.
+Organizations that avoid difficult decisions **love** SPACE. Not because it's useless — but because this model can be used to **delay action**.
 
 - "We need to understand all dimensions before acting"
 - "We can't optimize one dimension without considering the others"
@@ -639,9 +627,9 @@ Organizations that avoid difficult decisions **love** SPACE. Not because it's us
 
 All true. But when these phrases become patterns, they're no longer analysis — they're **institutionalized paralysis**.
 
-There's a thin line between accepting necessary complexity and using complexity as a shield against accountability. SPACE, like any sophisticated framework, can be used in both ways.
+There's a thin line between accepting necessary complexity and using complexity as a shield against accountability. SPACE, like any sophisticated approach, can be used in both ways.
 
-<Callout type="danger" title="The uncomfortable question">
+<Callout type="danger" title="Who benefits?">
   **Who benefits when the answer is always "it depends" and nothing ever changes?**
 
   Not the developers breaking under pressure. Not the product teams struggling with slow systems. It's the organizational structures that manage to present "systems thinking" while avoiding real decisions.
@@ -663,13 +651,13 @@ SPACE rarely becomes a dashboard. And when it does, it usually loses its value. 
 
 If DORA can be gamed, SPACE can be instrumentalized. And the weapon is precisely its strength: complexity.
 
-The model's sophistication — with its five dimensions and inevitable tensions — should protect against destructive simplification. But in the wrong hands, it becomes a tool to **obscure reality** instead of clarifying it.
+This approach's sophistication — with its five dimensions and inevitable tensions — should protect against destructive simplification. But in the wrong hands, it becomes a tool to **obscure reality** instead of clarifying it.
 
 <ProsCons
   client:load
   prosTitle="Legitimate use of SPACE"
   consTitle="Instrumentalization of SPACE"
-  context="How the framework can be used or abused"
+  context="How the model can be used or abused"
   variant="warning"
   pros={[
     "Recognize real trade-offs between dimensions",
@@ -709,10 +697,10 @@ The model's sophistication — with its five dimensions and inevitable tensions 
 
 **Reality:** Requests were legitimate (e.g., reduce toil, improve observability, automate manual processes). SPACE becomes a rhetorical shield against change.
 
-**What's really happening:** Framework became a political tool, not an analytical one.
+**What's really happening:** The approach became a political tool, not an analytical one.
 
-<Callout type="warning" title="The rhetorical trick">
-  When someone uses SPACE to say **nothing can be done** because "everything is connected and complex", they're not applying the framework — they're abusing it.
+<Callout type="warning" title="Misuse detection">
+  When someone uses SPACE to say **nothing can be done** because "everything is connected and complex", they're not applying the model — they're abusing it.
 
   SPACE exists to make trade-offs explicit and choices conscious. Not to make choices impossible.
 </Callout>
@@ -721,8 +709,8 @@ The model's sophistication — with its five dimensions and inevitable tensions 
 
 There is, of course, a risk here. Without discipline, SPACE can become relativism. If everything is multidimensional and contextual, nothing is comparable, nothing is decisive.
 
-<Callout type="danger" title="The SPACE trade-off">
-  The model doesn't deny this risk. It just assumes excessive simplification is a greater risk.
+<Callout type="danger" title="The inherent risk">
+  This approach doesn't deny this risk. It just assumes excessive simplification is a greater risk.
 </Callout>
 
 ## Why organizations resist SPACE (when used honestly)
@@ -781,13 +769,13 @@ These questions don't have technical answers. They have **organizational and pol
 
 The deepest resistance to SPACE isn't ideological — it's **structural**.
 
-If your promotion systems reward volume of activity (commits, tickets closed), you can't honestly apply a framework that treats activity as an unreliable indicator of real productivity.
+If your promotion systems reward volume of activity (commits, tickets closed), you can't honestly apply an approach that treats activity as an unreliable indicator of real productivity.
 
 If your success metrics ignore satisfaction and well-being, you can't apply SPACE which treats these dimensions as structural.
 
 **The system has already chosen.** SPACE would just make that choice uncomfortably explicit.
 
-<Callout type="danger" title="The choice nobody wants to admit">
+<Callout type="danger" title="Uncomfortable truths">
   SPACE doesn't fail because it's misunderstood. **It fails because it's understood too well.**
 
   Organizations resist it not because it's complex, but because **it makes visible what they'd prefer to keep implicit**: that productivity has cost, that optimization requires sacrifice, and that these choices are political — not technical.
@@ -801,7 +789,7 @@ SPACE doesn't replace DORA. It tensions it. It reminds us that **efficient syste
   client:load
   prosTitle="DORA asks"
   consTitle="SPACE asks"
-  context="The fundamental difference between the frameworks"
+  context="The fundamental difference between the approaches"
   variant="balanced"
   pros={[
     "Does our delivery system work?"
@@ -815,11 +803,11 @@ And that question can't be answered with a number. It requires listening, interp
 
 ## The bridge between system and human
 
-That's why, in this series, SPACE appears exactly here. After flow was understood, but before experience is explored in depth. **It bridges system and human, metric and meaning, efficiency and sustainability.**
+That's why, in this series, SPACE appears exactly here. After flow was understood, but before experience is explored in depth. **It bridges system and human, indicator and meaning, efficiency and sustainability.**
 
 And in making that bridge, SPACE reveals something fundamental: **productivity is not neutral, and complexity is not an excuse.**
 
-<Callout type="tip" title="Two simultaneous truths">
+<Callout type="tip" title="Dual reality">
   **First truth:** Productivity is genuinely multidimensional. Reducing it to a number always sacrifices something important.
 
   **Second truth:** This complexity can be instrumentalized. Used to avoid decision, delay action, and maintain destructive status quo under a veneer of "systems thinking".

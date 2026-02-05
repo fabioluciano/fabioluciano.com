@@ -33,39 +33,7 @@ But very few people remember that **DORA isn't about metrics**. DORA is about ca
   DORA metrics are outcome indicators. They don't tell you what to do. They signal whether what you're doing is working. The real work lies in the **24 technical and organizational capabilities** that sustain these metrics.
 </Callout>
 
-## The epistemological problem with metrics
 
-Before diving into the metrics and capabilities, it's worth questioning something rarely discussed: **do metrics describe reality or create it?**
-
-When DORA categorizes teams as "Elite", "High", "Medium", and "Low performers", is it merely observing patterns — or establishing a hierarchy that organizations will pursue? When deployment frequency becomes a success indicator, are we measuring organizational health — or creating a game where "faster" becomes synonymous with "better", regardless of context?
-
-<Callout type="warning" title="The hidden premise">
-  DORA starts from statistical correlations observed across thousands of organizations. But correlation isn't universal law. What works for the majority may not work for you. And what measures one thing well doesn't necessarily measure another.
-</Callout>
-
-This distinction matters because when we forget that metrics are snapshots — not absolute truths — we start treating them as ends in themselves. And then the system stops asking "are we solving the right problem?" and only asks "are we improving the numbers?".
-
-<ProsCons
-  client:load
-  prosTitle="What DORA assumes"
-  consTitle="What it often ignores"
-  context="Implicit premises of the DORA framework"
-  variant="warning"
-  pros={[
-    "Organizational contexts are comparable",
-    "Speed is a universal virtue",
-    "Metrics reveal objective truth",
-    "Improvement is always measurable"
-  ]}
-  cons={[
-    { text: "Each context has its unique constraints", emphasis: true },
-    { text: "Speed has human and technical costs", emphasis: true },
-    "Metrics create incentives and behaviors",
-    "Not everything valuable shows up in dashboards"
-  ]}
-/>
-
-This isn't an argument against metrics — it's a warning about what happens when we stop questioning what they really mean. With this critical lens established, we can look at the four DORA metrics with more nuance.
 
 ## DORA metrics as symptoms
 
@@ -133,8 +101,8 @@ Percentage of changes that cause degradation or incidents in production. Low rat
 
 **Doesn't measure:** Test coverage. Design quality. Technical decisions that increase or reduce fragility.
 
-<Callout type="info" title="Metrics as conversation">
-  DORA metrics are useful because they direct conversations. They force questions: why does it take so long to deploy? Why do our deployments break? But the answers aren't in the metrics — they're in the **capabilities**.
+<Callout type="info" title="The diagnostic value">
+  DORA measurements are useful because they direct conversations. They force questions: why does it take so long to deploy? Why do our deployments break? But the answers aren't in the numbers — they're in the **capabilities**.
 </Callout>
 
 ## The 24 capabilities nobody implements
@@ -245,7 +213,7 @@ Meaningful work. Autonomy. Sense of progress. Teams that feel valued deliver bet
 
 Leadership that inspires, intellectually challenges, individually supports, and encourages innovation. Not command-and-control.
 
-<Callout type="danger" title="Metrics without capabilities">
+<Callout type="danger" title="Surface-level implementation">
   Implementing DORA dashboards without investing in capabilities is cosmetic. Numbers may even improve for a while — through heroic effort, shortcuts, or statistical illusion. But they don't sustain.
 </Callout>
 
@@ -298,9 +266,9 @@ Ron Westrum, a sociologist who studied safety in high-risk organizations (aviati
 | **Bureaucratic** | Information flows through formal channels | Seeks justice | Creates problems |
 | **Generative** | Information flows to those who need it | Seeks learning | Implements |
 
-<Callout type="warning" title="Why culture matters for DORA">
+<Callout type="warning" title="The cultural foundation">
 
-DORA research found a strong correlation between generative culture and high performance in software delivery. It's no coincidence: **metrics improve when people can talk about problems without fear of punishment**.
+DORA research found a strong correlation between generative culture and high performance in software delivery. It's no coincidence: **measurements improve when people can talk about problems without fear of punishment**.
 
 </Callout>
 
@@ -327,9 +295,9 @@ DORA research found a strong correlation between generative culture and high per
 - Failures are treated as learning opportunities
 - New ideas are welcomed and tested quickly
 
-### How culture affects DORA metrics
+### How culture affects DORA measurements
 
-The connection between culture and metrics isn't abstract — it's mechanical:
+The connection between culture and measurements isn't abstract — it's mechanical:
 
 **Deployment Frequency:** In pathological cultures, nobody wants to be responsible for a deploy that breaks. Result: deploys accumulate, become large and risky. In generative cultures, small and frequent deploys are safe because errors are treated as learning, not as crimes.
 
@@ -343,7 +311,7 @@ The connection between culture and metrics isn't abstract — it's mechanical:
   client:load
   prosTitle="What generative culture produces"
   consTitle="What pathological culture produces"
-  context="Impact of culture on DORA metrics"
+  context="Impact of culture on DORA indicators"
   variant="balanced"
   pros={[
     "Problems are detected early",
@@ -365,7 +333,7 @@ Westrum didn't create his model to be transformed into a corporate survey. But t
 
 The problem: **culture doesn't change by decree**. An organization can have declared generative values while practicing pathological behaviors. The CEO can talk about "psychological safety" while managers punish those who bring bad news.
 
-<Callout type="danger" title="The real culture test">
+<Callout type="danger" title="The 3 AM test">
 
 An organization's real culture isn't what's written in the handbook. It's what happens when someone makes a serious production error at 3 AM. If the first question is "who did this?", the culture is pathological — no matter what the values slide says.
 
@@ -380,21 +348,53 @@ If your organization has pathological or bureaucratic culture, there's no shortc
 - **Time:** Trust takes years to build and seconds to destroy
 - **Tolerance for discomfort:** Exposing previously hidden problems is painful before it's liberating
 
-**Why this matters for DORA:** You can implement all the technical practices — CI/CD, automated tests, observability — and still have poor metrics if the culture doesn't allow people to talk about problems. Culture is the soil where practices grow or die.
+**Why this matters for DORA:** You can implement all the technical practices — CI/CD, automated tests, observability — and still have poor indicators if the culture doesn't allow people to talk about problems. Culture is the soil where practices grow or die.
 
 ## The critique nobody makes: when DORA becomes dogma
 
-Implementing the 24 capabilities is fundamental. They represent the real work of building sustainable delivery systems. But there's a conversation that rarely happens in meeting rooms, conferences, or articles about DevOps: **what if the DORA metrics themselves are leading us in the wrong direction?**
+Implementing the 24 capabilities is fundamental. They represent the real work of building sustainable delivery systems. But there's a conversation that rarely happens in meeting rooms, conferences, or articles about DevOps: **what if the DORA measurements themselves are leading us in the wrong direction?**
 
-This isn't about denying the framework's value. DORA brought rigor and evidence to discussions that were previously just anecdotal. But there's a problem growing silently: when metrics become absolute truths, when correlations become universal laws, when numbers replace judgment.
+This isn't about denying the model's value. DORA brought rigor and evidence to discussions that were previously just anecdotal. But there's a problem growing silently: when measurements become absolute truths, when correlations become universal laws, when numbers replace judgment.
 
-<Callout type="warning" title="The uncomfortable question">
+<Callout type="warning" title="The scope limitation">
   DORA measures **delivery capability**. It doesn't measure whether those deliveries make sense, how much it costs to sustain them, or what's being sacrificed to keep the numbers green.
 </Callout>
 
+## The epistemological problem and structural critiques
+
+Before diving deeper, it's worth questioning something rarely discussed: **do measurements describe reality or create it?**
+
+When DORA categorizes teams as "Elite", "High", "Medium", and "Low performers", is it merely observing patterns — or establishing a hierarchy that organizations will pursue? When deployment frequency becomes a success indicator, are we measuring organizational health — or creating a game where "faster" becomes synonymous with "better", regardless of context?
+
+<ProsCons
+  client:load
+  prosTitle="What DORA assumes"
+  consTitle="What it often ignores"
+  context="Implicit premises of the DORA framework"
+  variant="warning"
+  pros={[
+    "Organizational contexts are comparable",
+    "Speed is a universal virtue",
+    "Metrics reveal objective truth",
+    "Improvement is always measurable"
+  ]}
+  cons={[
+    { text: "Each context has its unique constraints", emphasis: true },
+    { text: "Speed has human and technical costs", emphasis: true },
+    "Metrics create incentives and behaviors",
+    "Not everything valuable shows up in dashboards"
+  ]}
+/>
+
+<Callout type="warning" title="The hidden premise">
+  DORA starts from statistical correlations observed across thousands of organizations. But correlation isn't universal law. What works for the majority may not work for you. And what measures one thing well doesn't necessarily measure another.
+</Callout>
+
+This distinction matters because when we forget that indicators are snapshots — not absolute truths — we start treating them as ends in themselves. And then the system stops asking "are we solving the right problem?" and only asks "are we improving the numbers?".
+
 ### The five structural critiques
 
-#### 1. Context-blindness: same metrics, opposite realities
+#### 1. Context-blindness: same indicators, opposite realities
 
 Two teams can have identical deployment frequency — 10 deployments per day — and be living completely opposite realities.
 
@@ -404,15 +404,15 @@ Two teams can have identical deployment frequency — 10 deployments per day —
 
 **Both appear as "Elite performers" on the dashboard.**
 
-DORA doesn't distinguish built capability from dangerous shortcut. Metrics are blind to **how** and **why** — they only see **how much**.
+DORA doesn't distinguish built capability from dangerous shortcut. Measurements are blind to **how** and **why** — they only see **how much**.
 
-<Callout type="danger" title="What this means">
-  Two teams with identical metrics can be on opposite trajectories: one toward sustainability, another toward collapse. And DORA doesn't differentiate.
+<Callout type="danger" title="The blind spot">
+  Two teams with identical indicators can be on opposite trajectories: one toward sustainability, another toward collapse. And DORA doesn't differentiate.
 </Callout>
 
 #### 2. Reverse gaming: optimizing in the wrong direction
 
-When metrics become targets, systems start gaming against them. Not out of malice, but through organizational dynamics<FootnoteRef client:load id={2} />.
+When measurements become targets, systems start gaming against them. Not out of malice, but through organizational dynamics<FootnoteRef client:load id={2} />.
 
 **Real examples of gaming:**
 
@@ -448,24 +448,24 @@ The system isn't improving — it's learning to lie to the indicator.
 
 #### 3. The invisible human cost of performance
 
-A team can maintain excellent DORA metrics while people break inside.
+A team can maintain excellent DORA indicators while people break inside.
 
 **Real scenario:** Team maintains "Elite performer" status for 8 consecutive months. High deployment frequency, low lead time, impressive MTTR. In retrospectives, everything seems fine. On dashboards, everything is green.
 
 Then, in a single month, three key developers resign. When questioned, the answer is uniform: **exhaustion**.
 
-What metrics didn't show:
+What measurements didn't show:
 - Constant work outside hours to maintain frequency
 - Chronic anxiety before each deploy
 - No time for learning or technical improvement
 - Technical debt accumulating silently
 - Rushed decisions to "not break the rhythm"
 
-<Callout type="danger" title="DORA stays green">
-  Metrics don't know — and can't know — whether high performance is sustainable or is being extracted through human wear.
+<Callout type="danger" title="The false positive">
+  Indicators don't know — and can't know — whether high performance is sustainable or is being extracted through human wear.
 </Callout>
 
-A team can be "performing well" according to DORA and simultaneously heading toward collective burnout. The metric doesn't measure cognitive, emotional, or social cost.
+A team can be "performing well" according to DORA and simultaneously heading toward collective burnout. The indicators don't measure cognitive, emotional, or social cost.
 
 #### 4. The fallacy of universal speed
 
@@ -486,7 +486,7 @@ But context reveals another story:
 
 **This team is being cautious for good reasons.** Accelerating could increase unacceptable risk. "Low performer" in DORA doesn't mean "bad team" — it just means speed isn't the right goal for this system.
 
-<Callout type="warning" title="Not every system needs to be fast">
+<Callout type="warning" title="Context matters">
   For certain domains — safety-critical systems, financial infrastructure, embedded hardware — stability, predictability, and careful analysis matter more than speed.
 </Callout>
 
@@ -508,11 +508,11 @@ Yet DORA is frequently treated as:
 
 This transforms an observation instrument into a **management ideology**.
 
-<Callout type="danger" title="When DORA stops being a tool">
-  When used for ranking between teams, when metrics become individual performance targets, when numbers replace conversations — DORA stops illuminating problems and becomes **the** problem.
+<Callout type="danger" title="The ideological shift">
+  When used for ranking between teams, when indicators become individual performance targets, when numbers replace conversations — DORA stops illuminating problems and becomes **the** problem.
 </Callout>
 
-The framework describes what was observed in specific contexts. It doesn't prescribe what should be done in all contexts. And it's definitely not a guarantee that "improving the numbers" means improving the system.
+The model describes what was observed in specific contexts. It doesn't prescribe what should be done in all contexts. And it's definitely not a guarantee that "improving the numbers" means improving the system.
 
 ### The synthesis phrase of the critique
 
@@ -528,7 +528,7 @@ The answer passes through a name that rarely appears in technical discussions, b
 
 ### What Gartner really is (and isn't)
 
-<Callout type="info" title="Honest definition">
+<Callout type="info" title="What Gartner actually is">
   Gartner isn't a scientific body, doesn't produce experimental knowledge, and doesn't validate practices neutrally. It is, fundamentally, **a consulting company that sells reduction of perceived decision risk**.
 </Callout>
 
@@ -601,13 +601,13 @@ Choosing a tool outside the Quadrant requires active justification. Choosing wit
 
 ### Why Gartner recommends DORA
 
-Now it's clearer why DORA consistently appears in Gartner reports and recommendations. Not because DORA is infallible, but because it has three properties that executives (and Gartner) value:
+Now it's clearer why DORA consistently appears in Gartner reports and recommendations. Not because this approach is infallible, but because it has three properties that executives (and Gartner) value:
 
 **1. It's simple and communicable**
 
-Four metrics. Easy to explain in a slide. Easy to compare over time. Easy to report to non-technical stakeholders.
+Four indicators. Easy to explain in a slide. Easy to compare over time. Easy to report to non-technical stakeholders.
 
-**This is executive currency.** Complex, nuanced, context-dependent metrics don't fit in 30-minute meetings with the C-level. Simplicity sells — even when it reduces reality to the point of distorting it.
+**This is executive currency.** Complex, nuanced, context-dependent measurements don't fit in 30-minute meetings with the C-level. Simplicity sells — even when it reduces reality to the point of distorting it.
 
 **2. It has "sufficient scientific backing"**
 
@@ -629,7 +629,7 @@ This narrative:
 
 Gartner doesn't create this narrative from scratch — it organizes, packages, and validates it.
 
-<Callout type="danger" title="The critical point">
+<Callout type="danger" title="Lost in translation">
   When Gartner recommends DORA, it's doing so as a **governance framework**, not as a complete explanatory model of reality. The problem is this distinction disappears in implementation.
 </Callout>
 
@@ -644,19 +644,19 @@ quickly becomes:
 > "Let's manage people by these numbers"
 
 At that moment:
-- Metrics become performance targets
+- Measurements become performance targets
 - Correlation becomes cause
 - Observation becomes control
-- Framework becomes morality
+- Model becomes morality
 
 And neither Gartner nor DORA were designed for this — but the corporate system incentivizes exactly this use.
 
 ### The phrase that summarizes everything
 
-<Callout type="danger" title="The truth about Gartner and DORA">
+<Callout type="danger" title="The market dynamics">
   **Gartner doesn't sell truth. It sells defensible consensus.**
 
-  DORA enters this package as a metric "scientific enough" to be used — and "simple enough" to be misused.
+  DORA enters this package as an approach "scientific enough" to be used — and "simple enough" to be misused.
 </Callout>
 
 Executives turn to Gartner not to discover what's right, but to ensure their decisions are hard to contest. DORA works perfectly in this role: it offers clear numbers, has an appearance of rigor, and reinforces narratives already in progress.
@@ -665,7 +665,7 @@ The problem isn't that Gartner recommends DORA. The problem is that organization
 
 ## DORA's structural limits
 
-After understanding the critiques of the framework and Gartner's role in its legitimization, it's easier to see where DORA ends — not due to design failure, but due to **inherent limitations** of any metrics system.
+After understanding the critiques of the model and Gartner's role in its legitimization, it's easier to see where DORA ends — not due to design failure, but due to **inherent limitations** of any measurement system.
 
 DORA is powerful for measuring a system's **delivery capability**. But there are fundamental questions it doesn't answer — and never proposed to answer:
 
@@ -673,7 +673,7 @@ DORA is powerful for measuring a system's **delivery capability**. But there are
   client:load
   prosTitle="What DORA sees"
   consTitle="What DORA doesn't see"
-  context="Structural limits of the framework"
+  context="Structural limits of the approach"
   variant="balanced"
   pros={[
     "Pipeline speed",
@@ -689,35 +689,35 @@ DORA is powerful for measuring a system's **delivery capability**. But there are
   ]}
 />
 
-### What's missing in the framework
+### What's missing in the model
 
-- **Team satisfaction**: DORA doesn't measure burnout, turnover, or cognitive load — only output.
-- **Code quality**: Metrics don't tell if code is maintainable, testable, or comprehensible.
+- **Team satisfaction**: DORA doesn't measure burnout, turnover, or mental burden — only output.
+- **Code quality**: Indicators don't tell if code is maintainable, testable, or comprehensible.
 - **Business value**: Frequent deployment doesn't guarantee what's being delivered solves real problems.
 - **Developer Experience**: Friction, clarity, tools, and processes remain completely invisible.
 - **Organizational cost**: The political, social, and emotional effort to maintain the numbers doesn't show.
 - **Context and choices**: DORA doesn't help decide if speed is the right goal for your system.
 
-<Callout type="warning" title="What happens when we ignore the limits">
-  When organizations treat DORA as a complete framework — instead of one lens among several — they create systems that optimize for metrics while wearing out people, accumulating technical debt, and producing changes nobody asked for.
+<Callout type="warning" title="The consequence of ignoring limits">
+  When organizations treat DORA as a complete approach — instead of one lens among several — they create systems that optimize for indicators while wearing out people, accumulating technical debt, and producing changes nobody asked for.
 </Callout>
 
-These gaps aren't bugs. They're inherent characteristics of any framework that tries to reduce organizational and human complexity to comparable numbers.
+These gaps aren't bugs. They're inherent characteristics of any model that tries to reduce organizational and human complexity to comparable numbers.
 
-<Callout type="tip" title="DORA as starting point, not destination">
+<Callout type="tip" title="The complementary approach">
   DORA works best as a starting point, not as complete truth. It forces important conversations about flow, capabilities, and continuous delivery. But it needs to be complemented with other lenses — SPACE, DevEx, qualitative conversations with the team — to create an honest view of what's happening.
 </Callout>
 
-## Capabilities first, metrics second — but with eyes open
+## Capabilities first, indicators second — but with eyes open
 
-If there's one thing DORA work makes clear, it's that **metrics are consequence, not cause**. But there's another truth, less comfortable: **metrics are also political instruments**, not just technical ones.
+If there's one thing DORA work makes clear, it's that **indicators are consequence, not cause**. But there's another truth, less comfortable: **measurements are also political instruments**, not just technical ones.
 
 You don't improve deployment frequency by creating a dashboard. You improve by investing in automation, tests, trunk-based development, and a culture of experimentation.
 
 You don't reduce MTTR just by asking people to be faster. You reduce it with observability, clear runbooks, automated rollback, and blameless culture.
 
-<Callout type="info" title="The order matters">
-  Implement the capabilities. Observe the results. Use metrics to validate progress, not to force behavior. And always ask: **what aren't these metrics showing?**
+<Callout type="info" title="The sequence">
+  Implement the capabilities. Observe the results. Use measurements to validate progress, not to force behavior. And always ask: **what aren't these indicators showing?**
 </Callout>
 
 ### The complete truth about DORA
@@ -729,31 +729,31 @@ DORA measures **how well a team can change software in production**. It doesn't 
 
 This doesn't make DORA useless. It makes it **incomplete** — and potentially dangerous when used as the only lens.
 
-The 24 capabilities aren't a checklist. They're investments that compete for time, attention, and resources with features, deadlines, and short-term pressures. And in this competition, metrics frequently win — because they're easier to measure than real value.
+The 24 capabilities aren't a checklist. They're investments that compete for time, attention, and resources with features, deadlines, and short-term pressures. And in this competition, numbers frequently win — because they're easier to measure than real value.
 
 ### Living with DORA consciously
 
-If your organization uses (or requires) DORA metrics, you don't need to reject them. But you need to use them **consciously**:
+If your organization uses (or requires) DORA indicators, you don't need to reject them. But you need to use them **consciously**:
 
 **Always ask:**
 - Are we measuring because we want to understand — or because we need to report?
 - Who benefits if these numbers improve?
-- What would be invisible if we only looked at metrics?
+- What would be invisible if we only looked at indicators?
 - Does our context really benefit from more speed?
 
 **Always complement:**
-- DORA metrics with regular conversations about wear and satisfaction
+- DORA indicators with regular conversations about wear and satisfaction
 - Quantitative dashboards with qualitative observation
 - Delivery numbers with business value perception
 - External comparisons with understanding of your own context
 
 **And remember:**
 
-<Callout type="danger" title="The choice that precedes metrics">
-  Before choosing DORA (or any framework), choose the problem you want to solve. If this choice isn't conscious, the system will make it for you. And systems don't care about burnout, context, or people — they optimize for what's measured.
+<Callout type="danger" title="The fundamental decision">
+  Before choosing DORA (or any approach), choose the problem you want to solve. If this choice isn't conscious, the system will make it for you. And systems don't care about burnout, context, or people — they optimize for what's measured.
 </Callout>
 
-**The question isn't whether it's worth investing in capabilities. The question is: are you willing to question the metrics that justify (or don't justify) that investment?**
+**The question isn't whether it's worth investing in capabilities. The question is: are you willing to question the indicators that justify (or don't justify) that investment?**
 
 <FootnoteList>
   <FootnoteItem id={2}>
