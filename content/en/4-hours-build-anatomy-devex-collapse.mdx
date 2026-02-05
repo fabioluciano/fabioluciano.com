@@ -1,0 +1,1008 @@
+---
+title: "4-Hour Builds: Anatomy of a Developer Experience Collapse"
+description: "When thousands of tests, hundreds of GB of RAM, and toxic culture collide: a complete anatomy of a developer experience disaster"
+publishedAt: 2026-02-04
+locale: en
+category: developer-experience
+tags: [devex, dora, space, build-pipeline]
+draft: false
+toc: true
+comments: true
+translationSlug: 4-horas-de-build-anatomia-de-um-colapso-de-developer-experience
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { ProsCons } from '@/components/mdx/ProsCons';
+import { Tooltip } from '@/components/mdx/Glossary';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
+
+## The Moment When Thousands of Tests Pass... and the Build Fails
+
+### 3h58min
+
+You look at Jenkins. Build running for 3 hours and 58 minutes.
+
+All tests passed. More than 7 thousand `@Test` methods × 3 databases (originally there were 4, Oracle was disabled because it consumed too much memory). All green. Surefire generating XML reports...
+
+**IT'S GOING TO PASS! 🎉**
+
+4 hours and 2 minutes.
+
+**❌ BUILD FAILED**
+
+```
+Error: Could not write report to target/surefire-reports
+Cause: No space left on device
+```
+
+You take a deep breath. You'll have to run it again.
+
+**And you'll have to wait again.**
+
+This was my reality during the time I spent at a fintech company. I won't mention names. I won't identify people. But I'll tell every technical detail of this story — because it's the only way to understand how seemingly rational systems produce collective madness.
+
+### The absurd numbers
+
+<Callout type="danger" title="The system">
+
+**~7,000 tests × 3 databases = over 20 thousand test executions**
+- (Originally 4 databases — Oracle disabled for consuming too much memory)
+- More combinations with Keycloak: **~30 thousand total executions** per build
+- Thousands of containers created and destroyed
+- ~150GB RAM in simultaneous use
+- ~5GB logs per attempt
+- Pipeline: 4 hours when working, 8h with retry
+- **GitFlow + batch releases** (feature → develop → release → master)
+- Estimated annual cost: **~$200K** in CI infrastructure alone
+
+</Callout>
+
+No, you didn't misread. There were **over 7 thousand `@Test` methods** — but each complete build executed each one **3 times**: once for H2, once for MySQL, once for MSSQL. (Originally there were 4 databases — Oracle was disabled because it consumed too much memory. Yes, consumption was already unsustainable and they tried to reduce it. It didn't help.) That alone was already over 20 thousand executions. And there were still combinations with 3 different Keycloak versions, reaching **approximately 30 thousand total executions** per build.
+
+Making a one-line change meant waiting all day. Opening a pull request meant planning your afternoon. Resolving a merge conflict became a marathon.
+
+And there was still **GitFlow**. Feature branch → develop → release branch → master. Each merge, another endless wait. Each branch, another chance for conflict. Batch releases meant your change was stuck waiting for the next release — sometimes weeks.
+
+And no, **you couldn't run the tests locally.** Not on your machine. Not on your laptop. The complete suite required resources only the CI infrastructure had: multiple databases, Kafka, Zookeeper, Schema Registry, specific Keycloak versions. Try to run locally? Your laptop melted before finishing the first test.
+
+**4 hours was the only feedback you had.**
+
+**"But why not optimize?"**
+
+We lived with this throughout the entire time I was there. Meetings, proposals, analyses, war rooms. And I'll tell you exactly what we found along the way — and why nothing changed.
+
+## Anatomy of the Problem
+
+### Technical Problems
+
+#### "No space left on device": the recurring ghost
+
+```
+Build #1234: ✅ SUCCESS
+Build #1235: ✅ SUCCESS
+Build #1236: ❌ FAILED - No space left on device
+Build #1237: ❌ FAILED
+Build #1238: ✅ SUCCESS (someone restarted something, nobody knows what)
+Build #1239: ❌ FAILED
+```
+
+This error became the most recurrent. But what exactly ran out of space? Disk space? Inodes? Pod quota? Permissions? The DevOps team didn't have application context to investigate completely, and developers didn't have access to infrastructure tools. What was clear was the **reckless and irresponsible resource consumption.**
+
+The math was brutal. Each Tekton worker accumulated cached Docker images (~10GB), Docker layers (~5GB), Maven .m2 cache (~3GB), build artifacts (~2GB), test reports (~500MB), and the true villain: **gigantic logs**. Add to that ghost containers that were never cleaned up properly (1-3GB), and you easily reach 22-28GB per worker.
+
+The problem wasn't just in the Kubernetes node. It was **everywhere**. Each Tekton pod had an ephemeral storage limit voraciously consumed: Docker images, container volumes, growing logs, temporary build artifacts. Total: ~20GB per pod.
+
+When the build ran for 3+ hours generating infinite logs, resources simply ran out.
+
+It was a system designed to irresponsibly consume resources and collapse under its own weight.
+
+#### The logs: the true villain
+
+A single build generated **~5GB of logs**. Not a typo.
+
+Maven vomited ~200MB of output. Spring Boot, starting multiple parallel workers, generated ~600MB of startup logs. TestContainers, orchestrating Docker, MySQL, MSSQL, H2, Kafka, Zookeeper, Keycloak, produced ~1.5GB of logs. The test execution itself? Another ~2GB. Jenkins pipeline added ~500MB. **Total: ~5GB per build.**
+
+Three builds per day = 14.4GB/day. One week = 100GB just in logs.
+
+No editor could open them. VSCode crashed. Vim gave "Out of memory". Sublime Text froze and turned the laptop into an electric toaster.
+
+The DevOps team didn't have complete application context — they were separated from Dev by organizational silos that made true collaboration impossible.
+
+Know what the solution was? Another team had to develop a custom Python tool to parse ~5GB files, throw the data to Google Sheets and visualize in Looker. And it didn't stop there: the tool needed **recurring fixes** to keep working.
+
+Because apparently it was easier to create and maintain a complete data pipeline (Python → Google Sheets → Looker) than to structure logs correctly or have real observability.
+
+#### The 13 abstraction layers
+
+<Mermaid
+  client:load
+  chart={`graph TD
+    J[Jenkins Pipeline] --> TL[Shared Library]
+    TL --> TK[Tekton TaskRun]
+    TK --> POD[Kubernetes Pod]
+    POD --> DIND[Docker-in-Docker]
+    DIND --> MVN[Maven Command]
+    MVN --> SUR[Surefire Plugin]
+    SUR --> TEST[Test Code]
+    TEST --> TC[TestContainers]
+    TC --> MY[(MySQL Container)]
+    TC --> MS[(MSSQL Container)]
+    TC --> H2[(H2 Database)]
+    TC --> KFK[Kafka Container]
+    TC --> ZK[Zookeeper Container]
+    TC --> SR[Schema Registry]
+    TC --> KC[Keycloak]
+
+    style J fill:#ff6b6b
+    style DIND fill:#ff6b6b
+    style TC fill:#ff6b6b`}
+  caption="The 13 layers between you and the code you're testing. Each layer exponentially adds debugging complexity."
+/>
+
+Debugging was impossible.
+
+Test failed? Good luck figuring out which of the 13 layers has the problem.
+
+Container won't start? Could be Docker, could be Kubernetes, could be Tekton, could be TestContainers, could be the network, could be resource limits, could be... you have 4 hours to find out.
+
+And the tools for that? Access to kubectl was blocked by security policy. Prometheus, Grafana, and Loki too. SSH to nodes? Same situation. Direct Kubernetes logs? Unavailable.
+
+You only had access to the Jenkins UI. And to the ~5GB logs that not even DevOps could open.
+
+#### Impossible to run locally
+
+And here's the detail that makes everything worse: **you couldn't run the test suite on your machine.**
+
+The complete suite required resources only the CI infrastructure had:
+
+<CompareColumns
+  client:load
+  leftTitle="Complete suite requires"
+  rightTitle="Your laptop has"
+  leftType="negative"
+  rightType="negative"
+  leftItems={[
+    "MySQL container running",
+    "MSSQL container (licensed)",
+    "H2 in-memory database",
+    "Oracle container (disabled - consumed TOO much memory)",
+    "Kafka + Zookeeper + Schema Registry",
+    "3 different Keycloak versions",
+    "~150GB RAM in simultaneous use",
+    "Storage for exponentially growing logs"
+  ]}
+  rightItems={[
+    "16GB RAM (if you were lucky)",
+    "256GB or 512GB SSD",
+    "Docker Desktop with resource limits",
+    "Operating system that needs to function",
+    "Other open applications (IDE, browser)",
+    "Fan trying not to melt everything",
+    "Hope (doesn't help)"
+  ]}
+/>
+
+Try to run locally? Your laptop melted before the first test finished. Docker Desktop froze. Operating system entered survival mode.
+
+**The consequence:** CI feedback was the ONLY feedback you had. There was no "run a few tests locally to validate quickly". There was no "iterate quickly until it works". It was commit → push → pray → wait.
+
+And if it failed? Wait all over again.
+
+#### Surefire: the final blow
+
+The most frustrating scenario went like this:
+
+**3h58min:** All tests passed. Green. Success.
+**3h59min:** Surefire generating XML reports...
+**4h00min:** `Error: Could not write report to target/surefire-reports`
+
+**All tests passed. But the build failed.**
+
+Known Surefire bug. Unresolved. Official solution: "retry".
+
+So you click "Rebuild". And wait for the same cycle to repeat.
+
+<Mermaid
+  client:load
+  chart={`graph LR
+    A[0:00 - Build starts ✅] --> B[1:00 - 25% passing ✅]
+    B --> C[2:00 - 50% passing ✅]
+    C --> D[3:00 - 75% passing ✅]
+    D --> E[3:58 - ALL passed! 🎉]
+    E --> F[3:59 - Generating reports...]
+    F --> G[4:00 - ❌ FAILED]
+    G --> H{Retry?}
+    H -->|Yes| A
+    H -->|No| I[Give up]
+
+    style E fill:#51cf66
+    style G fill:#ff6b6b`}
+  caption="The cycle of suffering: 4 hours of waiting, all green, fails at the last step, automatic retry."
+/>
+
+**The psychological impact was real.**
+
+3 consecutive retries. 12 hours of build for a 5-line change. And then the build passes — without you having changed anything. Pure frustration.
+
+### Organizational Problems: Why the system was never fixed
+
+But here's the question nobody wants to ask: **why** does a system that causes such obvious psychological suffering continue to operate? **Why** didn't 4 hours of feedback trigger urgency for change?
+
+The answer isn't technical. The answer is organizational.
+
+Before talking about specific technical problems, I need to establish an uncomfortable truth: **everyone knew there was complete organizational dysfunction.**
+
+The chain from developers to professionals who should provide support was broken. The reason? **Structural silos and people in the pantheon of the untouchables.**
+
+There were professionals who, due to tenure, historical reputation, or political position, were above questioning. Main system architects: over a decade at the company. Encyclopedic knowledge. Reputation built over the years. And an organizational position that made them **untouchable.**
+
+Bad technical decisions remained bad because those who made them couldn't be challenged. Dysfunctional processes continued dysfunctional because changing them would mean admitting someone important was wrong. And everyone knew this — but the organizational structure actively protected the dysfunction.
+
+#### Dev vs Infra: the blame game
+
+<Mermaid
+  client:load
+  chart={`graph TB
+    DEV["<b>Development</b><br/>We need resources<br/>Builds collapsing<br/>No debug tools"]
+    INFRA["<b>Infrastructure</b><br/>Not a resource problem<br/>~7,000 tests is absurd<br/>Optimize the code"]
+
+    PROBLEMA["<b>THE PROBLEM</b><br/>4h build<br/>Reckless resource consumption<br/>Impossible logs"]
+
+    DEV -.->|Blame| INFRA
+    INFRA -.->|Blame| DEV
+
+    PROBLEMA -->|Affects| DEV
+    PROBLEMA -->|Affects| INFRA
+
+    SOLUCAO["<b>SOLUTION?</b><br/>❌ None<br/>Ego > Collaboration"]
+
+    DEV -.->|Don't reach| SOLUCAO
+    INFRA -.->|Don't reach| SOLUCAO
+
+    style PROBLEMA fill:#ff6b6b
+    style SOLUCAO fill:#ffd43b`}
+  caption="The organizational impasse: Dev blames Infra, Infra blames Dev, nobody takes ownership."
+/>
+
+**Dev team:** "We need more resources. The build is collapsing, we're running out of resources."
+
+**Infra team:** "It's not a resource problem. ~7,000 tests is ridiculous. Optimize."
+
+**Dev:** "But the tests are necessary! It's a financial system!"
+
+**Infra:** "Then break them into smaller pipelines. Staged builds."
+
+**Dev:** "We can't. We need to validate all database × Keycloak combinations."
+
+**Infra:** "Then increase cloud resources."
+
+**Dev:** "You just said it's not a resource problem!"
+
+**Infra:** "..."
+
+**Dev:** "..."
+
+*Meeting ends without resolution.*
+
+This conversation happened. Literally. **Daily.**
+
+<CompareColumns
+  leftTitle="Dev Perspective"
+  rightTitle="Infra Perspective"
+  leftType="negative"
+  rightType="negative"
+  leftItems={[
+    "Insufficient resources cause recurring failures",
+    "We need more parallel workers",
+    "We need debug tools (kubectl, Prometheus)",
+    "Infra doesn't understand system complexity"
+  ]}
+  rightItems={[
+    "~7,000 tests is absurd over-engineering",
+    "Poorly designed pipeline causes waste",
+    "Debug tools already exist, request proper access",
+    "Dev wants more resources to compensate for inefficient code"
+  ]}
+/>
+
+Both were right. And both were wrong.
+
+The real problem wasn't technical. It was **political and structural.**
+
+It wasn't just ego — although there was ego in abundance. It was an organizational structure that protected certain people from any technical questioning:
+
+- **Questioned an architectural decision?** "This is how I designed it because I have over a decade of experience."
+- **Suggested a pipeline change?** "I created this pipeline. I know exactly why each step is there."
+- **Pointed out test waste?** "Are you suggesting reducing coverage? In a financial system?"
+
+Decisions made 5, 10 years ago remained untouched not because they still made sense, but because questioning the decision was questioning who made it. **It wasn't possible to have honest technical conversations.**
+
+Every discussion became reputation defense. Improvements were seen as personal criticism. Concrete data — waste analysis, build metrics, operational costs — were ignored if they contradicted historical decisions.
+
+And the worst part: **they were probably right when they made those decisions.** The context had changed. The system had grown. Tools evolved. But admitting this would mean admitting past decisions were no longer optimal. And in a culture where seniority is measured by never being wrong, admitting error is impossible.
+
+#### The bridge role (Dev ↔ Infra)
+
+I was the interlocutor between Dev and Infra. Not by choice. By necessity. The organizational structure actively reinforced dysfunction — silos ensured nobody had complete vision of the problem. And I ended up being the only person who understood both sides.
+
+Developers asked me: "Why can't we have kubectl? Why don't we have Grafana? Why do builds fail so much?" Infrastructure questioned me: "Why ~7,000 tests? Why don't they do a staged pipeline? Why does TestContainers need thousands of containers?"
+
+I translated. Mediated. Explained. Negotiated.
+
+And received pressure **from both sides:**
+
+- **Dev saw me as Infra extension:** "You have access. You can request the tools."
+- **Infra saw me as Dev extension:** "You understand the code. Convince them to optimize."
+- **Management saw me as the solution:** "You understand both. Fix it."
+
+I had no authority to change decisions. No budget to buy tools. No autonomy to alter architecture. But had **all the responsibility** when things broke.
+
+Being a bridge between Dev and Infra without decision-making power is the most efficient form of professional burnout I know. You feel the pain from both sides, understand the limitations of both, but can't solve any of the structural problems causing the conflict.
+
+#### Zero debug tools
+
+<CompareColumns
+  client:load
+  leftTitle="Tools I NEEDED"
+  rightTitle="Tools I HAD"
+  leftType="negative"
+  rightType="neutral"
+  leftItems={[
+    "kubectl access to inspect pods",
+    "SSH to Kubernetes nodes",
+    "Direct Prometheus queries",
+    "Grafana dashboards with relevant metrics",
+    "Structured logs (JSON)",
+    "Distributed tracing",
+    "Access to persistent volumes",
+    "Permission to run debug commands in pods"
+  ]}
+  rightItems={[
+    "Jenkins UI (view builds)",
+    "Download ~5GB logs that won't open",
+    "Corporate chat",
+    "Prayer",
+    "Hope",
+    "Free and unlimited frustration"
+  ]}
+/>
+
+Debugging was done **blindly.**
+
+Real example: "No space left on device". You can't `kubectl exec` to investigate. Could be permissions, pod quota, inode limit, or anything else. The error says "no space", but you'd never discover what. That's the reality of lacking tools.
+
+**The cruel irony:** there were 3 DevOps professionals, plus a Principal and Architects mediating the situation, and some Managers. But organizational silos ensured DevOps didn't have complete application context, and developers didn't have infrastructure access. Result: nobody could solve it.
+
+**Why not grant access?**
+
+"Security policy."
+
+"But I literally deploy code to this cluster."
+
+"That's different. Deploy uses controlled processes. kubectl is direct access."
+
+"What if I promise not to `kubectl delete`?"
+
+"It's not about trust. It's policy."
+
+"Then who can debug?"
+
+"DevOps."
+
+"DevOps knows Java and Spring Boot, but doesn't have complete application domain context. And we developers don't have infrastructure tools."
+
+"You need to communicate better."
+
+**Communicate better.** As if the problem was choosing the right communication tool. As if it weren't a structural dysfunction where people who should provide support didn't have tools or context to provide support, and people who needed support didn't have autonomy to solve problems.
+
+"..."
+
+### The bombshell discovery: 50% was unnecessary
+
+After weeks analyzing the tests, I discovered something nobody wanted to believe:
+
+**almost 4 thousand tests — half the suite — were pure waste.**
+
+<Callout type="danger" title="THE INCONVENIENT TRUTH">
+
+**Analysis of ~7,000 tests:** Over 1,500 tests tested MapStruct — code generated by the compiler. 900 tests were duplicated by Abstract*Test class inheritance. 1,000 tests tested Lombok — automatically generated getters and setters. 100 tests validated Bean Validation — @NotNull, @Size annotations that the framework itself guarantees. ~200 obvious null checks testing if null is null.
+
+**All the suffering... half was unnecessary.**
+
+</Callout>
+
+<Mermaid
+  client:load
+  chart={`pie
+    "Business Logic" : 2000
+    "MapStruct/Frameworks" : 1500
+    "Abstract Duplicates" : 900
+    "Lombok/POJOs" : 1000
+    "Validations" : 800
+    "Other Useful" : 750
+    "Null Checks" : 200
+    "Bean Validation" : 70`}
+  caption="50% of tests tested frameworks, compilers, or were duplicates. Only 27% tested actual business logic."
+/>
+
+MapStruct generates code at compile time. You write an interface:
+
+```java
+@Mapper
+interface OrderMapper {
+    OrderDTO toDTO(Order entity);
+}
+```
+
+And MapStruct generates the implementation. Automatically. Compiled. Type-safe.
+
+**Why test code generated by a compiler?**
+
+"To ensure the mapping is correct."
+
+**But it's automatically generated. If it compiled, it works.**
+
+"What if the version changes?"
+
+**So you trust the compiler but don't trust the framework?**
+
+"It's good to have coverage."
+
+**1,000 Lombok tests.**
+
+```java
+@Data
+class Order {
+    private String id;
+    private BigDecimal amount;
+}
+```
+
+Lombok generates getters, setters, equals, hashCode, toString. At compile time.
+
+And we had **1,000 tests** validating that `getId()` returns the id. That `setAmount(x)` sets the amount.
+
+**900 tests duplicated by inheritance.**
+
+Common pattern:
+
+```java
+abstract class AbstractServiceTest {
+    @Test void testCreate() { /* ... */ }
+    @Test void testUpdate() { /* ... */ }
+    @Test void testDelete() { /* ... */ }
+}
+
+class OrderServiceTest extends AbstractServiceTest {}
+class AccountServiceTest extends AbstractServiceTest {}
+class LedgerServiceTest extends AbstractServiceTest {}
+// ... 300 classes
+```
+
+Each subclass inherited the same tests. 900 tests ran **identical code** with different setup.
+
+**Solution:** Parameterized tests. One test, multiple executions. Reduction: 900 → 30 tests.
+
+**Nobody wanted to do it.**
+
+"It'll break code coverage."
+
+"But we're testing the same thing 900 times!"
+
+"It's the pattern we've always used."
+
+## Three Truths Nobody Wants to Hear
+
+Before analyzing the frameworks, let's get to the core: three truths that structure everything you'll read.
+
+### First truth: metrics lie when context is ignored
+
+You can have 100% test coverage and still be testing the wrong things. As we saw, thousands of tests verifying code generated by compilers (MapStruct, Lombok). Coverage: 100%. Value: zero.
+
+You can have "good" Deployment Frequency on the dashboard while developers avoid making changes because each one means an endless feedback loop. The metric is green. The team is in burnout.
+
+**Metrics are thermometers, not diagnoses.** A thermometer shows 38°C. Could be flu. Could be serious infection. Could be sepsis. The number alone says nothing.
+
+### Second truth: 50% of the problem was pure waste
+
+It wasn't "all necessary because of system complexity". It was waste. Pure and simple.
+
+As we detailed earlier, almost 4 thousand tests tested frameworks instead of business logic. **The biggest optimization wasn't technical. It was admitting that half the work was useless and having the courage to delete.**
+
+In cultures where "it's always been this way" is a valid argument, waste accumulates until the system collapses under its own weight. Endless builds. ~$200K/year. Widespread burnout.
+
+### Third truth: inadequate tools + toxic culture = inevitable disaster
+
+No framework alone saves. Not DORA, not SPACE, not DevEx, not any that comes.
+
+If professionals who should provide support are protected in untouchable silos, tools don't solve it. If technical decisions are blocked by ego instead of data, metrics don't solve it. **Collaboration > Ego. Always.**
+
+**There's no technical solution to an organizational problem.** And the faster you accept this, the faster you can decide: fight to change or leave before breaking.
+
+## When All Frameworks Agree: This is Dysfunction
+
+Now, let's see how these three truths manifest in each productivity framework. This series explores DORA<FootnoteRef client:load id={1} /> (delivery), SPACE<FootnoteRef client:load id={2} /> (multidimensional), and DevEx<FootnoteRef client:load id={3} /> (developer experience).
+
+### DORA Metrics: when metrics lie
+
+<Tooltip client:load term="DORA Metrics" definition="Set of 4 metrics that evaluate software delivery capability: deployment frequency, lead time, recovery time, and change failure rate.">DORA metrics</Tooltip> are designed to measure delivery capability. But there's an important detail: **there was deployment to test environment**, not production.
+
+The flow was: Build → Deploy to test environment → Testers performed manual tests → Packaging (helm-charts) → **Batch delivery to customer**.
+
+There was no continuous deployment. Releases were grouped and delivered in cycles. **GitFlow** managed branches (feature → develop → release → master). Feedback came from testers, not production telemetry.
+
+**Deployment Frequency: ✅ Dozens of deploys/day (test environment with snapshots)**
+
+Looked OK on the dashboard — testers used snapshot versions, so it didn't take long to deploy to tests. But here's the detail: 60% of these deploys had builds that failed on first attempt. And remember: **half of the 7,000 tests tested MapStruct, Lombok, and frameworks — pure waste.** The green metric hides real collapse.
+
+The development cycle reality was different:
+
+- 4-hour feedback loop for each build attempt
+- Multiple retries = days of real waiting
+- 60% failure on first attempt
+- Developers avoiding changes to not "waste" a build
+
+**Lead Time for Changes: ❌ 2-3 DAYS (sometimes WEEKS)**
+
+Feature branch → Build (4h) → Merge to develop → Build (4h) → Failed → Retry (4h) → Passed → Wait for next release → Merge to release branch → Build (4h) → Deploy to tests → Manual validation → Merge to master
+
+And that's assuming no build failed. A single retry? +4 hours. Build failed twice? +8 hours.
+
+**GitFlow + batch releases** multiplied lead time. A simple change was stuck waiting for the next release cycle. Sometimes weeks.
+
+A trivial change became a marathon. Not due to technical complexity. Due to process friction.
+
+**Time to Restore: ❌ 6-8 hours**
+
+Bug found by testers in the environment? 6-8 hours until having a fix deployed:
+- 1h to debug (without adequate tools)
+- 4h build (if passes on first try)
+- 1-2h for deploy and manual validation
+- If build fails: +4h for each retry
+
+**Change Failure Rate: ❌ ~30%**
+
+30% of test environment deploys presented problems discovered by testers:
+- Bugs that passed in ~7,000 tests
+- Configuration problems (helm-charts)
+- Environment incompatibilities
+- Workarounds that broke other features
+
+#### The DORA problem in this context
+
+DORA captures **symptoms**, not causes. Metrics looked "acceptable" in management reports — but reality was hell.
+
+Deployment Frequency doesn't distinguish between "reliable deploys" and "deploys that only pass on retry". Lead Time doesn't capture the 3 builds that failed before success. Change Failure Rate of 30% seems reasonable, but hides that **60% of builds failed on first attempt** before even reaching testers.
+
+And the worst: feedback came from **manual testers in test environment**, not production telemetry in minutes. Critical bugs were only discovered weeks later, when the helm-chart reached the customer.
+
+### SPACE Framework: the five dimensions of suffering
+
+<Tooltip client:load term="SPACE Framework" definition="5-dimension framework to measure productivity: Satisfaction, Performance, Activity, Communication, and Efficiency.">SPACE</Tooltip> expands analysis to multiple dimensions. And each one was destroyed:
+
+**S - Satisfaction and well-being: ❌ 2/10**
+
+Widespread frustration. Growing burnout. Severe emotional impact.
+
+**P - Performance: ⚠️ 7/10**
+
+Code was good. Technical quality was high. But horrible process sabotaged everything.
+
+**A - Activity: ❌ 4h feedback loop**
+
+Constant activity, but most of it was **waiting**. Wait for build. Wait for retry. Wait for log analysis. And meanwhile, **50% of work was testing frameworks** that didn't need to be tested.
+
+**C - Communication and collaboration: ❌ War between teams**
+
+Constant blame game. Impermeable silos. Bridge in the crossfire. Zero real collaboration.
+
+And worse: **inaccessible principals due to ego**. Question decisions? Impossible. "It's always been this way because I decided it many years ago."
+
+**E - Efficiency and Flow: ❌ Constant interruptions**
+
+Impossible to enter flow. Each change required coordination with 3 teams, 2 approvals, and prayers for the build to pass.
+
+<ProsCons
+  client:load
+  prosTitle="What SPACE would reveal"
+  consTitle="What SPACE wouldn't solve"
+  context="SPACE as diagnosis"
+  variant="warning"
+  pros={[
+    { text: "Satisfaction on the floor — visible in surveys", emphasis: true },
+    "High performance being wasted",
+    "Fragmented collaboration — Dev vs Infra",
+    "Inaccessible principals/architects due to defensive ego",
+    "Efficiency destroyed by process friction"
+  ]}
+  cons={[
+    "Why satisfaction is low (root cause)",
+    "How to resolve Dev vs Infra conflict (power structure)",
+    { text: "Who has authority to change (political decision)", emphasis: true },
+    "Human cost of the system (invisible burnout)"
+  ]}
+/>
+
+SPACE diagnoses well the **where** — but not the **how** or **why**.
+
+### DevEx Framework: Developer Experience destroyed
+
+<Tooltip client:load term="DevEx" definition="Research framework (2023) defining three dimensions to evaluate developer experience: flow state, feedback cycles, and cognitive load.">DevEx</Tooltip> looks at the three central experience dimensions: Flow, Feedback, and Cognitive Load.
+
+All of them were **completely destroyed.**
+
+<Mermaid
+  client:load
+  chart={`graph TB
+    F["<b>Flow</b><br/><small>DESTROYED</small><br/>4h feedback = impossible flow"]
+    FB["<b>Feedback</b><br/><small>ABSENT</small><br/>Impossible logs, tools denied"]
+    CL["<b>Cognitive Load</b><br/><small>MAXIMUM</small><br/>13 layers, Dev↔Infra bridge, tribal knowledge"]
+
+    F -.->|"No flow<br/>rushed decisions"| CL
+    FB -.->|"No feedback<br/>blind debugging"| CL
+    CL -.->|"High load<br/>mental exhaustion"| F
+
+    style F fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px
+    style FB fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px
+    style CL fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px`}
+  caption="The 3 DevEx dimensions form a vicious cycle: no flow, no feedback, and unsustainable cognitive load."
+/>
+
+**Flow: DESTROYED**
+
+4 hours waiting for feedback. Impossible to work on more than one thing without losing context. Developers started a change, waited 4h, were already on another task when the result arrived. And half that wait was to run **unnecessary framework tests**.
+
+**Feedback: ABSENT**
+
+Ambiguous, late, and impossible to analyze feedback. Impossible logs to process. Debug tools denied. Blind debugging.
+
+**Cognitive Load: MAXIMUM**
+
+13 abstraction layers. Tribal knowledge (only the most senior understood). Hostile infra (no kubectl, no observability). Constant political conflict.
+
+#### What DevEx shows
+
+When all three dimensions are broken simultaneously, **no productivity is possible.**
+
+Doesn't matter how good the code is. Doesn't matter how competent the team is. The environment is cognitively hostile — and exhausts even the most resilient people.
+
+### DX Core 4: the four faces of collapse
+
+**DX Core 4**<FootnoteRef id={4} /> is a more recent framework that expands the original DevEx to 4 interdependent dimensions: **Flow**, **Feedback**, **Cognitive Load**, and **Alignment**.
+
+What differentiates DX Core 4? It shows how these dimensions **don't exist in isolation** — they mutually reinforce each other. A problem in Flow causes problems in Feedback. High Cognitive Load breaks Alignment. And so on.
+
+In our case, **all 4 dimensions were in simultaneous collapse**. And worse: each amplified the others.
+
+<Mermaid
+  client:load
+  chart={`graph TB
+    subgraph DX["<b>DX Core 4 in the 4-Hour Build</b>"]
+        F["<b>Flow</b><br/><small>DESTROYED</small><br/>4h feedback loop<br/>Lost context"]
+        FB["<b>Feedback</b><br/><small>ABSENT</small><br/>Impossible logs<br/>Ambiguous error"]
+        CL["<b>Cognitive Load</b><br/><small>MAXIMUM</small><br/>13 layers<br/>Tribal knowledge"]
+        AL["<b>Alignment</b><br/><small>BROKEN</small><br/>Dev vs Infra<br/>Ego > Collaboration"]
+    end
+
+    F -.->|"No flow,<br/>more errors"| FB
+    FB -.->|"No feedback,<br/>mental load rises"| CL
+    CL -.->|"High load,<br/>conflict increases"| AL
+    AL -.->|"No alignment,<br/>processes worsen"| F
+
+    style F fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px
+    style FB fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px
+    style CL fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px
+    style AL fill:#ff6b6b,stroke:#d32f2f,stroke-width:3px`}
+  caption="The 4 DX Core 4 dimensions form a negative reinforcement cycle: each problem amplifies the others."
+/>
+
+#### Flow: DESTROYED
+
+Flow state? Impossible with such long feedback cycles. You initiate a PR, run the build, and when the result finally arrives — you're already on a completely different task. Lost context. Mental cache invalidated. Have to reload into memory what the hell you were doing.
+
+As we saw earlier, there was no alternative to run locally — the laptop couldn't handle the complete suite. It was commit, push, wait.
+
+Even worse: multiple attempts. Build fails, you adjust a line, run again. Same wait. At the end of the day, 2-3 attempts consumed 8-12 hours of real time to validate a change that should take minutes. Constant handoffs. Lost context. Growing mental load.
+
+Daily interruptions became the norm. "The build failed again, can you look?" Meeting. Corporate chat. Email. War room. Impossible to have 2 hours of uninterrupted deep work. Flow state became a theoretical concept — something you read in blog posts but never experienced in practice.
+
+#### Feedback: ABSENT
+
+Late feedback for any change = late decisions = more rework. You make an assumption at 9am, only find out if it was right at 1pm. And if it was wrong? The cycle restarts.
+
+The OODA Loop (Observe, Orient, Decide, Act) is a military decision-making concept adapted for software development. The faster you complete the cycle, the faster you learn and adapt. With 4 hours of feedback, the cycle becomes so slow it completely loses its effectiveness.
+
+And when feedback finally arrived, it was **useless**. Logs impossible to open. Messages like "No space left on device" without indicating WHERE (node disk? volume? tmpfs? which of thousands of containers?). Surefire failures without useful stack trace. Generic error that could mean literally anything.
+
+Actionability? Zero. Error found, but no tools to investigate. Access to kubectl? Denied. Prometheus? Denied. Grafana? Denied. Logs impossible to analyze without crashing the editor. Blind debugging, trying to guess the problem by telepathy. "Is it disk? Is it memory? Is it TestContainers leaving orphan containers? Who knows."
+
+#### Cognitive Load: MAXIMUM
+
+DX Core 4 separates cognitive load into 3 types: **Intrinsic** (inherent problem complexity), **Extraneous** (unnecessary complexity), and **Germane** (capacity to learn).
+
+**Intrinsic Load** was high, but legitimate: ~7,000 real tests, multiple databases (MySQL, MSSQL, H2 — Oracle had been disabled for consuming too much memory), Kafka + Zookeeper + Schema Registry + Keycloak, complex business logic involving financial transactions. This load made sense to exist.
+
+**Extraneous Load** was absurd: 13 abstraction layers from Jenkins to individual containers. Almost 4 thousand tests testing frameworks instead of business. Tribal knowledge concentrated in few seniors. Constant political conflict. Basic debug tools denied. Each layer added unnecessary cognitive friction.
+
+**Germane Load** was zero. There was no mental space to learn, improve, grow. All brain was occupied surviving daily operational chaos: builds failing, impossible logs, war meetings, conflicts between teams.
+
+The problem? **Extraneous Load consumed 80-90% of cognitive capacity.** Almost nothing left to do the real work (Intrinsic) or to improve the process (Germane). It was like trying to program while someone yells in your ear and randomly erases your code lines.
+
+#### Alignment: BROKEN
+
+**Goal clarity?** Zero. No common objective. Each side pushing responsibility to the other. Meanwhile, the build kept failing.
+
+**Decision structure?** Nonexistent — or worse: blocked by ego. Principals with many years at the company treated past decisions as unquestionable dogma. Ego prevailed over data.
+
+**Psychological safety?** Negative. Proposing a solution resulted in "You don't understand the complexity." Questioning a decision became "You don't have enough experience." Admitting not knowing something was impossible — immediately came "It's the other team's fault." The result: **widespread fear**. Fear of speaking. Fear of proposing. Fear of admitting not knowing. Fear of questioning. Toxic environment where political survival mattered more than solving the problem.
+
+<Callout type="danger" title="The negative reinforcement cycle">
+
+DX Core 4 reveals something scary: **problems in one dimension amplify problems in others**.
+
+1. **Slow feedback (4h)** → breaks **Flow** (lost context)
+2. **Broken flow** → increases **Cognitive Load** (mentally reload context)
+3. **High cognitive load** → breaks **Alignment** (exhausted people enter conflict)
+4. **Broken alignment** → worsens **Feedback** (teams don't collaborate to improve tools)
+
+And the cycle restarts. Each iteration worsens all 4 dimensions simultaneously.
+
+**In our case:** 2 years of vicious cycle. Growing entropy. Until people started leaving.
+
+</Callout>
+
+## How to Fix in 6 Months (If Ego Allowed)
+
+### Synthesis: What each framework revealed that others didn't
+
+| Insight | DORA | SPACE | DevEx | DX Core 4 |
+|---------|------|-------|-------|-----------|
+| Metrics hide reality | ✅ | - | - | - |
+| Satisfaction on the floor | - | ✅ | - | - |
+| Impossible flow | - | - | ✅ | ✅ |
+| Negative reinforcement cycle | - | - | - | ✅ |
+| 50% waste identified | Partial | - | ✅ | ✅ |
+
+**DX Core 4's unique insight:** It's not enough to diagnose each dimension in isolation. What matters is how they mutually reinforce. A problem in Flow causes problems in Feedback. High Cognitive Load breaks Alignment. And so on.
+
+DORA captured **symptoms** — high lead time, change failure rate. SPACE identified the **war between teams**. DevEx showed the **cognitive destruction**. But only DX Core 4 showed the **complete vicious cycle** where each problem amplifies the others.
+
+### What each framework would propose
+
+| Framework | Proposed Solution | Estimated Cost | Expected Impact |
+|-----------|------------------|----------------|------------------|
+| **DORA** | Staged pipeline (smoke→unit→e2e)<br/>Simplify GitFlow → trunk-based<br/>Reduce lead time with incremental builds | Medium<br/>2-3 months work | Lead Time: 2-3 days→4-8h<br/>Deployment Frequency: 2-3/week→daily<br/>MTTR: 6h→2h |
+| **SPACE** | Debug tools (kubectl, Grafana, Loki)<br/>Collaboration structure between teams<br/>Autonomy | Low (tools)<br/>High (cultural change) | Satisfaction: 2→7<br/>Collaboration: war→partnership<br/>Efficiency: reduced friction |
+| **DevEx** | Eliminate 50% unnecessary tests<br/>Structured logs (JSON)<br/>Fast feedback (build &lt;10min) | Low (delete tests)<br/>Medium (structure logs) | Flow: 4h→30min feedback<br/>Cognitive Load: 40% reduction<br/>Feedback: clear and actionable |
+| **DX Core 4** | Eliminate Extraneous Load (framework tests, layers)<br/>Establish agreement between teams (Alignment)<br/>Create clear decision structure | Medium<br/>Requires strong leadership | Cognitive Load: -70%<br/>Alignment: conflict→collaboration<br/>Flow: 4h→1h<br/>Feedback: ambiguous→clear |
+
+
+### The solution that never came: "What if..."
+
+SCENARIO: What if teams had worked together?
+
+**Month 1: Identification**
+- Joint test analysis
+- Discover 50% are unnecessary
+- Prioritize: remove waste first
+
+**Month 2: Execution**
+- Delete MapStruct and Lombok tests
+- Refactor Abstract tests to parameterized
+- Build drops from 4h to **2h**
+- Resource consumption failures reduced by 60%
+
+**Month 3: Consolidation**
+- Staged pipeline: smoke (5min) → unit (30min) → integration (1h)
+- Structured logs (JSON, ~5GB → 500MB)
+- Simplify GitFlow → trunk-based with feature flags
+- Fast feedback for 90% of cases
+
+**Result in 6 months:**
+- Lead time: 2-3 days → 4-8 hours (80-90% reduction)
+- Build time: 4h → 30min-1h with staged pipeline
+- Infra cost: ~$200K/year → $50K/year
+- Team satisfaction: 2/10 → 8/10
+
+**Annual savings: ~$150K**
+
+**BUT:**
+
+❌ Constant conflict
+❌ ~$500K wasted
+❌ Widespread burnout
+
+**BECAUSE: Ego > Collaboration**
+
+## Delete, Observe, Collaborate: The Plan That Stayed on Paper
+
+If there had been **real collaboration** between Dev and Infra, with focus on results instead of ego, here's exactly how transformation would happen:
+
+### Immediate Actions (Week 1-4): The easiest blow
+
+#### 1. Delete framework tests (MAXIMUM IMPACT, ZERO RISK)
+
+Delete MapStruct, Lombok tests, obvious null checks — as we detailed earlier.
+
+We know this works: it's literally pressing Delete. No risk. No "what if?". Just reduce waste. Immediate result: 40% of build disappears.
+
+**Total impact:** Build 4h → 2h30min (~40% reduction). You press Delete on a Friday and on Monday the team is 40% more productive. It's the kind of quick win that builds momentum for bigger changes.
+
+#### 2. Structured logs (JSON)
+
+**Problem:** ~5GB of pure text, impossible to analyze.
+
+**Solution:** Structured logging (JSON Lines)
+
+```json
+{"timestamp":"2024-02-03T14:23:45Z","level":"ERROR","message":"No space left on device","context":{"worker":"tekton-7","test":"OrderServiceTest","phase":"surefire-report"}}
+```
+
+With structured logs, size drops from ~5GB to ~500MB (JSON compression + gzip). Parsing becomes instant using tools like jq or grep. Analysis becomes trivial: query by specific field, complex filters, aggregations. And indexing with Loki becomes viable.
+
+**The complete solution:** Loki for log aggregation and querying + Prometheus for metrics + Grafana for unified visualization would solve all observability pain.
+
+Risk? Very low — it's configuration change, not code. Implementation time: 1 week maximum.
+
+### Medium-term Actions (1-3 Months): Building on the victory
+
+#### 1. Real observability
+
+After the quick success of deleting tests, the next step is **finally seeing** what's happening.
+
+Loki + Prometheus + Grafana for complete observability: Loki aggregates and indexes structured logs, Prometheus collects real-time build metrics (resource consumption per worker, container lifecycle, memory/CPU per test, storage usage), Grafana unifies everything in dashboards showing exactly where the bottleneck is happening now — not 4 hours later via impossible logs.
+
+Proactive alerts to catch problems before they become fires: resources exceeded limit? Alert fired before failing. Build passed 3h? Dashboard lights red to investigate bottleneck.
+
+Cost: ~$200/month with managed hosting. ROI: savings of ~10h/week of blind debugging = ~$5K/month recovered. Pays for itself in 1 week. It's the kind of investment CFO approves smiling.
+
+#### 2. Refactor Abstract tests to Parameterized
+
+As we saw earlier, 900 tests ran identical code by inheritance. JUnit 5 `@ParameterizedTest` solves: one test, multiple executions. Same coverage, less code, infinitely easier maintenance.
+
+#### 3. Staged Pipeline
+
+**Problem:** Everything runs always. Late feedback.
+
+**Solution:** Progressive pipeline
+
+```
+Smoke (5min)
+  ├─ Compilation
+  ├─ Fast unit tests (~500)
+  └─ If fails: STOP HERE ❌
+
+Unit (30min)
+  ├─ All unit tests (~4,000)
+  ├─ Static analysis (SonarQube)
+  └─ If fails: STOP HERE ❌
+
+Integration (1h)
+  ├─ Integration tests (H2 only)
+  ├─ API tests (Keycloak mock)
+  └─ If fails: STOP HERE ❌
+
+Full (2h) - Only on main/develop
+  ├─ Matrix: 3 DBs × 3 Keycloaks
+  └─ Complete E2E tests
+```
+
+**Impact:**
+- 90% of errors detected in &lt;30min
+- Fast feedback for feature branches
+- Full validation only on main branches
+
+#### 4. Simplify branch flow
+
+**Problem:** GitFlow + batch releases = artificially inflated lead time.
+
+Feature → develop → release → master = 4 merges × 4 hours build = up to 16 hours just in builds.
+
+**Solution:** GitHub Flow or trunk-based development
+
+```
+Feature branch → main (with feature flags)
+```
+
+Single merge. Incremental build for feature branches. Full validation only for main. Feature flags control visibility in production/tests.
+
+**Impact:**
+- Lead time: 2-3 days → 4-8 hours
+- Fewer merges = fewer conflicts
+- Fewer builds = less cost
+- More frequent and smaller releases
+
+**But:** Requires cultural change. Requires feature flags. Requires trust in automated tests. In an organization with rigid silos and fear of change? Unlikely to happen.
+
+### Long-term Actions (3-6 Months)
+
+#### 1. Blameless culture
+
+**Solution:** Shared ownership. Blameless postmortems asking "What did the system fail?" instead of "Who messed up?". Safe experimentation. Total transparency.
+
+Monetary cost? Zero — it's cultural change. Difficulty? Very high. Requires committed leadership willing to confront egos and establish new dynamics. Without this, everything else fails.
+
+#### 2. Distribute knowledge
+
+**Problem:** Knowledge concentrated in few seniors with 10+ years at the company. Only one person knows each critical part — if they leave, project paralyzes. This is called "Bus Factor" (number of people who, if hit by a bus, would cause project collapse). In this case, Bus Factor = 1. Extremely fragile.
+
+**Solution:** Pair programming on infra for juniors to learn Kubernetes, Tekton, pipeline. Living documentation with ADRs (Architecture Decision Records) and updated runbooks — not that dead documentation from 2018 nobody reads. Rotation: each sprint, a different person becomes pipeline "guardian". Reverse offboarding: when senior leaves, junior takes over with mentoring — forcing knowledge transfer before departure.
+
+Goal: bus factor from 1 to 5+. Anyone on the team can debug and fix the pipeline without depending on the "chosen one".
+
+#### 3. Developer Experience as strategic priority
+
+DevEx isn't "nice to have" — it's **investment in future velocity**. Adequate tools (kubectl, Loki, Prometheus, Grafana) aren't luxury, they're basic productivity requirement. Autonomy for developers to debug problems alone instead of being blocked waiting for DevOps. Clear and documented processes anyone can follow. Continuous investment in friction reduction — each sprint, one annoying thing is eliminated.
+
+The clearest metric? New developer onboarding time. Before: 6 months until contributing with confidence (because environment is hostile, knowledge is tribal, tools are denied). After: 1 month until first real contribution. When environment is friendly, people produce fast.
+
+### The cost of doing nothing
+
+<Callout type="danger" title="COST OF MAINTAINING STATUS QUO">
+
+**Direct operational cost:** ~$200K/year in oversized CI/CD infrastructure + $50K/year in incidents (emergency hotfixes, downtime, rework). Total: ~$250K/year burned.
+
+**Hidden cost (the worst):** Inevitable burnout. Morale on the floor with 2/10 satisfaction. Decreasing velocity — lead time increasing month by month. Technical debt accumulating because nobody wants to refactor a system that's already a nightmare to work with.
+
+**Human cost:** Constant frustration and severe emotional impact. Relationships completely destroyed.
+
+**Cost to improve:** $50K initial investment in tools + implementation time. A few months of coordinated effort. ROI: 6 months. After that? $100K/year saved. Happy and productive team. Increasing velocity instead of decreasing. Technical debt being systematically paid.
+
+The question isn't "can we invest?". The question is "can we continue not investing?".
+
+</Callout>
+
+## Recognized Your Company? Leave.
+
+If you recognized your situation here, you have three options:
+
+**1. Establish a deadline**
+
+"I'll give this 6 months to improve. Otherwise, I'm leaving."
+
+Deadline imposes urgency. For you and for the organization.
+
+**2. Escalate**
+
+Document. Quantify. Present to those with decision-making power.
+
+Not emotion. Numbers. "~$200K/year wasted. 4h build. 30% turnover. Here's the solution and ROI."
+
+**3. LEAVE**
+
+If nothing changes after 1 and 2, **leave.**
+
+Your mental health is worth more than any project. Burnout isn't a badge of honor. It's a sign the system is broken — and you don't need to break with it.
+
+<Callout type="danger" title="FINAL MESSAGE">
+
+**Don't normalize the absurd.**
+
+4-hour builds aren't "normal for complex systems".
+
+Tests testing compilers isn't "quality assurance".
+
+War between teams isn't "how things are".
+
+Debug tools denied isn't "security policy".
+
+**It's organizational dysfunction. And you don't have to accept it.**
+
+</Callout>
+
+<FootnoteList>
+  <FootnoteItem id={1}>
+    Forsgren, Nicole; Humble, Jez; Kim, Gene. **[Accelerate: The Science of Lean Software and DevOps](https://www.oreilly.com/library/view/accelerate/9781457191435/)**. IT Revolution Press, 2018. Presents the 4 DORA metrics (deployment frequency, lead time, MTTR, change failure rate) and the 24 technical and organizational capabilities that sustain high performance in software delivery.
+  </FootnoteItem>
+  <FootnoteItem id={2}>
+    Storey, Margaret-Anne; Zimmermann, Thomas; et al. **[The SPACE of Developer Productivity](https://queue.acm.org/detail.cfm?id=3454124)**. ACM Queue, 2021. Framework proposing 5 dimensions to measure developer productivity: Satisfaction, Performance, Activity, Communication, and Efficiency.
+  </FootnoteItem>
+  <FootnoteItem id={3}>
+    Noda, Abi; et al. **[DevEx: What Actually Drives Productivity](https://queue.acm.org/detail.cfm?id=3595878)**. ACM Queue, 2023. Framework based on 3 dimensions (flow, feedback, cognitive load) to systematically evaluate and improve developer experience.
+  </FootnoteItem>
+  <FootnoteItem id={4}>
+    Forsgren, Nicole; Storey, Margaret-Anne; et al. **[DevEx in Action: A Study of Its Tangible Impacts](https://queue.acm.org/detail.cfm?id=3639443)**. ACM Queue, 2024. Expansion of the DevEx framework to 4 dimensions: Flow, Feedback, Cognitive Load, and Alignment. Focuses on pragmatic interventions and interdependencies between dimensions.
+  </FootnoteItem>
+</FootnoteList>
