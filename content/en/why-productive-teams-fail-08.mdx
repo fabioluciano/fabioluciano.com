@@ -1,0 +1,528 @@
+---
+title: "Beyond Team Metrics: Structure, Flow, and the Corporate Perspective"
+description: "Team Topologies redesigns organization for flow. Flow Framework connects engineering to business. Developer Velocity Index shows how consultancies sell productivity. Three lenses that amplify what previous frameworks don't see."
+publishedAt: 2026-02-08
+locale: en
+category: platform-engineering
+tags:
+  - developer-experience
+  - platform-engineering
+  - team-topologies
+  - flow-framework
+draft: false
+toc: true
+comments: true
+series: why-productive-teams-fail
+seriesOrder: 8
+translationSlug: por-que-times-produtivos-fracassam-08
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { ProsCons } from '@/components/mdx/ProsCons';
+import { Tooltip } from '@/components/mdx/Glossary';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
+
+Throughout this series, we've explored frameworks that measure productivity at different levels: DORA in the pipeline, SPACE in dimensions, DevEx in experience, DX Core 4 in intervention points. They all share one characteristic: **they focus on the team as the unit of analysis**.
+
+But teams don't exist in a vacuum. They operate within organizational structures, respond to business pressures, and are evaluated by metrics that frequently come from outside engineering.
+
+Three perspectives expand the view:
+
+1. **Team Topologies** — How organizational structure determines flow
+2. **Flow Framework** — How to connect engineering metrics to business value
+3. **Developer Velocity Index** — How corporate consultancies simplify (and sell) productivity
+
+<Callout type="info" title="Why expand the view">
+
+DORA, SPACE, and DevEx are powerful for understanding what happens *within* teams. But if the organizational structure is wrong, or if the language with business is broken, optimizing within the team is insufficient. Sometimes, the problem is one level above.
+
+</Callout>
+
+---
+
+## Team Topologies: structure as a flow variable
+
+### The central argument
+
+<Tooltip client:load term="Team Topologies" definition="Organizational design model proposed by Matthew Skelton and Manuel Pais that defines four team types and three interaction modes to optimize delivery flow.">Team Topologies</Tooltip><FootnoteRef client:load id={1} />, published in 2019 by Matthew Skelton and Manuel Pais, starts from a provocative premise: **organizational structure is the first variable that determines delivery capacity**.
+
+It doesn't help to have perfect CI/CD, impeccable DORA metrics, and satisfied developers if the way teams are organized creates dependencies that block flow.
+
+<Callout type="warning" title="Conway's Law as design">
+
+Conway's Law states that systems tend to mirror the organization's communication structure. Team Topologies proposes *inverting* this law: **design the organizational structure to produce the architecture you want**.
+
+</Callout>
+
+### The four team types
+
+The model defines four fundamental team types, each with distinct responsibilities and characteristics:
+
+#### 1. Stream-aligned Teams (Times Alinhados a Fluxo)
+
+These are teams that **deliver value directly to the user or customer**. They work on a continuous flow of features, from concept to production.
+
+**Characteristics:**
+- Responsible for a clear slice of business value (product, journey, domain)
+- Must have autonomy to deliver without constant external dependencies
+- Need all capabilities necessary for their flow (design, development, operations)
+- Are the majority of teams in a healthy organization
+
+**The common problem:** When stream-aligned teams constantly depend on other teams for simple deliveries, there's an organizational design problem — not a process problem.
+
+#### 2. Platform Teams (Times de Plataforma)
+
+They exist to **reduce cognitive load on stream-aligned teams**. They provide internal services that allow flow teams to focus on business value.
+
+**Characteristics:**
+- Treat other teams as customers
+- Provide self-service services (infrastructure, CI/CD, observability)
+- Reduce effort duplication between teams
+- Should be optional, not mandatory (teams can use or not)
+
+**The common problem:** Platform teams that become mandatory bottlenecks instead of enablers. If every deploy needs "platform approval", the platform team became a committee, not a service.
+
+#### 3. Enabling Teams (Times Habilitadores)
+
+**Help other teams overcome obstacles** temporarily. They're specialists who transfer knowledge, not who do the work for others.
+
+**Characteristics:**
+- Detect capability gaps in stream-aligned teams
+- Work temporarily with specific teams
+- Goal is to become unnecessary (transfer knowledge, not create dependency)
+- Examples: DevOps teams, SRE mentors, security specialists
+
+**The common problem:** Enabling teams that become permanent support teams, creating dependency instead of capacity.
+
+#### 4. Complicated-Subsystem Teams (Times de Subsistema Complexo)
+
+Responsible for **components that require deep specialization** that doesn't make sense to distribute among all teams.
+
+**Characteristics:**
+- Master areas that require specialized knowledge (ML, cryptography, video processing)
+- Provide simplified interfaces for other teams
+- Justified only when specialization is genuinely rare and necessary
+- Should be exception, not rule
+
+**The common problem:** Using "complexity" as excuse to create silos. If the team exists because "only they understand the code", the problem is documentation and architecture, not need for specialization.
+
+<ProsCons
+  client:load
+  prosTitle="Well-designed structure"
+  consTitle="Poorly designed structure"
+  context="Organizational structure impact on flow"
+  variant="balanced"
+  pros={[
+    "Stream-aligned teams deliver with autonomy",
+    "Platform is service, not bottleneck",
+    "Enabling teams transfer knowledge",
+    "Dependencies are explicit and minimized"
+  ]}
+  cons={[
+    { text: "Every request becomes ticket for another team", emphasis: true },
+    { text: "Platform has weeks-long queue", emphasis: true },
+    "Specialists become indispensable",
+    "Nobody knows who is responsible for what"
+  ]}
+/>
+
+### The three interaction modes
+
+Beyond team types, Team Topologies defines three interaction modes between teams:
+
+**1. Collaboration**
+- Two teams work together temporarily on a shared problem
+- High communication, blurred boundaries
+- Should be temporary — permanent collaboration indicates poorly defined boundaries
+
+**2. X-as-a-Service**
+- One team provides service that another consumes
+- Low communication, clear contract
+- Ideal for stable platforms and subsystems
+
+**3. Facilitating**
+- One team (usually enabling) helps another develop capacity
+- Communication focused on knowledge transfer
+- Goal is to make facilitation unnecessary
+
+<Mermaid
+  client:load
+  chart={`
+flowchart TB
+    subgraph types["Team Types"]
+        stream["**Stream-aligned**<br/><br/>Deliver value<br/>directly to<br/>user/customer"]
+        platform["**Platform**<br/><br/>Reduce cognitive<br/>load with<br/>internal services"]
+        enabling["**Enabling**<br/><br/>Transfer<br/>knowledge<br/>temporarily"]
+        subsystem["**Complicated<br/>Subsystem**<br/><br/>Master<br/>rare<br/>specialization"]
+    end
+
+    stream -->|"X-as-Service<br/>(self-service)"| platform
+    stream -.->|"Facilitating<br/>(temporary)"| enabling
+    stream -->|"X-as-Service<br/>(simple interface)"| subsystem
+    stream -.->|"Collaboration<br/>(temporary exception)"| stream
+    platform -.->|"Facilitating<br/>(integration)"| stream
+    enabling -.->|"Facilitating<br/>(transfer<br/>capacity)"| stream
+
+    note1["**Majority of teams should be Stream-aligned**<br/>Other types exist to ENABLE flow,<br/>not to create permanent dependencies."]
+
+    style stream fill:#E8F5E9,stroke:#4CAF50,stroke-width:2px
+    style platform fill:#E3F2FD,stroke:#2196F3,stroke-width:2px
+    style enabling fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
+    style subsystem fill:#F3E5F5,stroke:#9C27B0,stroke-width:2px
+    style note1 fill:#fff,stroke:#666,stroke-width:1px
+  `}
+  alt="Diagram showing the 4 team types from Team Topologies and the 3 interaction modes"
+  caption="Team Topologies defines 4 team types and 3 interaction modes. The majority of teams should be Stream-aligned; other types exist to enable them, not to create permanent dependencies."
+/>
+
+<Callout type="danger" title="The most common mistake">
+
+Organizations treat collaboration as the default mode. Result: infinite meetings, hidden dependencies, and nobody can deliver independently. **Collaboration should be temporary exception, not permanent state.**
+
+</Callout>
+
+### Team Topologies and DORA/SPACE/DevEx
+
+| Framework | What it sees | What Team Topologies adds |
+|-----------|----------|-------------------------------|
+| **DORA** | Pipeline speed | Why the pipeline is slow (dependencies between teams) |
+| **SPACE** | Multiple dimensions | Why collaboration is fragmented (wrong structure) |
+| **DevEx** | Individual/team experience | Why cognitive load is high (poorly defined responsibilities) |
+
+Team Topologies doesn't compete with these frameworks — it explains **why their metrics might be bad** even when technical practices are right.
+
+### The limits of Team Topologies (what the book doesn't tell)
+
+The model is elegant — perhaps too elegant. In practice, there are limitations the book minimizes or completely ignores.
+
+#### Limitation 1: Contexts where the model doesn't work
+
+**Small startups (< 20 people):**
+- Separating stream-aligned, platform, and enabling teams doesn't make sense with 3 teams
+- Everyone does everything, and that's correct at this scale
+- Applying Team Topologies too early creates unnecessary bureaucracy
+
+**Very hierarchical organizations:**
+- Team Topologies assumes team autonomy that many cultures don't allow
+- If every decision needs approval from 3 levels up, stream-aligned teams are fiction
+- The model doesn't address how to change hierarchical culture
+
+**Companies with legacy contracts:**
+- External vendors can force team structures that don't fit the model
+- Complicated-subsystem team may be mandatory by contract, not by choice
+- Team Topologies assumes control that not every organization has
+
+#### Limitation 2: Renaming teams isn't Team Topologies
+
+**The most common anti-pattern:** Organization reads the book, renames existing teams to the 4 types, declares victory.
+
+- Infrastructure team becomes "Platform Team" (but continues being mandatory bottleneck)
+- Support team becomes "Enabling Team" (but continues doing operational work)
+- Every team becomes "Stream-aligned" (but continues with cross-dependencies in everything)
+
+**The problem:** The change is cosmetic. Interaction modes didn't change. Dependencies remain the same. Bottlenecks persist.
+
+**What really changing requires:**
+- Redesign responsibilities (not just names)
+- Eliminate blocking dependencies
+- Change incentives and success metrics
+- Renegotiate interaction contracts between teams
+
+#### Limitation 3: Transition costs the book minimizes
+
+**Transitions are painful.** The book treats reorganization as a design exercise, but in practice:
+
+- **People lose responsibility:** When you redesign teams, people lose domains they mastered
+- **Knowledge fragments:** Transition period has absurd cognitive load
+- **Metrics worsen before improving:** Every reorganization generates temporary productivity drop
+- **Political resistance:** Those who lose power resist, regardless of technical logic
+
+**What the book doesn't say:** Poorly managed transitions can destroy more value than they create. Reorganizing without buy-in, without knowledge migration plan, without stabilization period is a recipe for disaster.
+
+**Realistic estimate:** Significant reorganization takes 12-18 months to stabilize. The book doesn't prepare for this timeline.
+
+#### Limitation 4: Consultancy bias
+
+Matthew Skelton and Manuel Pais are Team Topologies consultants. This doesn't invalidate the model, but creates incentives:
+
+- **Simplicity sells:** 4 types + 3 modes is more sellable than "it depends on context"
+- **Universality sells:** "Works for any organization" is better marketing than "has limitations"
+- **Training sells:** Model that can be taught in 2 days generates more revenue
+
+The result: details are simplified, exceptions are minimized, real complexity is reduced.
+
+<Callout type="warning" title="Use Team Topologies as lens, not as law">
+
+The model is **useful for thinking about structure** — it's not **universal recipe**. Organizations that treat Team Topologies as compliance checklist end up worse than if they hadn't adopted anything.
+
+Ask: "Does this structure make sense for our context?" — not "Are we following Team Topologies correctly?"
+
+</Callout>
+
+---
+
+## Flow Framework: translating engineering to business
+
+### The language problem
+
+<Tooltip client:load term="Flow Framework" definition="Model proposed by Mik Kersten that connects engineering flow metrics to business results, categorizing work into Features, Defects, Risks, and Debts.">Flow Framework</Tooltip><FootnoteRef client:load id={2} />, published in 2018 by Mik Kersten, addresses a different problem: **engineering and business speak different languages**.
+
+When engineering reports "deployment frequency increased 40%", the CFO asks: "So what? Did this generate revenue?"
+
+When business asks "deliver faster", engineering responds: "We're at the limit. We have technical debt."
+
+The dialogue doesn't happen because the metrics don't translate.
+
+<Callout type="info" title="The translation gap">
+
+DORA measures delivery capacity. SPACE measures productivity dimensions. DevEx measures experience. None of them directly answers: **how much business value are we creating?**
+
+</Callout>
+
+### The four work categories (Flow Items)
+
+The Flow Framework proposes categorizing all work into four types:
+
+#### 1. Features (Funcionalidades)
+- New value for the customer
+- Generates revenue, differentiation, or satisfaction
+- It's what business usually wants most
+
+#### 2. Defects (Defeitos)
+- Fixing problems in existing features
+- Doesn't add new value, but preserves existing value
+- Signal of development process quality
+
+#### 3. Risks (Riscos)
+- Work to reduce vulnerabilities (security, compliance, resilience)
+- Not visible to end user, but critical for sustainability
+- Frequently ignored until it becomes incident
+
+#### 4. Debts (Dívidas)
+- Work to improve technical base (refactoring, dependency updates)
+- Doesn't deliver immediate value, but enables future deliveries
+- The hardest to justify to business
+
+<CompareColumns
+  leftTitle="What business sees"
+  rightTitle="What engineering sees"
+  leftType="neutral"
+  rightType="neutral"
+  leftItems={[
+    "We want more features",
+    "Why so many bugs?",
+    "Security is cost",
+    "Refactoring doesn't deliver value"
+  ]}
+  rightItems={[
+    "Features without quality become defects",
+    "Bugs are symptom of pressure",
+    "Security prevents catastrophe",
+    "Technical debt is killing us"
+  ]}
+/>
+
+### Flow Metrics: metrics that business understands
+
+The framework proposes metrics that translate technical capacity into business language:
+
+**Flow Velocity:** How many work items are completed per period? (Similar to throughput, but categorized)
+
+**Flow Efficiency:** How much time is work active vs. waiting? (Reveals process bottlenecks)
+
+**Flow Time:** How much time from start to finish of an item? (Similar to lead time, but per category)
+
+**Flow Load:** How many items are in progress simultaneously? (Reveals overload)
+
+**Flow Distribution:** What percentage of work goes to each category? (Reveals where effort is being invested)
+
+<Callout type="warning" title="The critical insight of Flow Distribution">
+
+If 60% of work is defects and technical debt, and only 20% is features, **business needs to understand that accelerating features requires investing in quality**. Flow Distribution makes this conversation possible with data, not with opinion.
+
+</Callout>
+
+### The Value Stream as unit of analysis
+
+Unlike frameworks focused on teams, Flow Framework uses the **value stream** as unit:
+
+- A value stream crosses multiple teams
+- Measures from customer request to value delivery
+- Reveals bottlenecks that individual team metrics don't show
+
+**Example:** A team may have excellent DORA metrics (frequent deploys, low lead time), but the total value stream be slow because there are bottlenecks in business approvals, transfers between teams, or external dependencies.
+
+### Flow Framework and other frameworks
+
+| Question | DORA answers | Flow Framework adds |
+|----------|---------------|------------------------|
+| Are we delivering fast? | Yes (pipeline) | Yes, but delivering *what*? |
+| Where is the bottleneck? | In pipeline | In entire value stream |
+| How much effort goes to value? | Doesn't measure | Flow Distribution shows |
+| Does business understand our progress? | Doesn't translate | Metrics in business language |
+
+---
+
+## Developer Velocity Index: the corporate perspective
+
+### What it is (and where it comes from)
+
+The <Tooltip client:load term="Developer Velocity Index" definition="Index created by McKinsey that measures development velocity through practices in technology, tools, culture, and management.">Developer Velocity Index (DVI)</Tooltip><FootnoteRef client:load id={3} /> was created by McKinsey in 2020. It's an index that tries to correlate development practices with business results.
+
+Unlike DORA (born from academic research) or Team Topologies (born from practice), DVI comes from the world of **corporate consulting**. This matters because it defines its audience and incentives.
+
+<Callout type="warning" title="Context matters">
+
+DVI wasn't created to help engineers improve. It was created to help **executives justify investments** in technology. This doesn't make it invalid, but defines its priorities and limitations.
+
+</Callout>
+
+### The four dimensions of DVI
+
+The index evaluates organizations in four areas:
+
+**1. Technology**
+- Modern development tools
+- Cloud infrastructure
+- CI/CD practices
+
+**2. Working Practices**
+- Agile methodologies
+- Code practices (code review, pair programming)
+- Test automation
+
+**3. Talent**
+- Ability to attract and retain developers
+- Development programs
+- Learning culture
+
+**4. Enterprise Enablement**
+- Leadership support
+- Technology investment
+- Strategic alignment
+
+### What DVI claims (and doesn't prove)
+
+The McKinsey study claims that companies in the top quartile of "developer velocity" have:
+- 4-5x more revenue growth
+- 55% more innovation
+- 60% higher employee satisfaction
+
+<Callout type="danger" title="Correlation vs. Causality">
+
+These correlations are impressive, but don't prove causality. Successful companies have more resources to invest in tools and practices — not necessarily the reverse. DVI may be measuring **consequence** of success, not **cause**.
+
+</Callout>
+
+### Why executives love DVI
+
+DVI solves a specific problem for C-level:
+
+1. **Investment justification:** "McKinsey says companies with high velocity grow 4x more"
+2. **External benchmark:** "We're in the 60th percentile compared to market"
+3. **Simple narrative:** One number that summarizes "engineering maturity"
+4. **Reputational coverage:** If it goes wrong, "we followed McKinsey"
+
+<ProsCons
+  client:load
+  prosTitle="What DVI offers"
+  consTitle="What DVI hides"
+  context="Critical analysis of Developer Velocity Index"
+  variant="warning"
+  pros={[
+    "Language that executives understand",
+    "Benchmark against market",
+    "Investment justification",
+    "Holistic view (tech + culture + management)"
+  ]}
+  cons={[
+    { text: "Correlation treated as causality", emphasis: true },
+    { text: "Proprietary methodology (not replicable)", emphasis: true },
+    "Incentive to sell consulting",
+    "Simplifies complexity into single number"
+  ]}
+/>
+
+### The structural critique
+
+The problem with DVI isn't that it's wrong — it's that it comes from a specific context:
+
+**1. Conflict of interest:** McKinsey sells consulting to improve the index it created.
+
+**2. Opaque methodology:** Unlike DORA (published, replicable research), DVI is proprietary.
+
+**3. Dangerous simplification:** Reducing "engineering maturity" to a single number ignores context, trade-offs, and important details.
+
+**4. Survivorship bias:** The study analyzes successful companies. We don't know how many companies with "high velocity" failed.
+
+<Callout type="info" title="When to use (with caution)">
+
+DVI can be useful for:
+- Opening conversation with executives who don't understand DORA/SPACE
+- Justifying budget in business language
+- Initial benchmark (with caveats)
+
+But it shouldn't replace frameworks with transparent methodology and focus on real improvement.
+
+</Callout>
+
+---
+
+## Integrating the perspectives
+
+### What each framework adds
+
+| Framework | Unit of analysis | Central question | Primary audience |
+|-----------|-------------------|------------------|-------------------|
+| **DORA** | Pipeline/Team | "Does the system deliver well?" | Engineering |
+| **SPACE** | Team/Individual | "Are we measuring right?" | Engineering/Management |
+| **DevEx** | Individual/Team | "How is it to work here?" | Engineering |
+| **Team Topologies** | Organization | "Does structure allow flow?" | Org Architecture |
+| **Flow Framework** | Value Stream | "How much value are we creating?" | Engineering + Business |
+| **DVI** | Company | "How do we compare to market?" | Executives |
+
+### When to use each one
+
+**Problem in pipeline, bad delivery metrics:**
+→ Start with DORA for diagnosis
+
+**Teams deliver but people suffer:**
+→ Use DevEx to understand experience
+
+**Good team metrics but slow total delivery:**
+→ Team Topologies to verify structure
+→ Flow Framework to map value stream
+
+**Need to justify investment to C-level:**
+→ Flow Framework to translate to business language
+→ DVI as external reference (with caveats)
+
+**Redesigning organization:**
+→ Team Topologies as design framework
+→ Flow Framework to measure impact
+
+### The question that remains
+
+Eight articles. Six frameworks. Dozens of metrics, dimensions, team types, and interaction modes.
+
+If you've gotten this far with the feeling of having **many lenses and little clarity**, that's exactly the condition the next article addresses: how to integrate all this in practice? Which framework to use for which question? How to combine without creating paralysis from excess analysis?
+
+Frameworks don't change organizations. **People change organizations.** But people need more than measurement tools — they need a model for choosing which tool to use when.
+
+**The next question isn't "which framework is better?" — it's "how to use them all together without going crazy?"**
+
+In the [next article](/en/why-productive-teams-fail-09), we'll build exactly that model: a decision matrix that connects specific question to appropriate framework, without paralysis from analysis or metric overload.
+
+<FootnoteList>
+  <FootnoteItem id={1}>
+    Skelton, Matthew; Pais, Manuel. **[Team Topologies: Organizing Business and Technology Teams for Fast Flow](https://teamtopologies.com/book)**. IT Revolution Press, 2019. The book proposes four fundamental team types (stream-aligned, platform, enabling, complicated-subsystem) and three interaction modes (collaboration, x-as-a-service, facilitating) to optimize software delivery flow.
+  </FootnoteItem>
+  <FootnoteItem id={2}>
+    Kersten, Mik. **[Project to Product: How to Survive and Thrive in the Age of Digital Disruption with the Flow Framework](https://projecttoproduct.org/)**. IT Revolution Press, 2018. The book introduces the Flow Framework, which connects engineering metrics to business results through four work types (features, defects, risks, debts) and flow metrics.
+  </FootnoteItem>
+  <FootnoteItem id={3}>
+    McKinsey & Company. **[Developer Velocity: How software excellence fuels business performance](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/developer-velocity-how-software-excellence-fuels-business-performance)**. McKinsey Digital, 2020. The study introduces the Developer Velocity Index (DVI) as a measure of engineering maturity and its correlation with business results.
+  </FootnoteItem>
+</FootnoteList>
