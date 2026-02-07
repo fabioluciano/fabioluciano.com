@@ -501,7 +501,7 @@ Antes de analisar os frameworks, vamos ao cerne: três verdades que estruturam t
 
 Você pode ter 100% de cobertura de testes e ainda assim estar testando as coisas erradas. Como vimos, milhares de testes verificando código gerado por compiladores (MapStruct, Lombok). Cobertura: 100%. Valor: zero.
 
-Você pode ter Deployment Frequency "boa" no dashboard enquanto desenvolvedores evitam fazer mudanças porque cada uma significa um feedback loop interminável. A métrica está verde. O time está em burnout.
+Você pode ter Deployment Frequency "boa" no dashboard enquanto desenvolvedores evitam fazer mudanças porque cada uma significa um ciclo de feedback interminável. A métrica está verde. O time está em burnout.
 
 **Métricas são termômetros, não diagnósticos.** Um termômetro mostra 38°C. Pode ser gripe. Pode ser infecção grave. Pode ser sepse. O número sozinho não diz nada.
 
@@ -527,7 +527,7 @@ Agora, vamos ver como essas três verdades se manifestam em cada framework de pr
 
 ### Métricas DORA: quando as métricas mentem
 
-<Tooltip client:load term="DORA Metrics" definition="Conjunto de 4 métricas que avaliam a capacidade de entrega de software: frequência de deploy, lead time, tempo de recuperação e taxa de falhas em mudanças.">As métricas DORA</Tooltip> são desenhadas para medir capacidade de entrega. Mas há um detalhe importante: **havia implantação em ambiente de testes**, não produção.
+<Tooltip client:load term="DORA Metrics" definition="Conjunto de 4 métricas que avaliam a capacidade de entrega de software: frequência de deploy, tempo de entrega, tempo de recuperação e taxa de falhas em mudanças.">As métricas DORA</Tooltip> são desenhadas para medir capacidade de entrega. Mas há um detalhe importante: **havia implantação em ambiente de testes**, não produção.
 
 O fluxo era: Build → Deploy em ambiente de testes → Testadores faziam testes manuais → Empacotamento (helm-charts) → **Entrega ao cliente em batch**.
 
@@ -539,18 +539,18 @@ Parecia OK no dashboard — testadores usavam versões snapshot, então não dem
 
 A realidade do ciclo de desenvolvimento era outra:
 
-- 4 horas de feedback loop para cada tentativa de build
+- 4 horas de ciclo de feedback para cada tentativa de build
 - Múltiplos retries = dias de espera real
 - 60% de falha na primeira tentativa
 - Desenvolvedores evitando mudanças para não "gastar" um build
 
-**Lead Time for Changes: ❌ 2-3 DIAS (às vezes SEMANAS)**
+**Tempo de Entrega para Mudanças: ❌ 2-3 DIAS (às vezes SEMANAS)**
 
 Feature branch → Build (4h) → Merge para develop → Build (4h) → Falhou → Retry (4h) → Passou → Esperar próximo release → Merge para release branch → Build (4h) → Deploy para testes → Validação manual → Merge para master
 
 E isso assumindo que nenhum build falhou. Um único retry? +4 horas. Build falhou duas vezes? +8 horas.
 
-**GitFlow + liberações em batch** multiplicavam o lead time. Uma mudança simples ficava travada esperando o próximo ciclo de release. Às vezes semanas.
+**GitFlow + liberações em batch** multiplicavam o tempo de entrega. Uma mudança simples ficava travada esperando o próximo ciclo de release. Às vezes semanas.
 
 Uma mudança trivial virava maratona. Não por complexidade técnica. Por fricção de processo.
 
@@ -574,7 +574,7 @@ Bug encontrado pelos testadores no ambiente? 6-8 horas até ter um fix deployado
 
 DORA captura **sintomas**, não causas. As métricas pareciam "aceitáveis" em relatórios gerenciais — mas a realidade era inferno.
 
-Deployment Frequency não distingue entre "deploys confiáveis" e "deploys que só passam no retry". Lead Time não captura os 3 builds que falharam antes do sucesso. Change Failure Rate de 30% parece razoável, mas esconde que **60% dos builds falhavam na primeira tentativa** antes mesmo de chegar aos testadores.
+Deployment Frequency não distingue entre "deploys confiáveis" e "deploys que só passam no retry". Tempo de Entrega não captura os 3 builds que falharam antes do sucesso. Change Failure Rate de 30% parece razoável, mas esconde que **60% dos builds falhavam na primeira tentativa** antes mesmo de chegar aos testadores.
 
 E o pior: feedback vinha de **testadores manuais em ambiente de testes**, não de telemetria de produção em minutos. Bugs críticos só eram descobertos semanas depois, quando o helm-chart chegava ao cliente.
 
@@ -590,7 +590,7 @@ Frustração generalizada. Burnout crescente. Impacto emocional severo.
 
 Código era bom. Qualidade técnica era alta. Mas processo horrível sabotava tudo.
 
-**A - Activity: ❌ 4h de feedback loop**
+**A - Activity: ❌ 4h de ciclo de feedback**
 
 Atividade constante, mas a maior parte dela era **esperar**. Esperar build. Esperar retry. Esperar análise de logs. E enquanto isso, **50% do trabalho era testar frameworks** que não precisavam ser testados.
 
@@ -680,7 +680,7 @@ No nosso caso, **todas as 4 dimensões estavam em colapso simultâneo**. E pior:
   client:load
   chart={`graph TB
     subgraph DX["<b>DX Core 4 no Build de 4 Horas</b>"]
-        F["<b>Flow</b><br/><small>DESTRUÍDO</small><br/>4h de feedback loop<br/>Contexto perdido"]
+        F["<b>Flow</b><br/><small>DESTRUÍDO</small><br/>4h de ciclo de feedback<br/>Contexto perdido"]
         FB["<b>Feedback</b><br/><small>AUSENTE</small><br/>Logs impossíveis<br/>Erro ambíguo"]
         CL["<b>Cognitive Load</b><br/><small>MÁXIMA</small><br/>13 camadas<br/>Conhecimento tribal"]
         AL["<b>Alignment</b><br/><small>QUEBRADO</small><br/>Dev vs Infra<br/>Ego > Colaboração"]
@@ -704,7 +704,7 @@ Estado de flow? Impossível com ciclos de feedback tão longos. Você inicia um 
 
 Como vimos anteriormente, não havia alternativa de rodar localmente — o laptop não aguentava a suite completa. Era commit, push, esperar.
 
-Pior ainda: múltiplas tentativas. Build falha, você ajusta uma linha, roda de novo. Mesma espera. No fim do dia, 2-3 tentativas consumiram 8-12 horas de tempo real para validar uma mudança que deveria levar minutos. Handoffs constantes. Contexto perdido. Carga mental crescente.
+Pior ainda: múltiplas tentativas. Build falha, você ajusta uma linha, roda de novo. Mesma espera. No fim do dia, 2-3 tentativas consumiram 8-12 horas de tempo real para validar uma mudança que deveria levar minutos. Transferências constantes. Contexto perdido. Carga mental crescente.
 
 Interrupções diárias viraram norma. "O build falhou de novo, você pode olhar?" Reunião. Chat corporativo. E-mail. Sala de guerra. Impossível ter 2 horas de trabalho profundo ininterrupto. Flow state virou conceito teórico — algo que você lia em blog posts mas nunca experimentava na prática.
 
@@ -767,13 +767,13 @@ E o ciclo recomeça. Cada iteração piora as 4 dimensões simultaneamente.
 
 **O insight único do DX Core 4:** Não basta diagnosticar cada dimensão isoladamente. O que importa é como elas se reforçam mutuamente. Um problema em Flow causa problemas em Feedback. Carga Cognitiva alta quebra Alignment. E assim por diante.
 
-DORA capturou **sintomas** — lead time alto, change failure rate. SPACE identificou a **guerra entre times**. DevEx mostrou a **destruição cognitiva**. Mas só DX Core 4 mostrou o **ciclo vicioso completo** onde cada problema amplifica os outros.
+DORA capturou **sintomas** — tempo de entrega alto, change failure rate. SPACE identificou a **guerra entre times**. DevEx mostrou a **destruição cognitiva**. Mas só DX Core 4 mostrou o **ciclo vicioso completo** onde cada problema amplifica os outros.
 
 ### O que cada framework proporia
 
 | Framework | Solução Proposta | Custo Estimado | Impacto Esperado |
 |-----------|------------------|----------------|------------------|
-| **DORA** | Staged pipeline (smoke→unit→e2e)<br/>Simplificar GitFlow → trunk-based<br/>Reduzir lead time com builds incrementais | Médio<br/>2-3 meses de trabalho | Lead Time: 2-3 dias→4-8h<br/>Deployment Frequency: 2-3/sem→diário<br/>MTTR: 6h→2h |
+| **DORA** | Staged pipeline (smoke→unit→e2e)<br/>Simplificar GitFlow → trunk-based<br/>Reduzir tempo de entrega com builds incrementais | Médio<br/>2-3 meses de trabalho | Tempo de Entrega: 2-3 dias→4-8h<br/>Deployment Frequency: 2-3/sem→diário<br/>MTTR: 6h→2h |
 | **SPACE** | Ferramentas de debug (kubectl, Grafana, Loki)<br/>Estrutura de colaboração entre times<br/>Autonomia | Baixo (ferramentas)<br/>Alto (mudança cultural) | Satisfaction: 2→7<br/>Collaboration: guerra→parceria<br/>Efficiency: fricção reduzida |
 | **DevEx** | Eliminar 50% dos testes desnecessários<br/>Logs estruturados (JSON)<br/>Feedback rápido (build &lt;10min) | Baixo (delete testes)<br/>Médio (estruturar logs) | Flow: 4h→30min de feedback<br/>Carga Cognitiva: redução 40%<br/>Feedback: claro e acionável |
 | **DX Core 4** | Eliminar Extraneous Load (testes frameworks, camadas)<br/>Estabelecer acordo entre times (Alignment)<br/>Criar estrutura de decisão clara | Médio<br/>Requer liderança forte | Cognitive Load: -70%<br/>Alignment: conflito→colaboração<br/>Flow: 4h→1h<br/>Feedback: ambíguo→claro |
@@ -801,7 +801,7 @@ CENÁRIO: E se os times tivessem trabalhado juntos?
 - Feedback rápido para 90% dos casos
 
 **Resultado em 6 meses:**
-- Lead time: 2-3 dias → 4-8 horas (80-90% redução)
+- Tempo de entrega: 2-3 dias → 4-8 horas (80-90% redução)
 - Build time: 4h → 30min-1h com staged pipeline
 - Custo infra: ~$200K/ano → $50K/ano
 - Satisfação do time: 2/10 → 8/10
@@ -896,7 +896,7 @@ Full (2h) - Apenas em main/develop
 
 #### 4. Simplificar fluxo de branches
 
-**Problema:** GitFlow + batch releases = lead time inflado artificialmente.
+**Problema:** GitFlow + batch releases = tempo de entrega inflado artificialmente.
 
 Feature → develop → release → master = 4 merges × 4 horas de build = até 16 horas só de builds.
 
@@ -909,7 +909,7 @@ Feature branch → main (com feature flags)
 Um único merge. Build incremental para feature branches. Full validation apenas para main. Feature flags controlam visibilidade em produção/testes.
 
 **Impacto:**
-- Lead time: 2-3 dias → 4-8 horas
+- Tempo de entrega: 2-3 dias → 4-8 horas
 - Menos merges = menos conflitos
 - Menos builds = menos custo
 - Releases mais frequentes e menores
@@ -944,7 +944,7 @@ A métrica mais clara? Tempo de onboarding de novo desenvolvedor. Antes: 6 meses
 
 **Custo operacional direto:** ~$200K/ano em infraestrutura CI/CD superdimensionada + $50K/ano em incidentes (hotfixes emergenciais, downtime, retrabalho). Total: ~$250K/ano queimados.
 
-**Custo oculto (o pior):** Burnout inevitável. Moral no chão com satisfação 2/10. Velocidade decrescente — lead time aumentando mês a mês. Dívida técnica acumulando porque ninguém quer refatorar um sistema que já é pesadelo de trabalhar.
+**Custo oculto (o pior):** Burnout inevitável. Moral no chão com satisfação 2/10. Velocidade decrescente — tempo de entrega aumentando mês a mês. Dívida técnica acumulando porque ninguém quer refatorar um sistema que já é pesadelo de trabalhar.
 
 **Custo humano:** Frustração constante e impacto emocional severo. Relacionamentos completamente destruídos.
 
@@ -994,7 +994,7 @@ Ferramentas de debug negadas não é "política de segurança".
 
 <FootnoteList>
   <FootnoteItem id={1}>
-    Forsgren, Nicole; Humble, Jez; Kim, Gene. **[Accelerate: The Science of Lean Software and DevOps](https://www.oreilly.com/library/view/accelerate/9781457191435/)**. IT Revolution Press, 2018. Apresenta as 4 métricas DORA (deployment frequency, lead time, MTTR, change failure rate) e as 24 capacidades técnicas e organizacionais que sustentam alta performance em entrega de software.
+    Forsgren, Nicole; Humble, Jez; Kim, Gene. **[Accelerate: The Science of Lean Software and DevOps](https://www.oreilly.com/library/view/accelerate/9781457191435/)**. IT Revolution Press, 2018. Apresenta as 4 métricas DORA (deployment frequency, tempo de entrega, MTTR, change failure rate) e as 24 capacidades técnicas e organizacionais que sustentam alta performance em entrega de software.
   </FootnoteItem>
   <FootnoteItem id={2}>
     Storey, Margaret-Anne; Zimmermann, Thomas; et al. **[The SPACE of Developer Productivity](https://queue.acm.org/detail.cfm?id=3454124)**. ACM Queue, 2021. Framework que propõe 5 dimensões para medir produtividade de desenvolvedores: Satisfaction, Performance, Activity, Communication e Efficiency.

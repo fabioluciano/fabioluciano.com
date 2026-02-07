@@ -1,0 +1,528 @@
+---
+title: "Além das Métricas de Time: Estrutura, Fluxo e a Perspectiva Corporativa"
+description: "Team Topologies redesenha a organização para fluxo. Flow Framework conecta engenharia a negócio. Developer Velocity Index mostra como consultorias vendem produtividade. Três lentes que ampliam o que os frameworks anteriores não veem."
+publishedAt: 2026-02-08
+locale: pt
+category: platform-engineering
+tags:
+  - developer-experience
+  - platform-engineering
+  - team-topologies
+  - flow-framework
+draft: false
+toc: true
+comments: true
+series: por-que-times-produtivos-fracassam
+seriesOrder: 8
+translationSlug: why-productive-teams-fail-08
+---
+
+import { Callout } from '@/components/mdx/Callout';
+import { CompareColumns } from '@/components/mdx/CompareColumns';
+import { ProsCons } from '@/components/mdx/ProsCons';
+import { Tooltip } from '@/components/mdx/Glossary';
+import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
+import { Mermaid } from '@/components/mdx';
+
+Ao longo desta série, exploramos frameworks que medem produtividade em diferentes níveis: DORA no pipeline, SPACE nas dimensões, DevEx na experiência, DX Core 4 nos pontos de intervenção. Todos compartilham uma característica: **focam no time como unidade de análise**.
+
+Mas times não existem no vácuo. Eles operam dentro de estruturas organizacionais, respondem a pressões de negócio e são avaliados por métricas que frequentemente vêm de fora da engenharia.
+
+Três perspectivas ampliam o olhar:
+
+1. **Team Topologies** — Como a estrutura organizacional determina o fluxo
+2. **Flow Framework** — Como conectar métricas de engenharia a valor de negócio
+3. **Developer Velocity Index** — Como consultorias corporativas simplificam (e vendem) produtividade
+
+<Callout type="info" title="Por que expandir o olhar">
+
+DORA, SPACE e DevEx são poderosos para entender o que acontece *dentro* de times. Mas se a estrutura organizacional está errada, ou se a linguagem com o negócio está quebrada, otimizar dentro do time é insuficiente. Às vezes, o problema está um nível acima.
+
+</Callout>
+
+---
+
+## Team Topologies: a estrutura como variável de fluxo
+
+### O argumento central
+
+<Tooltip client:load term="Team Topologies" definition="Modelo de design organizacional proposto por Matthew Skelton e Manuel Pais que define quatro tipos de times e três modos de interação para otimizar fluxo de entrega.">Team Topologies</Tooltip><FootnoteRef client:load id={1} />, publicado em 2019 por Matthew Skelton e Manuel Pais, parte de uma premissa provocadora: **a estrutura organizacional é a primeira variável que determina a capacidade de entrega**.
+
+Não adianta ter CI/CD perfeito, métricas DORA impecáveis e desenvolvedores satisfeitos se a forma como times estão organizados cria dependências que bloqueiam fluxo.
+
+<Callout type="warning" title="A Lei de Conway como design">
+
+A Lei de Conway afirma que sistemas tendem a espelhar a estrutura de comunicação da organização. Team Topologies propõe *inverter* essa lei: **desenhe a estrutura organizacional para produzir a arquitetura que você quer**.
+
+</Callout>
+
+### Os quatro tipos de times
+
+O modelo define quatro tipos fundamentais de times, cada um com responsabilidades e características distintas:
+
+#### 1. Times Alinhados a Fluxo (Stream-aligned Teams)
+
+São os times que **entregam valor diretamente ao usuário ou cliente**. Trabalham em um fluxo contínuo de funcionalidades, do conceito à produção.
+
+**Características:**
+- Responsáveis por uma fatia clara de valor de negócio (produto, jornada, domínio)
+- Devem ter autonomia para entregar sem dependências externas constantes
+- Precisam de todas as capacidades necessárias para seu fluxo (design, desenvolvimento, operação)
+- São a maioria dos times em uma organização saudável
+
+**O problema comum:** Quando times alinhados a fluxo dependem constantemente de outros times para entregas simples, há um problema de design organizacional — não de processo.
+
+#### 2. Times de Plataforma (Platform Teams)
+
+Existem para **reduzir a carga cognitiva dos times alinhados a fluxo**. Fornecem serviços internos que permitem aos times de fluxo focar em valor de negócio.
+
+**Características:**
+- Tratam outros times como clientes
+- Fornecem serviços de autosserviço (infraestrutura, CI/CD, observabilidade)
+- Reduzem duplicação de esforço entre times
+- Devem ser opcionais, não obrigatórios (times podem usar ou não)
+
+**O problema comum:** Times de plataforma que se tornam gargalos obrigatórios em vez de habilitadores. Se todo deploy precisa de "aprovação da plataforma", o time de plataforma virou comitê, não serviço.
+
+#### 3. Times Habilitadores (Enabling Teams)
+
+**Ajudam outros times a superar obstáculos** temporários. São especialistas que transferem conhecimento, não que fazem o trabalho para outros.
+
+**Características:**
+- Detectam lacunas de capacidade em times alinhados a fluxo
+- Trabalham temporariamente com times específicos
+- Objetivo é tornar-se desnecessário (transferir conhecimento, não criar dependência)
+- Exemplos: times de DevOps, mentores de SRE, especialistas em segurança
+
+**O problema comum:** Times habilitadores que viram times permanentes de suporte, criando dependência em vez de capacidade.
+
+#### 4. Times de Subsistema Complexo (Complicated-Subsystem Teams)
+
+Responsáveis por **componentes que exigem especialização profunda** que não faz sentido distribuir entre todos os times.
+
+**Características:**
+- Dominam áreas que exigem conhecimento especializado (ML, criptografia, processamento de vídeo)
+- Fornecem interfaces simplificadas para outros times
+- Justificados apenas quando a especialização é genuinamente rara e necessária
+- Devem ser exceção, não regra
+
+**O problema comum:** Usar "complexidade" como desculpa para criar silos. Se o time existe porque "só eles entendem o código", o problema é documentação e arquitetura, não necessidade de especialização.
+
+<ProsCons
+  client:load
+  prosTitle="Estrutura bem desenhada"
+  consTitle="Estrutura mal desenhada"
+  context="Impacto da estrutura organizacional no fluxo"
+  variant="balanced"
+  pros={[
+    "Times alinhados a fluxo entregam com autonomia",
+    "Plataforma é serviço, não gargalo",
+    "Times habilitadores transferem conhecimento",
+    "Dependências são explícitas e minimizadas"
+  ]}
+  cons={[
+    { text: "Todo pedido vira ticket para outro time", emphasis: true },
+    { text: "Plataforma tem fila de semanas", emphasis: true },
+    "Especialistas se tornam indispensáveis",
+    "Ninguém sabe quem é responsável pelo quê"
+  ]}
+/>
+
+### Os três modos de interação
+
+Além dos tipos de time, Team Topologies define três modos de interação entre times:
+
+**1. Colaboração (Collaboration)**
+- Dois times trabalham juntos temporariamente em um problema compartilhado
+- Alta comunicação, fronteiras borradas
+- Deve ser temporário — colaboração permanente indica fronteiras mal definidas
+
+**2. X-as-a-Service**
+- Um time fornece serviço que outro consome
+- Baixa comunicação, contrato claro
+- Ideal para plataformas e subsistemas estáveis
+
+**3. Facilitação (Facilitating)**
+- Um time (geralmente habilitador) ajuda outro a desenvolver capacidade
+- Comunicação focada em transferência de conhecimento
+- Objetivo é tornar a facilitação desnecessária
+
+<Mermaid
+  client:load
+  chart={`
+flowchart TB
+    subgraph tipos["Tipos de Times"]
+        stream["**Alinhado a Fluxo**<br/><br/>Entregam valor<br/>diretamente ao<br/>usuário/cliente"]
+        platform["**Plataforma**<br/><br/>Reduzem carga<br/>cognitiva com<br/>serviços internos"]
+        enabling["**Habilitador**<br/><br/>Transferem<br/>conhecimento<br/>temporariamente"]
+        subsystem["**Subsistema<br/>Complexo**<br/><br/>Dominam<br/>especialização<br/>rara"]
+    end
+
+    stream -->|"X-como-Serviço<br/>(autosserviço)"| platform
+    stream -.->|"Facilitação<br/>(temporário)"| enabling
+    stream -->|"X-como-Serviço<br/>(interface simples)"| subsystem
+    stream -.->|"Colaboração<br/>(exceção temporária)"| stream
+    platform -.->|"Facilitação<br/>(integração)"| stream
+    enabling -.->|"Facilitação<br/>(transferir<br/>capacidade)"| stream
+
+    note1["**Maioria dos times deve ser Alinhado a Fluxo**<br/>Outros tipos existem para HABILITAR fluxo,<br/>não para criar dependências permanentes."]
+
+    style stream fill:#E8F5E9,stroke:#4CAF50,stroke-width:2px
+    style platform fill:#E3F2FD,stroke:#2196F3,stroke-width:2px
+    style enabling fill:#FFF3E0,stroke:#FF9800,stroke-width:2px
+    style subsystem fill:#F3E5F5,stroke:#9C27B0,stroke-width:2px
+    style note1 fill:#fff,stroke:#666,stroke-width:1px
+  `}
+  alt="Diagrama mostrando os 4 tipos de times do Team Topologies e os 3 modos de interação"
+  caption="Team Topologies define 4 tipos de times e 3 modos de interação. A maioria dos times deve ser Alinhado a Fluxo; outros tipos existem para habilitá-los, não para criar dependências permanentes."
+/>
+
+<Callout type="danger" title="O erro mais comum">
+
+Organizações tratam colaboração como modo padrão. Resultado: reuniões infinitas, dependências ocultas e ninguém consegue entregar independentemente. **Colaboração deveria ser exceção temporária, não estado permanente.**
+
+</Callout>
+
+### Team Topologies e DORA/SPACE/DevEx
+
+| Framework | O que vê | O que Team Topologies adiciona |
+|-----------|----------|-------------------------------|
+| **DORA** | Velocidade do pipeline | Por que o pipeline está lento (dependências entre times) |
+| **SPACE** | Múltiplas dimensões | Por que colaboração está fragmentada (estrutura errada) |
+| **DevEx** | Experiência individual/time | Por que carga cognitiva é alta (responsabilidades mal definidas) |
+
+Team Topologies não compete com esses frameworks — ele explica **por que as métricas deles podem estar ruins** mesmo quando práticas técnicas estão certas.
+
+### Os limites do Team Topologies (o que o livro não conta)
+
+O modelo é elegante — talvez elegante demais. Na prática, há limitações que o livro minimiza ou ignora completamente.
+
+#### Limitação 1: Contextos onde o modelo não funciona
+
+**Startups pequenas (< 20 pessoas):**
+- Separar times alinhados a fluxo, de plataforma e habilitadores não faz sentido com 3 times
+- Todo mundo faz tudo, e isso é correto nessa escala
+- Aplicar Team Topologies cedo demais cria burocracia desnecessária
+
+**Organizações muito hierárquicas:**
+- Team Topologies assume autonomia de times que muitas culturas não permitem
+- Se toda decisão precisa de aprovação de 3 níveis acima, times alinhados a fluxo são ficção
+- O modelo não endereça como mudar cultura hierárquica
+
+**Empresas com contratos legados:**
+- Fornecedores externos podem forçar estruturas de time que não se encaixam no modelo
+- Time de subsistema complexo pode ser obrigatório por contrato, não por escolha
+- Team Topologies assume controle que nem toda organização tem
+
+#### Limitação 2: Renomear times não é Team Topologies
+
+**O anti-padrão mais comum:** Organização lê o livro, renomeia times existentes para os 4 tipos, declara vitória.
+
+- Time de infraestrutura vira "Time de Plataforma" (mas continua sendo gargalo obrigatório)
+- Time de suporte vira "Time Habilitador" (mas continua fazendo trabalho operacional)
+- Todo time vira "Alinhado a Fluxo" (mas continua com dependências cruzadas em tudo)
+
+**O problema:** A mudança é cosmética. Os modos de interação não mudaram. As dependências continuam as mesmas. Os gargalos permanecem.
+
+**O que realmente mudar exige:**
+- Redesenhar responsabilidades (não apenas nomes)
+- Eliminar dependências bloqueantes
+- Mudar incentivos e métricas de sucesso
+- Renegociar contratos de interação entre times
+
+#### Limitação 3: Custos de transição que o livro minimiza
+
+**Transições são dolorosas.** O livro trata reorganização como exercício de design, mas na prática:
+
+- **Pessoas perdem responsabilidade:** Quando você redesenha times, pessoas perdem domínios que dominavam
+- **Conhecimento se fragmenta:** Período de transição tem carga cognitiva absurda
+- **Métricas pioram antes de melhorar:** Toda reorganização gera queda temporária de produtividade
+- **Resistência política:** Quem perde poder resiste, independente de lógica técnica
+
+**O que o livro não diz:** Transições mal gerenciadas podem destruir mais valor do que criar. Reorganizar sem adesão, sem plano de migração de conhecimento, sem período de estabilização é receita para desastre.
+
+**Estimativa realista:** Reorganização significativa leva 12-18 meses para estabilizar. O livro não prepara para esse cronograma.
+
+#### Limitação 4: O viés de consultoria
+
+Matthew Skelton e Manuel Pais são consultores de Team Topologies. Isso não invalida o modelo, mas cria incentivos:
+
+- **Simplicidade vende:** 4 tipos + 3 modos é mais vendável que "depende do contexto"
+- **Universalidade vende:** "Funciona para qualquer organização" é melhor marketing que "tem limitações"
+- **Treinamentos vendem:** Modelo que pode ser ensinado em 2 dias gera mais receita
+
+O resultado: detalhes são simplificados, exceções são minimizadas, complexidade real é reduzida.
+
+<Callout type="warning" title="Use Team Topologies como lente, não como lei">
+
+O modelo é **útil para pensar sobre estrutura** — não é **receita universal**. Organizações que tratam Team Topologies como lista de verificação de conformidade acabam pior do que se não tivessem adotado nada.
+
+Pergunte: "Essa estrutura faz sentido para nosso contexto?" — não "Estamos seguindo Team Topologies corretamente?"
+
+</Callout>
+
+---
+
+## Flow Framework: traduzindo engenharia para negócio
+
+### O problema de linguagem
+
+<Tooltip client:load term="Flow Framework" definition="Modelo proposto por Mik Kersten que conecta métricas de fluxo de engenharia a resultados de negócio, categorizando trabalho em Funcionalidades, Defeitos, Riscos e Dívidas.">Flow Framework</Tooltip><FootnoteRef client:load id={2} />, publicado em 2018 por Mik Kersten, endereça um problema diferente: **engenharia e negócio falam línguas diferentes**.
+
+Quando engenharia reporta "deployment frequency aumentou 40%", o CFO pergunta: "E daí? Isso gerou receita?"
+
+Quando negócio pede "entregar mais rápido", engenharia responde: "Estamos no limite. Temos dívida técnica."
+
+O diálogo não acontece porque as métricas não se traduzem.
+
+<Callout type="info" title="A lacuna de tradução">
+
+DORA mede capacidade de entrega. SPACE mede dimensões de produtividade. DevEx mede experiência. Nenhum deles responde diretamente: **quanto valor de negócio está sendo criado?**
+
+</Callout>
+
+### As quatro categorias de trabalho (Flow Items)
+
+O Flow Framework propõe categorizar todo trabalho em quatro tipos:
+
+#### 1. Funcionalidades (Features)
+- Novo valor para o cliente
+- Gera receita, diferenciação ou satisfação
+- É o que negócio geralmente quer mais
+
+#### 2. Defeitos (Defects)
+- Correção de problemas em funcionalidades existentes
+- Não adiciona valor novo, mas preserva valor existente
+- Sinal de qualidade do processo de desenvolvimento
+
+#### 3. Riscos (Risks)
+- Trabalho para reduzir vulnerabilidades (segurança, conformidade, resiliência)
+- Não visível para usuário final, mas crítico para sustentabilidade
+- Frequentemente ignorado até virar incidente
+
+#### 4. Dívidas (Debts)
+- Trabalho para melhorar a base técnica (refatoração, atualização de dependências)
+- Não entrega valor imediato, mas habilita entregas futuras
+- O mais difícil de justificar para negócio
+
+<CompareColumns
+  leftTitle="O que negócio vê"
+  rightTitle="O que engenharia vê"
+  leftType="neutral"
+  rightType="neutral"
+  leftItems={[
+    "Queremos mais funcionalidades",
+    "Por que tantos bugs?",
+    "Segurança é custo",
+    "Refatoração não entrega valor"
+  ]}
+  rightItems={[
+    "Funcionalidades sem qualidade viram defeitos",
+    "Bugs são sintoma de pressão",
+    "Segurança evita catástrofe",
+    "Dívida técnica está nos matando"
+  ]}
+/>
+
+### Flow Metrics: métricas que negócio entende
+
+O framework propõe métricas que traduzem capacidade técnica em linguagem de negócio:
+
+**Velocidade de Fluxo (Flow Velocity):** Quantos itens de trabalho são completados por período? (Similar a vazão, mas categorizado)
+
+**Eficiência de Fluxo (Flow Efficiency):** Quanto tempo o trabalho fica ativo vs. esperando? (Revela gargalos de processo)
+
+**Tempo de Fluxo (Flow Time):** Quanto tempo do início ao fim de um item? (Similar a tempo de entrega, mas por categoria)
+
+**Carga de Fluxo (Flow Load):** Quantos itens estão em progresso simultaneamente? (Revela sobrecarga)
+
+**Distribuição de Fluxo (Distribuição de Fluxo):** Qual percentual do trabalho vai para cada categoria? (Revela onde o esforço está sendo investido)
+
+<Callout type="warning" title="O insight crítico da Distribuição de Fluxo">
+
+Se 60% do trabalho é defeitos e dívida técnica, e apenas 20% é funcionalidades, **negócio precisa entender que acelerar funcionalidades exige investir em qualidade**. Distribuição de Fluxo torna essa conversa possível com dados, não com opinião.
+
+</Callout>
+
+### O Fluxo de Valor como unidade de análise
+
+Diferente de frameworks focados em times, Flow Framework usa o **fluxo de valor (value stream)** como unidade:
+
+- Um fluxo de valor atravessa múltiplos times
+- Mede do pedido do cliente até a entrega de valor
+- Revela gargalos que métricas de time individual não mostram
+
+**Exemplo:** Um time pode ter métricas DORA excelentes (deploys frequentes, tempo de entrega baixo), mas o fluxo de valor total ser lento porque há gargalos em aprovações de negócio, transferências entre times ou dependências externas.
+
+### Flow Framework e os outros frameworks
+
+| Pergunta | DORA responde | Flow Framework adiciona |
+|----------|---------------|------------------------|
+| Estamos entregando rápido? | Sim (pipeline) | Sim, mas entregando *o quê*? |
+| Onde está o gargalo? | No pipeline | No fluxo de valor inteiro |
+| Quanto esforço vai para valor? | Não mede | Distribuição de Fluxo mostra |
+| Negócio entende nosso progresso? | Não traduz | Métricas em linguagem de negócio |
+
+---
+
+## Developer Velocity Index: a perspectiva corporativa
+
+### O que é (e de onde vem)
+
+O <Tooltip client:load term="Developer Velocity Index" definition="Índice criado pela McKinsey que mede velocidade de desenvolvimento através de práticas em tecnologia, ferramentas, cultura e gestão.">Developer Velocity Index (DVI)</Tooltip><FootnoteRef client:load id={3} /> foi criado pela McKinsey em 2020. É um índice que tenta correlacionar práticas de desenvolvimento com resultados de negócio.
+
+Diferente de DORA (nascido de pesquisa acadêmica) ou Team Topologies (nascido de prática), o DVI vem do mundo de **consultoria corporativa**. Isso importa porque define seu público e seus incentivos.
+
+<Callout type="warning" title="Contexto importa">
+
+O DVI não foi criado para ajudar engenheiros a melhorar. Foi criado para ajudar **executivos a justificar investimentos** em tecnologia. Isso não o torna inválido, mas define suas prioridades e limitações.
+
+</Callout>
+
+### As quatro dimensões do DVI
+
+O índice avalia organizações em quatro áreas:
+
+**1. Tecnologia (Technology)**
+- Ferramentas modernas de desenvolvimento
+- Infraestrutura cloud
+- Práticas de CI/CD
+
+**2. Práticas de Trabalho (Working Practices)**
+- Metodologias ágeis
+- Práticas de código (code review, pair programming)
+- Automação de testes
+
+**3. Talento (Talent)**
+- Capacidade de atrair e reter desenvolvedores
+- Programas de desenvolvimento
+- Cultura de aprendizado
+
+**4. Habilitação Empresarial (Enterprise Enablement)**
+- Apoio da liderança
+- Investimento em tecnologia
+- Alinhamento estratégico
+
+### O que o DVI afirma (e não prova)
+
+O estudo da McKinsey afirma que empresas no quartil (quartile) superior de "velocidade de desenvolvimento (developer velocity)" têm:
+- 4-5x mais crescimento de receita
+- 55% mais inovação
+- 60% maior satisfação de funcionários
+
+<Callout type="danger" title="Correlação vs. Causalidade">
+
+Essas correlações são impressionantes, mas não provam causalidade. Empresas bem-sucedidas têm mais recursos para investir em ferramentas e práticas — não necessariamente o inverso. O DVI pode estar medindo **consequência** de sucesso, não **causa**.
+
+</Callout>
+
+### Por que executivos adoram o DVI
+
+O DVI resolve um problema específico para C-level:
+
+1. **Justificativa de investimento:** "McKinsey diz que empresas com alta velocidade (velocity) crescem 4x mais"
+2. **Benchmark externo:** "Estamos no percentil 60 comparado ao mercado"
+3. **Narrativa simples:** Um número que resume "maturidade de engenharia"
+4. **Cobertura reputacional:** Se der errado, "seguimos a McKinsey"
+
+<ProsCons
+  client:load
+  prosTitle="O que o DVI oferece"
+  consTitle="O que o DVI esconde"
+  context="Análise crítica do Developer Velocity Index"
+  variant="warning"
+  pros={[
+    "Linguagem que executivos entendem",
+    "Benchmark contra mercado",
+    "Justificativa para investimento",
+    "Visão holística (tech + cultura + gestão)"
+  ]}
+  cons={[
+    { text: "Correlação tratada como causalidade", emphasis: true },
+    { text: "Metodologia proprietária (não replicável)", emphasis: true },
+    "Incentivo a vender consultoria",
+    "Simplifica complexidade em número único"
+  ]}
+/>
+
+### A crítica estrutural
+
+O problema do DVI não é que esteja errado — é que vem de um contexto específico:
+
+**1. Conflito de interesse:** McKinsey vende consultoria para melhorar o índice que ela mesma criou.
+
+**2. Metodologia opaca:** Diferente de DORA (pesquisa publicada, replicável), o DVI é proprietário.
+
+**3. Simplificação perigosa:** Reduzir "maturidade de engenharia" a um número único ignora contexto, compensações e detalhes importantes.
+
+**4. Viés de sobrevivência:** O estudo analisa empresas bem-sucedidas. Não sabemos quantas empresas com "alta velocidade (velocity)" falharam.
+
+<Callout type="info" title="Quando usar (com cautela)">
+
+O DVI pode ser útil para:
+- Abrir conversa com executivos que não entendem DORA/SPACE
+- Justificar orçamento em linguagem de negócio
+- Benchmark inicial (com ressalvas)
+
+Mas não deveria substituir frameworks com metodologia transparente e foco em melhoria real.
+
+</Callout>
+
+---
+
+## Integrando as perspectivas
+
+### O que cada framework adiciona
+
+| Framework | Unidade de análise | Pergunta central | Público principal |
+|-----------|-------------------|------------------|-------------------|
+| **DORA** | Pipeline/Time | "O sistema entrega bem?" | Engenharia |
+| **SPACE** | Time/Indivíduo | "Estamos medindo certo?" | Engenharia/Gestão |
+| **DevEx** | Indivíduo/Time | "Como é trabalhar aqui?" | Engenharia |
+| **Team Topologies** | Organização | "A estrutura permite fluxo?" | Arquitetura Org |
+| **Flow Framework** | Fluxo de Valor | "Quanto valor estamos criando?" | Engenharia + Negócio |
+| **DVI** | Empresa | "Como nos comparamos ao mercado?" | Executivos |
+
+### Quando usar cada um
+
+**Problema no pipeline, métricas de entrega ruins:**
+→ Comece com DORA para diagnóstico
+
+**Times entregam mas pessoas sofrem:**
+→ Use DevEx para entender experiência
+
+**Métricas de time boas mas entrega total lenta:**
+→ Team Topologies para verificar estrutura
+→ Flow Framework para mapear fluxo de valor
+
+**Precisando justificar investimento para C-level:**
+→ Flow Framework para traduzir em linguagem de negócio
+→ DVI como referência externa (com ressalvas)
+
+**Redesenhando a organização:**
+→ Team Topologies como framework de design
+→ Flow Framework para medir impacto
+
+### A pergunta que permanece
+
+Oito artigos. Seis frameworks. Dezenas de métricas, dimensões, tipos de time e modos de interação.
+
+Se você chegou até aqui com a sensação de ter **muitas lentes e pouca clareza**, essa é exatamente a condição que o próximo artigo endereça: como integrar tudo isso na prática? Qual framework usar para qual pergunta? Como combinar sem criar paralisia por excesso de análise?
+
+Frameworks não mudam organizações. **Pessoas mudam organizações.** Mas pessoas precisam de mais do que ferramentas de medição — precisam de um modelo para escolher qual ferramenta usar quando.
+
+**A próxima pergunta não é "qual framework é melhor?" — é "como usar todos eles juntos sem enlouquecer?"**
+
+No [próximo artigo](/pt/por-que-times-produtivos-fracassam-09), vamos construir exatamente esse modelo: uma matriz de decisão que conecta pergunta específica a framework apropriado, sem paralisia por análise ou sobrecarga de métricas.
+
+<FootnoteList>
+  <FootnoteItem id={1}>
+    Skelton, Matthew; Pais, Manuel. **[Team Topologies: Organizing Business and Technology Teams for Fast Flow](https://teamtopologies.com/book)**. IT Revolution Press, 2019. O livro propõe quatro tipos fundamentais de times (stream-aligned, platform, enabling, complicated-subsystem) e três modos de interação (collaboration, x-as-a-service, facilitating) para otimizar fluxo de entrega de software.
+  </FootnoteItem>
+  <FootnoteItem id={2}>
+    Kersten, Mik. **[Project to Product: How to Survive and Thrive in the Age of Digital Disruption with the Flow Framework](https://projecttoproduct.org/)**. IT Revolution Press, 2018. O livro introduz o Flow Framework, que conecta métricas de engenharia a resultados de negócio através de quatro tipos de trabalho (features, defects, risks, debts) e métricas de fluxo.
+  </FootnoteItem>
+  <FootnoteItem id={3}>
+    McKinsey & Company. **[Developer Velocity: How software excellence fuels business performance](https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/developer-velocity-how-software-excellence-fuels-business-performance)**. McKinsey Digital, 2020. O estudo introduz o Developer Velocity Index (DVI) como medida de maturidade de engenharia e sua correlação com resultados de negócio.
+  </FootnoteItem>
+</FootnoteList>

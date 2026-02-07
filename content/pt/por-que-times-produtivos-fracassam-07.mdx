@@ -81,7 +81,7 @@ Entender esse contexto comercial importa porque define **o que o framework escol
 
 ## O ponto de saturação cognitiva
 
-Depois de DORA, SPACE e DevEx, organizações chegam a um estado específico. O <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: feedback loops, cognitive load, flow state e developer satisfaction.">DX Core 4</Tooltip> nasce exatamente nesse ponto de saturação cognitiva. Não como um novo modelo explicativo, mas como uma **redução deliberada da complexidade**.
+Depois de DORA, SPACE e DevEx, organizações chegam a um estado específico. O <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: ciclos de feedback, carga cognitiva, estado de fluxo e satisfação do desenvolvedor.">DX Core 4</Tooltip> nasce exatamente nesse ponto de saturação cognitiva. Não como um novo modelo explicativo, mas como uma **redução deliberada da complexidade**.
 
 Essa escolha já diz muito. O DX Core 4 não tenta capturar tudo. **Ele aceita perder precisão conceitual em troca de capacidade de ação.**
 
@@ -111,7 +111,7 @@ A escolha não é arbitrária. O DX Core 4 concentra-se nas áreas onde **fricç
 
 **Como esses eixos se relacionam com frameworks anteriores:**
 
-- **DORA** mede resultados (<Tooltip client:load term="lead time" definition="Tempo desde o commit do código até a entrega em produção. Métrica DORA que mede velocidade de entrega.">lead time</Tooltip>, deployment frequency). **DX Core 4** investiga as condições que produzem esses resultados.
+- **DORA** mede resultados (<Tooltip client:load term="tempo de entrega" definition="Tempo desde o commit do código até a entrega em produção. Métrica DORA que mede velocidade de entrega.">tempo de entrega</Tooltip>, deployment frequency). **DX Core 4** investiga as condições que produzem esses resultados.
 - **SPACE** tenta capturar todas as dimensões. **DX Core 4** reduz para os pontos mais concretos onde agir.
 - **DevEx** diagnostica fricção. **DX Core 4** organiza onde intervir primeiro.
 
@@ -231,7 +231,7 @@ O primeiro eixo é **fluxo**. Aqui, fluxo não é velocidade abstrata nem obsess
 **O que DX Core 4 chama de fluxo é diferente de:**
 
 - **Flow state** (estado psicológico de concentração profunda)
-- **Throughput** (volume de trabalho completado por unidade de tempo)
+- **Vazão** (volume de trabalho completado por unidade de tempo)
 - **Velocity** (métrica ágil de pontos entregues)
 
 Fluxo aqui é mais próximo de **ausência de fricção desnecessária**. É poder começar uma tarefa às 10h e, às 12h, ter avançado de forma proporcional ao tempo investido — sem ter gasto 90 minutos esperando ambiente subir, dependências serem aprovadas ou processos burocráticos serem satisfeitos.
@@ -261,20 +261,20 @@ A questão é: **a interrupção gera valor proporcional ao custo?**
 
 #### Por que fluxo é tratado como vivência, não métrica
 
-Você pode ter **<Tooltip client:load term="lead time" definition="Tempo desde o commit do código até a entrega em produção. Métrica DORA que mede velocidade de entrega.">lead time</Tooltip> baixo** (métrica DORA) mas **fluxo degradado** (experiência DX Core 4).
+Você pode ter **<Tooltip client:load term="tempo de entrega" definition="Tempo desde o commit do código até a entrega em produção. Métrica DORA que mede velocidade de entrega.">tempo de entrega</Tooltip> baixo** (métrica DORA) mas **fluxo degradado** (experiência DX Core 4).
 
 **Como isso acontece:**
 
-- Lead time mede agregado (média do time/mês)
+- Tempo de entrega mede agregado (média do time/mês)
 - Fluxo mede vivência individual cotidiana
 
 **Exemplo prático:**
 
-Time tem lead time de 2 horas (excelente!). Mas consegue isso porque:
+Time tem tempo de entrega de 2 horas (excelente!). Mas consegue isso porque:
 - 70% das mudanças são triviais e fluem rápido
 - 30% das mudanças são bloqueadas por dias
 
-**Resultado:** Lead time agregado é ótimo. Experiência de fluxo é miserável para quem trabalha nas mudanças complexas.
+**Resultado:** Tempo de entrega agregado é ótimo. Experiência de fluxo é miserável para quem trabalha nas mudanças complexas.
 
 **DX Core 4 captura essa diferença.** Não basta medir resultado agregado — é preciso entender a vivência de trabalho.
 
@@ -439,7 +439,7 @@ Sistemas com alta carga cognitiva não escalam pessoas; **eles consomem as melho
 
 **Diagnóstico real:** **Carga cognitiva acidental está absurda**
 
-**O que DORA ou SPACE mostrariam?** Métricas normais. Lead time ok. Satisfação ok (dos que sobreviveram).
+**O que DORA ou SPACE mostrariam?** Métricas normais. Tempo de entrega ok. Satisfação ok (dos que sobreviveram).
 
 **O que DX Core 4 expõe:** Sistema está matando onboarding e concentrando conhecimento em poucos.
 
@@ -550,12 +550,12 @@ Alinhamento = todos **entendem** a decisão e sabem como agir dentro dela, mesmo
 
 **O que acontece na prática:**
 
-- Produto pressiona por features rápidas
+- Produto pressiona por funcionalidades rápidas
 - Engenharia resiste para manter qualidade
 - Plataforma bloqueia deploys para garantir estabilidade
 - **Todos trabalham muito. Mas em direções levemente incompatíveis.**
 
-**Resultado:** Lead time aumenta (porque cada lado puxa para direção diferente). Satisfação cai (porque todos sentem que "ninguém entende a importância" do que fazem). Valor real entregue diminui.
+**Resultado:** Tempo de entrega aumenta (porque cada lado puxa para direção diferente). Satisfação cai (porque todos sentem que "ninguém entende a importância" do que fazem). Valor real entregue diminui.
 
 #### Os três tipos de desalinhamento
 
@@ -566,10 +566,10 @@ Alinhamento = todos **entendem** a decisão e sabem como agir dentro dela, mesmo
 **O que está acontecendo:**
 
 Cada área tem prioridades diferentes:
-- Produto: entregar features visíveis
+- Produto: entregar funcionalidades visíveis
 - Engenharia: reduzir débito técnico
 - Plataforma: estabilizar infraestrutura
-- Segurança: implementar compliance
+- Segurança: implementar conformidade
 
 **Nenhuma dessas prioridades está errada. Mas não há ordem clara entre elas.**
 
@@ -687,7 +687,7 @@ Quatro dimensões são **drasticamente mais simples** que as cinco do SPACE. E e
     "Quebrar paralisia organizacional"
   ]}
   cons={[
-    { text: "Tratar como compliance checklist", emphasis: true },
+    { text: "Tratar como checklist de conformidade", emphasis: true },
     "Reduzir complexidade real a 4 categorias",
     "Ignorar contexto organizacional único",
     "Declarar vitória prematura ('cobrimos os 4!')"
@@ -713,7 +713,7 @@ Quatro dimensões são **drasticamente mais simples** que as cinco do SPACE. E e
 - Documentação está desatualizada e ninguém lê
 - Reuniões de sync consomem 4 horas/semana de todo mundo
 
-**O que aconteceu:** DX Core 4 virou checklist. Em vez de ferramenta de pensamento, virou auditoria de compliance. **Temos os 4 eixos cobertos, logo estamos bem.**
+**O que aconteceu:** DX Core 4 virou checklist. Em vez de ferramenta de pensamento, virou auditoria de conformidade. **Temos os 4 eixos cobertos, logo estamos bem.**
 
 ### Padrão 2: O que os 4 eixos não capturam
 
@@ -722,7 +722,7 @@ DX Core 4 é **deliberadamente reducionista**. Ele aceita perder detalhes para g
 - **Poder e política:** Quem decide? Quem controla as responsabilidades?
 - **Economia e incentivos:** Sistemas de promoção e recompensa
 - **História e contexto:** Por que chegamos aqui?
-- **Restrições externas:** Regulação, compliance, contratos legados
+- **Restrições externas:** Regulação, conformidade, contratos legados
 
 Esses fatores **não aparecem nos 4 eixos**. Mas podem ser justamente o que torna intervenção impossível.
 
@@ -815,11 +815,11 @@ Há contextos onde DX Core 4 simplesmente **não captura o que importa**. E for�
 
 **Realidade:** Em contextos de escassez extrema, DX Core 4 é **luxo intelectual**. A escolha não é "qual eixo priorizar?" mas "quanto DevEx podemos sacrificar para existir amanhã?".
 
-### Limitação 2: Compliance e regulação
+### Limitação 2: Conformidade e regulação
 
-**Cenário:** Fintech regulada. Compliance exige auditoria manual de toda mudança, aprovações múltiplas, documentação extensiva.
+**Cenário:** Fintech regulada. Conformidade exige auditoria manual de toda mudança, aprovações múltiplas, documentação extensiva.
 
-**DX Core 4 diz:** "Melhore feedback loops! Reduza tempo de espera!"
+**DX Core 4 diz:** "Melhore ciclos de feedback! Reduza tempo de espera!"
 
 **Realidade:** Regulador exige 48h de janela para revisão. **Não há otimização possível** sem mudar lei ou setor.
 

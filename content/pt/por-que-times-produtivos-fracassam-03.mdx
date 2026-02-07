@@ -69,7 +69,7 @@ Ao longo desta série, vamos falar de quatro frameworks amplamente utilizados pa
 
 ### DORA: A pipeline
 
-<Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focado em medir a capacidade de entrega de software através de métricas como frequência de implantação, lead time, MTTR e taxa de falhas.">DORA</Tooltip><FootnoteRef client:load id={2} /> olha para a capacidade de entrega do time como um sistema de fluxo.
+<Tooltip client:load term="DORA" definition="DevOps Research and Assessment. Framework focado em medir a capacidade de entrega de software através de métricas como frequência de implantação, tempo de entrega, MTTR e taxa de falhas.">DORA</Tooltip><FootnoteRef client:load id={2} /> olha para a capacidade de entrega do time como um sistema de fluxo.
 
 <DefinitionList
   client:load
@@ -80,8 +80,8 @@ Ao longo desta série, vamos falar de quatro frameworks amplamente utilizados pa
       icon: "code"
     },
     {
-      term: "Tempo de Entrega para Mudanças (Lead Time for Changes)",
-      definition: "Quanto tempo entre commit e implantação em produção. Mede a rapidez da pipeline.",
+      term: "Tempo de Entrega para Mudanças",
+      definition: "Quanto tempo entre commit e implantação em produção. Mede a rapidez do pipeline.",
       icon: "code"
     },
     {
@@ -103,7 +103,7 @@ Ao longo desta série, vamos falar de quatro frameworks amplamente utilizados pa
 
 O modelo categoriza times em Elite, High, Medium e Low performers. Essa classificação é útil para diagnóstico inicial, mas torna-se problemática quando tratada como objetivo em si.
 
-**Útil para:** Previsibilidade, confiabilidade e eficiência da pipeline.
+**Útil para:** Previsibilidade, confiabilidade e eficiência do pipeline.
 
 **Não foi desenhado para:** Experiência humana, aprendizado ou desgaste cognitivo. Quando usado fora desse contexto, começa a gerar conclusões que ele nunca se propôs a sustentar.
 
@@ -128,7 +128,7 @@ Onde DORA mede fluxo, <Tooltip client:load term="SPACE" definition="Framework qu
       icon: "info"
     },
     {
-      term: "Performance (Performance)",
+      term: "Desempenho (Performance)",
       definition: "Resultado do trabalho medido por qualidade e impacto, não apenas volume de entregas.",
       icon: "code"
     },
@@ -168,7 +168,7 @@ DORA mede entrega, SPACE mede dimensões, <Tooltip client:load term="Developer E
   client:load
   items={[
     {
-      term: "Ciclos de Feedback (Feedback loops)",
+      term: "Ciclos de Feedback",
       definition: "Quanto tempo para ver resultado de uma mudança — compilação, testes, implantação. Ciclos rápidos aceleram aprendizado.",
       icon: "code"
     },
@@ -212,13 +212,13 @@ Fricção excessiva, ferramentas ruins, processos opacos e interrupções consta
 
 ### DX Core 4: A síntese pragmática
 
-Enquanto os três anteriores focam em diferentes aspectos, <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: feedback loops, cognitive load, flow state e developer satisfaction.">DX Core 4</Tooltip> tenta sintetizar: quais são os pontos onde agir que realmente importam?
+Enquanto os três anteriores focam em diferentes aspectos, <Tooltip client:load term="DX Core 4" definition="Framework que identifica quatro dimensões centrais da Developer Experience: ciclos de feedback, carga cognitiva, estado de fluxo e satisfação do desenvolvedor.">DX Core 4</Tooltip> tenta sintetizar: quais são os pontos onde agir que realmente importam?
 
 <DefinitionList
   client:load
   items={[
     {
-      term: "Ciclos de Feedback Rápidos (Fast feedback loops)",
+      term: "Ciclos de Feedback Rápidos",
       definition: "Velocidade de ciclos (compilação, test, CI, implantação). Quanto mais rápido o retorno, mais rápido o aprendizado e a correção de curso. Esperas longas matam momentum.",
       icon: "code",
       emphasis: true
@@ -266,7 +266,7 @@ Um dos aspectos mais críticos do DX Core 4 é a ênfase em Ciclos de Feedback r
       Foco: Pipeline
       Medidas
         Deployment Frequency
-        Lead Time
+        Tempo de Entrega
         MTTR
         Change Failure Rate
       Pergunta
@@ -284,8 +284,8 @@ Um dos aspectos mais críticos do DX Core 4 é a ênfase em Ciclos de Feedback r
     DevEx
       Foco: Vivência Cotidiana
       Dimensões
-        Feedback loops
-        Cognitive load
+        Ciclos de Feedback
+        Carga Cognitiva
         Flow state
         Tooling
         Documentation
@@ -295,8 +295,8 @@ Um dos aspectos mais críticos do DX Core 4 é a ênfase em Ciclos de Feedback r
     DX Core 4
       Foco: Ação Pragmática
       Onde agir
-        Fast feedback
-        Low cognitive load
+        Feedback Rápido
+        Baixa Carga Cognitiva
         Deep flow
         High satisfaction
       Pergunta
@@ -343,7 +343,7 @@ Como vimos no [Artigo 2](/pt/por-que-times-produtivos-fracassam-02), escolher o 
   rightItems={[
     "Escondem complexidade sob número único",
     "Substituem conversas difíceis por painéis",
-    "Viram rituais de compliance",
+    "Viram rituais de conformidade",
     "São tratados como verdades inquestionáveis"
   ]}
 />
@@ -385,7 +385,7 @@ Frameworks bem-intencionados frequentemente degeneram em rituais vazios. O que c
 - Métricas são coletadas, mas ninguém age sobre elas
 - Times otimizam para parecerem bem nos números, não para melhorarem de fato
 - Discussões sobre métodos de medição substituem discussões sobre problemas reais
-- Frameworks viram requisitos de compliance, não ferramentas de diagnóstico
+- Frameworks viram requisitos de conformidade, não ferramentas de diagnóstico
 - A linguagem dos frameworks substitui conversas diretas sobre dificuldades
 
 Quando isso acontece, o framework deixou de iluminar o problema e passou a **ser o problema**.
@@ -418,6 +418,6 @@ Frameworks são lentes. Úteis quando você sabe o que está procurando e consci
     Momentum, no contexto de desenvolvimento de software, refere-se ao estado psicológico de progresso contínuo e engajamento. É a sensação de estar avançando de forma consistente, onde cada ação gera resultado visível rapidamente, criando um ciclo virtuoso de motivação e produtividade. Quando o momentum é perdido — por compilações lentas, processos burocráticos, ou esperas prolongadas — o custo não é apenas temporal: é cognitivo e emocional. Times perdem o foco, a energia mental se dissipa, e retomar o contexto requer esforço adicional. Proteger o momentum é proteger a capacidade do time de trabalhar em estado de flow.
   </FootnoteItem>
   <FootnoteItem id={2}>
-    Forsgren, Nicole; Humble, Jez; Kim, Gene. **[Accelerate: The Science of Lean Software and DevOps](https://itrevolution.com/product/accelerate/)**. IT Revolution Press, 2018. O livro apresenta os resultados de anos de pesquisa do programa DORA, estabelecendo as quatro métricas-chave (frequência de implantação, lead time, tempo de recuperação e taxa de falhas) como indicadores de performance em entrega de software.
+    Forsgren, Nicole; Humble, Jez; Kim, Gene. **[Accelerate: The Science of Lean Software and DevOps](https://itrevolution.com/product/accelerate/)**. IT Revolution Press, 2018. O livro apresenta os resultados de anos de pesquisa do programa DORA, estabelecendo as quatro métricas-chave (frequência de implantação, tempo de entrega, tempo de recuperação e taxa de falhas) como indicadores de performance em entrega de software.
   </FootnoteItem>
 </FootnoteList>

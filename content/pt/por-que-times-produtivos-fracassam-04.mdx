@@ -25,7 +25,7 @@ import { Accordion, AccordionItem } from '@/components/mdx/Accordion';
 import { FootnoteRef, FootnoteList, FootnoteItem } from '@/components/mdx/Footnote';
 import { Mermaid } from '@/components/mdx';
 
-DORA virou moeda corrente em conversas sobre DevOps e entrega de software. Suas quatro métricas — deployment frequency, lead time for changes, mean time to recovery e change failure rate — são citadas em apresentações, usadas para justificar investimentos e incluídas em painéis corporativos.
+DORA virou moeda corrente em conversas sobre DevOps e entrega de software. Suas quatro métricas — frequência de implantação, tempo de entrega para mudanças, tempo médio de recuperação e taxa de falha de mudanças — são citadas em apresentações, usadas para justificar investimentos e incluídas em painéis corporativos.
 
 Mas pouquíssimas pessoas lembram que **DORA não é sobre métricas**. DORA é sobre capacidades.
 
@@ -35,7 +35,7 @@ Mas pouquíssimas pessoas lembram que **DORA não é sobre métricas**. DORA é 
 
 ## As métricas DORA como sintomas
 
-<Tooltip client:load term="DORA Metrics" definition="Conjunto de 4 métricas que avaliam a capacidade de entrega de software: frequência de deploy, lead time, tempo de recuperação e taxa de falhas em mudanças.">As quatro métricas DORA</Tooltip> funcionam como termômetros, não como tratamento.
+<Tooltip client:load term="DORA Metrics" definition="Conjunto de 4 métricas que avaliam a capacidade de entrega de software: frequência de deploy, tempo de entrega, tempo de recuperação e taxa de falhas em mudanças.">As quatro métricas DORA</Tooltip> funcionam como termômetros, não como tratamento.
 
 **Por que DORA não mede produtividade?** Porque produtividade em software não é sobre velocidade de entrega — é sobre **valor gerado sustentavelmente**. DORA mede sintomas de um sistema de entrega saudável (fluxo rápido, baixo risco, recuperação ágil), mas não mede:
 
@@ -52,7 +52,7 @@ Mas pouquíssimas pessoas lembram que **DORA não é sobre métricas**. DORA é 
 - Evitando problemas complexos em favor de entregas fáceis
 
 <Callout type="danger" title="A confusão perigosa">
-  DORA mede **saúde da pipeline**, não produtividade. Um sistema de entrega eficiente é condição necessária, mas não suficiente, para produtividade real. Confundir as duas coisas leva organizações a otimizar para velocidade enquanto destroem valor e pessoas.
+  DORA mede **saúde do pipeline**, não produtividade. Um sistema de entrega eficiente é condição necessária, mas não suficiente, para produtividade real. Confundir as duas coisas leva organizações a otimizar para velocidade enquanto destroem valor e pessoas.
 </Callout>
 
 <ProsCons
@@ -77,13 +77,13 @@ Mas pouquíssimas pessoas lembram que **DORA não é sobre métricas**. DORA é 
 
 ### Frequência de Implantação (Deployment Frequency)
 
-Mede com que frequência código vai para produção. Alta frequência sinaliza que a pipeline é confiável, o risco percebido é baixo e mudanças podem ser pequenas.
+Mede com que frequência código vai para produção. Alta frequência sinaliza que o pipeline é confiável, o risco percebido é baixo e mudanças podem ser pequenas.
 
 **Não mede:** Se essas entregas importam. Se o time está sustentável. Se há dívida técnica crescendo em paralelo.
 
 ### Tempo de Entrega para Mudanças (Lead Time for Changes)
 
-Tempo desde o commit até o código rodando em produção. Lead time baixo indica pipeline enxuto, menos etapas manuais, menos burocracia.
+Tempo desde o commit até o código rodando em produção. Tempo de entrega baixo indica pipeline enxuto, menos etapas manuais, menos burocracia.
 
 **Não mede:** Qualidade das mudanças. Tempo de revisão de código. Carga cognitiva para realizar o trabalho.
 
@@ -187,7 +187,7 @@ Mudanças de schema versionadas, testadas e deployadas como código. Sem scripts
 
 #### Limites de trabalho em progresso (WIP limits)
 
-Trabalho em progresso limitado. Foco em finalizar antes de começar novo trabalho. Throughput real, não ilusão de movimento.
+Trabalho em progresso limitado. Foco em finalizar antes de começar novo trabalho. Vazão real, não ilusão de movimento.
 
 #### Gestão visual (Visual management)
 
@@ -299,7 +299,7 @@ A conexão entre cultura e métricas não é abstrata — é mecânica:
 
 **Deployment Frequency:** Em culturas patológicas, ninguém quer ser responsável por um deploy que quebra. Resultado: deploys se acumulam, ficam grandes e arriscados. Em culturas generativas, deploys pequenos e frequentes são seguros porque erros são tratados como aprendizado, não como crime.
 
-**Lead Time:** Em culturas burocráticas, cada mudança precisa de múltiplas aprovações formais. Resultado: lead time inflado por espera em filas. Em culturas generativas, confiança permite aprovações mais ágeis e revisões colaborativas.
+**Tempo de Entrega:** Em culturas burocráticas, cada mudança precisa de múltiplas aprovações formais. Resultado: tempo de entrega inflado por espera em filas. Em culturas generativas, confiança permite aprovações mais ágeis e revisões colaborativas.
 
 **MTTR:** Em culturas patológicas, incidentes viram caça às bruxas. Resultado: pessoas escondem problemas ou demoram a escalar. Em culturas generativas, incidentes são reportados imediatamente e todos colaboram na solução.
 
@@ -390,7 +390,7 @@ Quando métricas viram metas, sistemas começam a jogar contra elas. Não por ma
 
 - **Deployment Frequency:** Funcionalidades são quebradas em dezenas de PRs minúsculos. Uma mudança que deveria ser atômica vira 15 implantações "para subir a frequência".
 
-- **Lead Time:** Commits são feitos mas não mergeados até o último momento. PRs ficam em draft. O "lead time oficial" cai, mas o tempo real de trabalho continua o mesmo.
+- **Tempo de Entrega:** Commits são feitos mas não mergeados até o último momento. PRs ficam em draft. O "tempo de entrega oficial" cai, mas o tempo real de trabalho continua o mesmo.
 
 - **MTTR (Mean Time to Recovery):** Auto-rollback é configurado de forma agressiva. Qualquer erro vira rollback automático, contado como "recuperação rápida" — mesmo quando deveria ser investigado.
 
@@ -404,12 +404,12 @@ Quando métricas viram metas, sistemas começam a jogar contra elas. Não por ma
   variant="warning"
   pros={[
     "Alta frequência de deploy",
-    "Lead time baixíssimo",
+    "Tempo de entrega baixíssimo",
     "Recuperação rápida",
     "Baixa taxa de falhas"
   ]}
   cons={[
-    { text: "Features fragmentadas artificialmente", emphasis: true },
+    { text: "Funcionalidades fragmentadas artificialmente", emphasis: true },
     { text: "Work in Progress oculto", emphasis: true },
     { text: "Problemas não investigados", emphasis: true },
     { text: "Incidentes mascarados", emphasis: true }
@@ -422,7 +422,7 @@ O sistema não está melhorando — está aprendendo a mentir para o indicador.
 
 Um time pode manter métricas DORA excelentes enquanto as pessoas quebram por dentro.
 
-**Cenário real:** Time mantém status "Elite performer" por 8 meses consecutivos. Deployment frequency alta, lead time baixo, MTTR impressionante. Nas retrospectivas, tudo parece bem. Nos painéis, tudo está verde.
+**Cenário real:** Time mantém status "Elite performer" por 8 meses consecutivos. Deployment frequency alta, tempo de entrega baixo, MTTR impressionante. Nas retrospectivas, tudo parece bem. Nos painéis, tudo está verde.
 
 Então, em um único mês, três desenvolvedores-chave pedem demissão. Quando questionados, a resposta é uniforme: **exaustão**.
 
@@ -443,11 +443,11 @@ Um time pode estar "performando bem" segundo DORA e simultaneamente caminhando p
 
 DORA assume implicitamente que mais rápido é sempre melhor. Mas essa premissa não é universal — ela é contextual.
 
-**Exemplo: Sistema de compliance financeiro**
+**Exemplo: Sistema de conformidade financeira**
 
 Segundo DORA, este time é "Low performer":
 - Deployment frequency: 2x por mês
-- Lead time: 3 semanas
+- Tempo de entrega: 3 semanas
 - Change failure rate: ~5%
 
 Mas o contexto revela outra história:
@@ -468,7 +468,7 @@ DORA não ajuda a decidir quando velocidade é o objetivo errado. E quando aplic
 
 A crítica mais profunda — e mais raramente articulada — é filosófica.
 
-DORA nasce de pesquisa empírica: milhares de organizações foram observadas, padrões foram identificados, correlações foram estabelecidas. Times com alta frequência de implantação **tendem** a ter melhor performance geral. Times com baixo MTTR **tendem** a ser mais resilientes.
+DORA nasce de pesquisa empírica: milhares de organizações foram observadas, padrões foram identificados, correlações foram estabelecidas. Times com alta frequência de implantação **tendem** a ter melhor performance geral. Times com baixo tempo médio de recuperação(MTTR) **tendem** a ser mais resilientes.
 
 **Mas correlação não é causalidade. E tendência não é lei universal.**
 
@@ -590,7 +590,7 @@ DORA é poderoso para medir a **capacidade de entrega** de um sistema. Mas há p
   context="Limites estruturais do framework"
   variant="balanced"
   pros={[
-    "Velocidade da pipeline",
+    "Velocidade do pipeline",
     "Estabilidade do deploy",
     "Capacidade de recuperação",
     "Frequência de mudanças"
@@ -628,7 +628,7 @@ Se há uma coisa que o trabalho DORA deixa claro, é que **métricas são conseq
 
 Você não melhora a frequência de implantação criando um dashboard. Você melhora investindo em automação, testes, trunk-based development e cultura de experimentação.
 
-Você não reduz MTTR apenas pedindo que as pessoas sejam mais rápidas. Você reduz com observabilidade, runbooks claros, rollback automatizado e cultura blameless.
+Você não reduz tempo médio de recuperação(MTTR) apenas pedindo que as pessoas sejam mais rápidas. Você reduz com observabilidade, runbooks claros, rollback automatizado e cultura blameless.
 
 <Callout type="info" title="A ordem importa">
   Implemente as capacidades. Observe os resultados. Use as métricas para validar progresso, não para forçar comportamento. E sempre pergunte: **o que essas métricas não estão mostrando?**
